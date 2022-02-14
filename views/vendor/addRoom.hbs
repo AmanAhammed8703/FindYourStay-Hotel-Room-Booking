@@ -1,0 +1,199 @@
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4 style="font-size: 40px;">ADD ROOMS</h4>
+
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <form class="mt-3" action="/vendor/addRoom" method="post" enctype="multipart/form-data" id="addroom">
+                            <div class="container" style="color: black;">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label mt-2">Category</label>
+                                        <input type="text" class="form-control" name="category" value="{{type}}"
+                                            readonly>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label mt-2">Price</label>
+                                        <input type="text" class="form-control" name="price">
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label mt-2">No.of rooms</label>
+                                        <input type="number" class="form-control" name="quantity">
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label mt-2">Price/extra bed</label>
+                                        <input type="text" class="form-control" name="bed">
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="form-label mt-2">Amenities</label>
+                                        <div>
+                                            <ul>
+                                                <li>
+
+                                                    <input type="checkbox" value="A/C" name="Aminity1">
+                                                    <label for="">A/C</label>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" value="Wi-Fi" name="Aminity2">
+                                                    <label for=""> Wi-Fi</label>
+                                                </li>
+                                                <li>
+
+                                                    <input type="checkbox" value="CARD PAYMENT" name="Aminity3">
+                                                    <label for=""> CARD PAYMENT</label>
+                                                </li>
+                                                <li>
+
+                                                    <input type="checkbox" value="TV" name="Aminity4">
+                                                    <label for="">TV</label>
+                                                </li>
+                                                <li>
+
+                                                    <input type="checkbox" value="SWIMMING POOL" name="Aminity5">
+                                                    <label for="">SWIMMING POOL</label>
+                                                </li>
+
+
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div id="image-box" style="width: 500px; height: 500px; display: none;"></div>
+                                    <button class="btn btn-primary mt-3" type="button" style="display: none;"
+                                        id="crop-btn">Crop</button>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col form-group mt-5">
+                                        <div>
+                                            <label for="exampleFormControlFile1">Add Image 1</label>
+                                        </div>
+                                        <div>
+                                            <img src="" width="100px" id="imagePreview1" style="display: none;">
+                                            <input type="file" class="form-control-file" id="img1" name="roomImage1"
+                                                onchange="viewImage1(event)" style="margin-top: 10px;" required>
+                                            <p id="errormessage1" style="display: none;">Please upload a image file</p>
+                                        </div>
+                                    </div>
+                                    <div class="col form-group mt-5">
+                                        <div>
+                                            <label for="exampleFormControlFile1">Add Image 2</label>
+                                        </div>
+                                        <div>
+                                            <img src="" width="100px" id="imagePreview2" style="display: none;">
+                                            <input type="file" class="form-control-file" id="img2" name="roomImage2"
+                                                onchange="viewImage2(event)" style="margin-top: 10px;" required>
+                                            <p id="errormessage2" style="display: none;">Please upload a image file</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col form-group mt-5">
+                                        <div>
+                                            <label for="exampleFormControlFile1">Add Image 3</label>
+                                        </div>
+                                        <div>
+                                            <img src="" width="100px" id="imagePreview3" style="display: none;">
+                                            <input type="file" class="form-control-file" id="img3" name="roomImage3"
+                                                onchange="viewImage3(event)" style="margin-top: 10px;" required>
+                                            <p id="errormessage3" style="display: none;">Please upload a image file</p>
+                                        </div>
+                                    </div>
+                                    <div class="col form-group mt-5">
+                                        <div>
+
+                                            <label for="exampleFormControlFile1">Add Image 4</label>
+                                        </div>
+                                        <div>
+                                            <img src="" width="100px" id="imagePreview4" style="display: none;">
+                                            <input type="file" class="form-control-file" id="img4" name="roomImage4"
+                                                onchange="viewImage4(event)" style="margin-top: 10px;" required>
+                                            <p id="errormessage4" style="display: none;">Please upload a image file</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-success btn-lg px-5 mt-4" type="submit" id="confirm-btn">Add
+                                        Room</button>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!--**********************************
+            Content body end
+        ***********************************-->
+
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+<!-- Required vendors -->
+<script src="/admin-temp/vendor/global/global.min.js"></script>
+<script src="/admin-temp/js/quixnav-init.js"></script>
+<script src="/admin-temp/js/custom.min.js"></script>
+
+<script src="/js/roomValidation.js"></script>
+
+<!-- Datatable -->
+<script src="/admin-temp/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/admin-temp/js/plugins-init/datatables.init.js"></script>
+
+{{!--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+--}}
+
+<script src="/js/imageCrop.js"></script>
+<style>
+    .error{
+        color: red;
+    }
+</style>

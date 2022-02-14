@@ -1,0 +1,148 @@
+<!--MOBILE MENU-->
+	<section>
+		<div class="mm">
+			<div class="mm-inn">
+				<div class="mm-logo">
+					<a href="index.html"><img src="/images/logo.png" alt="">
+					</a>
+				</div>
+				
+			</div>
+		</div>
+	</section>
+	<!--HEADER SECTION-->
+	<section>
+		<!--TOP SECTION-->
+		<div class="menu-section">
+			<div class="container">
+				<div class="row">
+					<div class="top-bar">
+						
+					</div>
+					<div class="all-drop-down">
+						
+						<!-- PAGES Dropdown Structure -->
+						
+					</div>
+				</div>
+				<div class="row">
+					<div class="logo">
+						<a href="index.html"><img src="/images/logo.png" alt="" />
+						</a>
+					</div>
+					<div class="menu-bar">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+
+
+<div class="inn-body-section inn-booking" style="height: 100%;">
+	<div class="container">
+		<div class="row">
+			<!--TYPOGRAPHY SECTION-->
+
+			<div class="col-md-12">
+				<div class="book-form-local  inn-com-form" style="margin-top: 100px;">
+					<form class="col s12" action="/vendor/vendorSignup" method="post" enctype="multipart/form-data" id="vendorsignup">
+
+
+						<div class="row">
+							<h1 style="margin-left: 10px;">Sign Up</h1>
+							{{#if vendorErr}}
+                                    <p style="color: red;">User does  exist in the given email  </p>
+									{{/if}}
+							<div class="input-field" style="margin: 0%;">
+								<div class="col m6">
+									<input type="text" class=" validate" name="propertyName"
+										style="margin: 0.5%; color: " placeholder="Property Name">
+
+								</div>
+
+								<div class="col m6">
+									<input type="text" class=" validate" name="Email"
+										style="margin: 0.5%; margin-top: 10px;" placeholder="Email">
+
+								</div>
+							</div>
+							<div class="input-field " style="margin: 0%;">
+								<div class="col m6">
+									<input type="password" class=" validate " name="Password" style="margin: 0.5%;"
+										placeholder="Password" id="pw">
+
+								</div>
+
+								<div class="col m6">
+									<input type="password" class=" validate" name="confirmPassword" style="margin: 0.5%; "
+										placeholder="Confirm Password">
+
+								</div>
+							</div>
+							<div class="input-field ">
+								<div class="col m6">
+									<input type="text" class=" numbers " name="mobileNumber" style="margin: 0.5%;"
+										placeholder="Mobile Number">
+
+								</div>
+
+								<div class="col m6">
+									<input type="text" class=" validate" name="Location"
+										style="margin: 0.5%;  " placeholder="Location">
+
+								</div>
+							</div>
+							<div class="input-field">
+								<div class="col m6">
+									<textarea type="textarea" class=" validate " name="Address" cols="16"
+										style="margin: 0.5%;" placeholder="Address"></textarea>
+
+								</div>
+
+								<div class="col m6">
+									<p style="margin: 0.5%;"> Upload your license</p>
+									<input type="file" class=" validate" accept="image/*" name="License"
+										style="margin: 0.5%; color: " placeholder="License" value="Upload your license"
+										multiple>
+
+								</div>
+							</div>
+
+
+						</div>
+
+
+
+
+						<div class="row">
+							<div class="input-field col s12">
+								<input type="submit" value="sign up" class="form-btn">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="input-field col s12" style="text-align: center;">
+								<a href="/login" class="create">Already have an account?</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!--END TYPOGRAPHY SECTION-->
+		</div>
+	</div>
+</div>
+<!--TOP SECTION-->
+<!--TOP SECTION-->
+
+<!--END HEADER SECTION-->
+
+<script src="/js/vendorSignup.js"></script>
+	<script>
+	$('.numbers').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+</script>

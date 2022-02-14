@@ -1,0 +1,84 @@
+<div class="content-body" style="color: black;">
+  <div class="container-fluid">
+<div class="second " style="margin: 50px;">
+    <h1 style="font-weight: 700;">Hotels <i class="fas fa-chevron-right"></i> {{hotel.propertyName}} <i
+            class="fas fa-chevron-right"></i> {{rooms.id}}</h1><br><br>
+
+
+    <div class="row">
+        <div id="carouselExampleIndicators" class="col-sm-6 carousel slide" data-bs-ride="carousel" >
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner" style="height: 300px;">
+                <div class="carousel-item active">
+                    <img src="/vendor-room-images/{{rooms._id}}1.jpeg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/vendor-room-images/{{rooms._id}}2.jpeg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/vendor-room-images/{{rooms._id}}3.jpeg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/vendor-room-images/{{rooms._id}}4.jpeg" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            
+        </div>
+        <div class="col-sm-6">
+            <ul style="list-style: none;line-height: 50px;font-weight: 700;font-size: 20px;">
+                <li>Category:  {{rooms.category}}</li>
+                <li>Quantity:  {{rooms.quantity}}</li>
+                <li>Price:  {{rooms.price}}</li>
+                <li>Price per extra bed:  {{rooms.bed}}</li>
+                
+            </ul>
+            
+        
+        </div>
+        
+    </div>
+    <div class="row" style="margin-top: 50px;border: solid;padding: 10px;">
+        <h5>Amenities:</h5> <ul >
+                    <li >{{rooms.Aminity1}}</li>
+                    <li >{{rooms.Aminity2}}</li>
+                    <li>{{rooms.Aminity3}}</li>
+                    <li>{{rooms.Aminity4}}</li>
+                    <li>{{rooms.Aminity5}}</li>
+                </ul>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Report</h3>
+            <form action="">
+            <textarea name="" id="" cols="100" rows="4"> </textarea><br>
+            <button type="submit" class="btn btn-danger" style="width: 100px;">Report
+            </button>
+        
+            </form>
+        </div>
+    </div>
+</div>
+  </div>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

@@ -1,0 +1,94 @@
+<!--MOBILE MENU-->
+	<section>
+		<div class="mm">
+			<div class="mm-inn">
+				<div class="mm-logo">
+					<a href="index.html"><img src="images/logo.png" alt="">
+					</a>
+				</div>
+				
+			</div>
+		</div>
+	</section>
+	<!--HEADER SECTION-->
+	<section>
+		<!--TOP SECTION-->
+		<div class="menu-section">
+			<div class="container">
+				<div class="row">
+					<div class="top-bar">
+						
+					</div>
+					<div class="all-drop-down">
+						
+						<!-- PAGES Dropdown Structure -->
+						
+					</div>
+				</div>
+				<div class="row">
+					<div class="logo">
+						<a href="index.html"><img src="images/logo.png" alt="" />
+						</a>
+					</div>
+					<div class="menu-bar">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<!--TYPOGRAPHY SECTION-->
+					
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12" action='/vendor/vendorLogin'method="post" id="userlogin">
+								
+								
+								<div class="row">
+                                    <h1>Login</h1>
+									{{#if  vendorlogErr}}
+									<p style="color: red;">Incorrect email or password</p>
+									{{else if notApproved}}
+                                    <p style="color: red;">This account is not verified yet</p>
+									{{else if vendorBlock}}
+									<p style="color: red;">This account is blocked</p>
+									{{/if}}
+									<div class="input-field col s12">
+										<input type="text" class="validate" name="Email" placeholder="Email">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="password" class="validate" name="Password" placeholder="Password">
+										
+									</div>
+									
+								</div>
+                                <br><br>
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="Login" class="form-btn"> </div>
+								</div><br><br>
+                               
+                                <div class="row">
+                                    <div class="input-field col s12" style="text-align: center;">
+                                        <a href="/vendor/vendorSignup" class="create">Create new account?</a>
+									</div>
+                                </div>
+							</form>
+						</div>
+					</div>
+					<!--END TYPOGRAPHY SECTION-->
+				</div>
+			</div>
+		</div>
+		
+		
+		
+	
+	</section>
+
+	<script src="js/userLogin.js"></script>

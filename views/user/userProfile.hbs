@@ -1,0 +1,51 @@
+
+    
+    <div  style="margin-top: 60px;">
+        <div class="container">
+
+        <div class="db-profile"> <img src="profile-picture/{{user._id}}.jpeg" alt="">
+        
+            <h4>{{user.userName}}</h4>
+        </div>
+        <div class="db-profile-edit" >
+            {{#if emailNumber}}
+            <p style="color: red;text-align: center;">existing user in given email and mobile number</p>
+            {{else if email}}
+            <p style="color: red;text-align: center;">user exist in given email</p>
+            {{else if number}}
+            <p style="color: red;text-align: center;">user exist in given mobile number</p>
+            {{/if}}
+            <form class="col s12" action="/editProfile" method="post">
+                <div>
+                    <label class="col s4">User Name</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.userName}}" class="validate" name="userName" readonly>
+                        <input type="text" value="{{user._id}}" class="validate" name="userid" readonly hidden>
+                    </div>
+                </div>
+                <div>
+                    <label class="col s4">Email ID</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.Email}}" class="validate" name="Email" readonly>
+                    </div>
+                </div>
+                <div>
+                    <label class="col s4">Mobile Number</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.mobileNumber}}" class="validate" name="mobileNumber"readonly>
+                    </div>
+                </div>
+
+              
+                <div>
+                    <a href="/updatePassword?id={{user._id}}">Change Password?</a>
+                    <div class="input-field col s8">
+                        <input type="submit" value="Edit Profile" class="waves-effect waves-light pro-sub-btn"
+                            id="pro-sub-btn">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>

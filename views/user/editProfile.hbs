@@ -1,0 +1,55 @@
+<div style="margin-top: 60px;">
+    <div class="container">
+
+
+        <div class="db-profile-edit">
+            <form class="col s12" method="post" action="/updateProfile?id={{user.userid}}"
+                enctype="multipart/form-data">
+                <div class="db-profile"> <img id="profile" src="profile-picture/{{user.userid}}.jpeg" alt="">
+                    <h4>{{user.userName}}</h4>
+
+<label for="profile1" style="text-align: center;"><span style="font-family: sans-serif;font-weight: normal;color: rgb(61, 139, 255);text-decoration: underline;">Change profile picture</span></label>
+                    <input type="file" name="imgpro" id="profile1" style="display: none;"
+                        onchange="viewImage1(event)">
+
+                </div>
+                <div>
+                    <label class="col s4">User Name</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.userName}}" class="validate" name="userName">
+                    </div>
+                </div>
+                <div>
+                    <label class="col s4">Email ID</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.Email}}" class="validate" name="Email">
+                    </div>
+                </div>
+                <div>
+                    <label class="col s4">Mobile Number</label>
+                    <div class="input-field col s8">
+                        <input type="text" value="{{user.mobileNumber}}" class="validate" name="mobileNumber">
+                    </div>
+                </div>
+
+
+                <div>
+                    <div class="input-field col s8">
+                        <input type="submit" value="Update Profile" class="waves-effect waves-light pro-sub-btn"
+                            id="pro-sub-btn">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function viewImage1(event) {
+        let file = event.target.files[0].name
+
+        document.getElementById('profile').src = URL.createObjectURL(event.target.files[0])
+
+
+    }
+</script>

@@ -1,0 +1,105 @@
+
+	<section>
+		<!--TOP SECTION-->
+		<div class="menu-section">
+			<div class="container">
+				<div class="row">
+					<div class="top-bar">
+						
+					</div>
+					<div class="all-drop-down">
+						
+						<!-- PAGES Dropdown Structure -->
+						
+					</div>
+				</div>
+				<div class="row">
+					<div class="logo">
+						<a href="index.html"><img src="images/logo.png" alt="" />
+						</a>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<!--TYPOGRAPHY SECTION-->
+					<div class="col-md-6">
+						<div class="book-title">
+							<h2>There is the smarter way</h2>
+                            <p>Login using your mobile number and OTP</p>
+													</div>
+					</div>
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12" action="/otp" method="post" id="otpverify">
+								
+								
+								<div class="row">
+                                    <h1>Login</h1>
+									{{#if invalid}}
+                                    <p style="color: red;">OTP is incorrect</p>
+									{{/if}}
+									<div class="input-fields col s12" >
+                                        
+										<input type="password" class="numbers" name="otp" placeholder="Enter OTP">
+										
+									</div>
+									
+									
+								</div><br>
+                                
+								
+								
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="Verigy otp & login" class="form-btn" > </div>
+								</div>
+                                
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <a href="/signup" class="create">Create new account?</a><p id="timer"></p><a href="/resend" id="resend">Resend OTP</a>
+									</div>
+                                </div>
+							</form>
+						</div>
+					</div>
+					<!--END TYPOGRAPHY SECTION-->
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		
+	<!--END HEADER SECTION-->
+	
+	</section>
+	<script>
+		document.getElementById('resend').style.visibility='hidden';
+var timeLeft = 30;
+    var elem = document.getElementById('timer');
+    
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+      if (timeLeft == -1) {
+        clearTimeout(timerId);
+        document.getElementById('resend').style.visibility='visible';
+      } else {
+        elem.innerHTML = timeLeft + ' seconds remaining';
+        timeLeft--;
+      }
+    }
+	</script>
+	<script src="js/OTPverify.js"></script>
+<script>
+	$('.numbers').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+</script>
+	

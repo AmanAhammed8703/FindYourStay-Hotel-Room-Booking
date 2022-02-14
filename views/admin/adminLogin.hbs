@@ -1,0 +1,30 @@
+
+
+
+<div class="wrapper ">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="">
+      <h3>ADMIN LOGIN</h3>
+      {{#if adminerr}}
+                                    <p style="color: red;">Incrorrect email or password</p>
+									{{/if}}
+    </div>
+
+    <!-- Login Form -->
+    <form action="/admin/adminLogin" method="post" id="adminLogin">
+    <div>
+      <input type="text" id="login" class="" name="Email" placeholder="login" style="background-color: rgb(219, 219, 219);">
+      <input type="text" id="password" class=""  name="Password" placeholder="password" style="background-color: rgb(219, 219, 219);">
+      </div>
+      <input type="submit" class="" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    
+
+  </div>
+</div>
+<script src="/js/adminLogin.js"></script>

@@ -1,0 +1,280 @@
+
+	<!--TOP SECTION-->
+	<!--TOP SECTION-->
+	<div class="inn-body-section inn-booking">
+		<div class="container">
+			<div class="row">
+				<!--TYPOGRAPHY SECTION-->
+				<div class="col-md-6">
+					<div class="book-title">
+						<h2>Find your home away from home</h2>
+						<p></p>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="book-form inn-com-form">
+						<form class="col s12" method="post" action="/search" id="indexsearch">
+
+							<div class="row">
+								<div class="input-field col s12">
+									<input type="text" id="searchTextField" class="validate" 
+										placeholder="Location" name="location" style="">
+									
+								</div>
+
+							</div>
+							<div class="row">
+								
+								<div class="input-field  col s6" >
+									<label for="">No. of Room</label>
+									<div>
+									<button type="button" class="sidebutton11 col s3 " id="roomminus" style="display: inline;height: 45px;border:none;font-size:20px;background:transparent;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;"
+										>-</button>
+
+									<input class="col s6" id="inproom" type="number" value="1" min="1" name="room"
+										style="display: inline;text-align:center;border-radius: 0%;"readonly>
+									<button type="button" class=" col s3 " id="roomplus" style="display: inline;height: 45px;border:none;font-size:20px;background:transparent;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;"
+										>+</button>
+									</div>
+								</div>
+								<div class="input-field  col s6">
+									<label for="">No. of guests</label>
+									<div>
+									<button type="button" class="sidebutton11 col s3 " id="guestminus"style="display: inline;height: 45px;border:none;font-size:20px;background:transparent;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;"
+										>-</button>
+
+									<input class="col s6" id="inpguest" type="number" value="1" min="1" name="guest"
+										style="display: inline;text-align:center" readonly>
+									<button type="button"onclick class=" col s3 " id="guestplus" style="display: inline;height: 45px;border:none;font-size:20px;background:transparent;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;"
+										>+</button>
+									</div>
+								</div>
+
+
+
+							</div>
+							<div class="row">
+								<div class="input-field col s6">
+									<input type="text" id="from" name="from" placeholder="Check In"autocomplete="off">
+
+								</div>
+								<div class="input-field col s6">
+									<input type="text" id="to" name="to" placeholder="Check Out"autocomplete="off">
+
+								</div>
+
+							</div>
+							<p style="font-size: 10px;margin-left: 10px;">*Only two guests are allowed in a room</p>
+							<div class="row">
+								<div class="input-field col s12">
+									<input type="submit" value="Search" class="form-btn">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--END TYPOGRAPHY SECTION-->
+			</div>
+		</div>
+	</div>
+	<!--TOP SECTION-->
+	<!--TOP SECTION-->
+	<!-- HOTEL GRID -->
+	<div class="hom1 hom-com pad-bot-40">
+		<div class="container">
+			<div class="row">
+				<div class="hom1-title">
+					<h2>Our Hotel Rooms</h2>
+					<div class="head-title">
+						<div class="hl-1"></div>
+						<div class="hl-2"></div>
+						<div class="hl-3"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="to-ho-hotel  ">
+					<!-- HOTEL GRID -->
+					{{#each rooms}}
+					<div class="col-md-4 col-sm-6">
+						<div class="to-ho-hotel-con">
+							<div class="to-ho-hotel-con-1">
+								<img src="vendor-room-images/{{this._id}}1.jpeg" alt="" style="height: 200px;">
+							</div>
+							<div class="to-ho-hotel-con-23">
+								<div class="to-ho-hotel-con-2"> </div>
+								<div class="to-ho-hotel-con-3">
+									<ul>
+										<li><a href="/roomOneDetail?id={{this._id}}">
+												<h4 style="color: white;">{{this.category}}</h4>
+											</a>
+											<div class="dir-rat-star ho-hot-rat-star">{{this.id}} </div>
+										</li>
+										<li><span class="ho-hot-pri-dis"></span><span
+												class="ho-hot-pri">₹{{this.price}}</span> </li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					<!-- HOTEL GRID -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--END HEADER SECTION-->
+<footer class="site-footer clearfix">
+	<div class="sidebar-container">
+		<div class="sidebar-inner">
+			<div class="widget-area clearfix">
+				<div class="widget widget_azh_widget">
+					<div>
+						<div class="container">
+							<div class="row">
+								<div class="col-sm-12 col-md-3 foot-logo"> <img src="images/logo1.png" alt="logo">
+									<p class="hasimg">Hotels worldwide incl. Infos, Ratings and Photos. Make your Hotel
+										Reservation cheap.</p>
+									<p class="hasimg">The top-rated hotel booking services.</p>
+								</div>
+								<div class="col-sm-12 col-md-3">
+									<h4>Support &amp; Help</h4>
+									<ul class="two-columns">
+										<li><a href="dashboard.html">Dashboard</a>
+										</li>
+										<li><a href="db-activity.html">DB Activity</a>
+										</li>
+										<li><a href="booking.html">Booking</a>
+										</li>
+										<li><a href="contact-us.html">Contact Us</a>
+										</li>
+										<li><a href="about-us.html">About Us</a>
+										</li>
+										<li><a href="aminities.html">Aminities</a>
+										</li>
+										<li><a href="blog.html">Blog</a>
+										</li>
+										<li><a href="menu1.html">Food Menu</a>
+										</li>
+									</ul>
+								</div>
+								<div class="col-sm-12 col-md-3">
+									<h4>Cities Covered</h4>
+									<ul class="two-columns">
+										<li><a href="#!">Sydney</a>
+										</li>
+										<li><a href="#!">Basel</a>
+										</li>
+										<li><a href="#!">Copenhagen</a>
+										</li>
+										<li><a href="#!">Frankfurt</a>
+										</li>
+										<li><a href="#!">Vancouver</a>
+										</li>
+										<li><a href="#!">Auckland</a>
+										</li>
+										<li><a href="#!">Vienna</a>
+										</li>
+										<li><a href="#!">Los Angeles</a>
+										</li>
+									</ul>
+								</div>
+								<div class="col-sm-12 col-md-3">
+									<h4>Address</h4>
+									<p>28800 Orchard Lake Road, Suite 180 Farmington Hills, U.S.A. Landmark : Next To
+										Airport</p>
+									<p> <span class="foot-phone">Phone: </span> <span class="foot-phone">+01 1245
+											2541</span> </p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="foot-sec2">
+						<div class="container">
+							<div class="row">
+								<div class="col-sm-12 col-md-3">
+									<h4>Payment Options</h4>
+									<p class="hasimg"> <img src="images/payment.png" alt="payment"> </p>
+								</div>
+								<div class="col-sm-12 col-md-4">
+									<h4>Subscribe Now</h4>
+									<form>
+										<ul class="foot-subsc">
+											<li>
+												<input type="text" placeholder="Enter your email id">
+											</li>
+											<li>
+												<input type="submit" value="submit">
+											</li>
+										</ul>
+									</form>
+								</div>
+								<div class="col-sm-12 col-md-5 foot-social">
+									<h4>Follow with us</h4>
+									<p>Join the thousands of other There are many variations of passages of Lorem Ipsum
+										available</p>
+									<ul>
+										<li><a href="#!"><i class="fa fa-facebook" aria-hidden="true"></i></a> </li>
+										<li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a> </li>
+										<li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a> </li>
+										<li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </li>
+										<li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a> </li>
+										<li><a href="#!"><i class="fa fa-whatsapp" aria-hidden="true"></i></a> </li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .widget-area -->
+		</div>
+		<!-- .sidebar-inner -->
+	</div>
+	<!-- #quaternary -->
+</footer>
+<script src="/js/indexSearch.js"></script>
+<script>
+
+	$("#roomplus").click(function () {
+		var val = parseInt($("#inproom").val())
+
+		if (val < 4){
+			val = val + 1
+			}
+		$("#inproom").val(val)
+	})
+	$("#roomminus").click(function () {
+		var val = parseInt($("#inproom").val())
+		var guest=parseInt($("#inpguest").val())
+		if (val != 1) {
+			val = val - 1
+		}
+		$("#inproom").val(val)
+		if(guest>(val*4))
+		$("#inpguest").val(val*4)
+		
+	})
+	$("#guestplus").click(function () {
+		var val = parseInt($("#inpguest").val())
+		var room=parseInt($("#inproom").val())
+		if (val < room*4){
+			val = val + 1
+			}
+		$("#inpguest").val(val)
+	})
+	$("#guestminus").click(function () {
+		var val = parseInt($("#inpguest").val())
+		if (val != 1) {
+			val = val - 1
+		}
+		$("#inpguest").val(val)
+	})
+</script>
+<style>
+	.error{
+		color: red;
+	}
+</style>

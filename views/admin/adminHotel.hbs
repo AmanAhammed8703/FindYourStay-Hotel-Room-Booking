@@ -1,0 +1,147 @@
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="row page-titles mx-0">
+      <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+          <h4 style="font-size: 40px;">Hotels</h4>
+          
+        </div>
+      </div>
+      <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+          <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
+        </ol>
+      </div>
+    </div>
+    <!-- row -->
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="example" class="display" style="min-width: 845px;color: black;">
+                <thead>
+                  <tr>
+                   
+                    <th scope="col">Property</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Mobile No.</th>
+                    <th scope="col">Block</th>
+                    <th scope="col">Controlls</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each hotel}}
+                  <tr>
+                    
+                    <td>{{this.propertyName}}</td>
+                    <td>{{this.Email}}</td>
+                    <td>{{this.Location}}</td>
+                    <td>{{this.mobileNumber}}</td>
+                    <td>{{this.Block}}</td>
+
+                    <td><a href="/admin/hotelView?id={{{this._id}}}" class="btn"
+                        style="width: 70px; text-decoration: underline;color: black;">View<br>Details</a>
+                      {{#if Block}}
+                      <a href="/admin/unblockHotel?id={{{this._id}}}" class="btn" style="width: 80px;color: black;">Unblock</a>
+                      {{else}}
+                      <a href="/admin/BlockHotel?id={{{this._id}}}" class="btn" style="width: 80px;color: black;">Block</a>
+                      {{/if}}
+
+
+
+                      <!-- Button trigger modal -->
+                      <!-- Button trigger modal -->
+                      <button type="button" class="delete btn btn-danger" id="delete" data-bs-toggle="modal" data-id="{{this._id}}"
+                        data-bs-target="#exampleModal">
+                        <i class="fas fa-trash"></i>
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <input type="text" id="inp">
+                              Are you sure?Do you want to delete this hotel?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="" type="button" id="delete" class="btn btn-danger">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!--**********************************
+            Content body end
+        ***********************************-->
+{{!--
+<script>
+  $(function () {
+    $('#adminHotel').DataTable({
+      responsive: true;
+    });
+
+  });
+</script> --}}
+
+<script>
+  $(document).on("click", ".delete", function (e) {
+
+    var varid = $(e.target).data('id');
+    $('.modal-body #inp').attr('value',varid)
+    $('.modal-footer #delete').attr('href', "/admin/deleteHotel?id="+varid)
+  })
+</script>
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+<!-- Required vendors -->
+<script src="/admin-temp/vendor/global/global.min.js"></script>
+<script src="/admin-temp/js/quixnav-init.js"></script>
+<script src="/admin-temp/js/custom.min.js"></script>
+
+
+
+<!-- Datatable -->
+<script src="/admin-temp/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/admin-temp/js/plugins-init/datatables.init.js"></script>
+
+{{!--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+--}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>

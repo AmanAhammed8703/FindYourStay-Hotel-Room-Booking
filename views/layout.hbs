@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<title>MyHotel - Hotel Booking and Room Booking Online Html Responsive Template</title>
+<!-- META TAGS -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{#if admin}}
+<link href="/css/admin.css" rel="stylesheet" type="text/css" />
+<link href="/css/vendor.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{{else if temp}}
+<link rel="shortcut icon" href="/images/admin/favicon.svg" type="image/x-icon" />
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="/css/admin/main.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{{else if vendor}}
+<link href="/css/vendor.css" rel="stylesheet" type="text/css" />
+{{else if vendors}}
+<link href="/css/vendors.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{{else if admintemp}}
+<link rel="icon" type="image/png" sizes="16x16" href="/admin-temp/images/favicon.png">
+<link rel="stylesheet" href="/admin-temp/vendor/owl-carousel/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/admin-temp/vendor/owl-carousel/css/owl.theme.default.min.css">
+<link href="/admin-temp/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+<link href="/admin-temp/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+{{else if vendortemp}}
+<link rel="icon" type="image/png" sizes="16x16" href="/admin-temp/images/favicon.png">
+<link rel="stylesheet" href="/admin-temp/vendor/owl-carousel/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/admin-temp/vendor/owl-carousel/css/owl.theme.default.min.css">
+<link href="/admin-temp/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+<link href="/admin-temp/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+{{else}}
+<!-- FAV ICON(BROWSER TAB ICON) -->
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="shortcut icon" href="/images/fav.ico" type="image/x-icon">
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css?family=Poppins%7CQuicksand:500,700" rel="stylesheet">
+<!-- FONTAWESOME ICONS -->
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<!-- ALL CSS FILES -->
+<link href="/css/materialize.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<link href="/css/local.css" rel="stylesheet">
+<link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<!-- RESPONSIVE.CSS ONLY FOR MOBILE AND TABLET VIEWS -->
+<link href="/css/responsive.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+{{/if}}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css" integrity="sha512-5ZQRy5L3cl4XTtZvjaJRucHRPKaKebtkvCWR/gbYdKH67km1e18C1huhdAc0wSnyMwZLiO7nEa534naJrH6R/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.js" integrity="sha512-witv14AEvG3RlvqCAtVxAqply8BjTpbWaWheEZqOohL5pxLq3AtIwrihgz7SsxihwAZkhUixj171yQCZsUG8kw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css"
+	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+	{{#if usertemp}}
+	{{>userHeader}}
+	{{/if}}
+	{{#if admintemp}}
+	{{>adminPartialHeader}}
+	{{/if}}
+	{{#if vendortemp}}
+	{{>tempHeader}}
+	{{/if}}
+	{{{body}}}
+	{{#if admintemp}}
+	{{>adminPartialFooter}}
+	{{/if}}
+	{{#if vendortemp}}
+	{{>tempFooter}}
+	{{/if}}
+
+
+
+
+
+
+
+	<!--ALL SCRIPT FILES-->
+
+
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/jquery-ui.js"></script>
+	<script src="/js/angular.min.js"></script>
+	<script src="/js/bootstrap.js" type="text/javascript"></script>
+	<script src="/js/materialize.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+		integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script src="/js/jquery.mixitup.min.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+	<script src="js/custom.js"></script>

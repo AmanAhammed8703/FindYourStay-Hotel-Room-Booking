@@ -1,0 +1,102 @@
+
+	<section>
+		<!--TOP SECTION-->
+		<div class="menu-section">
+			<div class="container">
+				<div class="row">
+					<div class="top-bar">
+						
+					</div>
+					<div class="all-drop-down">
+						
+						<!-- PAGES Dropdown Structure -->
+						
+					</div>
+				</div>
+				<div class="row">
+					<div class="logo">
+						<a href="index.html"><img src="images/logo.png" alt="" />
+						</a>
+					</div>
+					<div class="menu-bar">
+						<ul>
+							<li><a href="#" class='dropdown-button' data-activates='drop-home'>Home </a>
+							</li>
+							<li><a href="#" class='dropdown-button' data-activates='drop-room'>Rooms </a>
+							</li>
+							<li><a href="services.html">Services</a>
+							</li>
+							<li><a href="menu.html">Menu</a>
+							</li>
+							<li><a href="events.html">Events</a>
+							</li>
+							<li><a href="aminities1.html">Amenities</a>
+							</li>
+							<li><a href="#!" data-toggle="modal" data-target="#modal1"> Log In</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<!--TYPOGRAPHY SECTION-->
+					<div class="col-md-6">
+						<div class="book-title">
+							<h2>There is the smarter way</h2>
+                            <p>Login using your mobile number and OTP</p>
+													</div>
+					</div>
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12" action="/otpLogin" method="post" id="otplogin">
+								
+								
+								<div class="row">
+                                    <h1>Login</h1>
+									{{#if nomobile}}
+                                    <p style="color: red;">User does not exist in given number</p>
+									{{/if}}
+									<div class="input-field col s12">
+										<input type="text" class="numbers" name="mobileNumber" placeholder="Mobile Number">
+										
+									</div>
+									
+									
+								</div>
+                                
+								
+								
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="GET OTP" class="form-btn"> </div>
+								</div>
+                                
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <a href="/signup" class="create">Create new account?</a>
+									</div>
+                                </div>
+							</form>
+						</div>
+					</div>
+					<!--END TYPOGRAPHY SECTION-->
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		
+	</section>
+	<script src="js/OTPmobile.js"></script>
+	<script>
+	$('.numbers').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+</script>
+	

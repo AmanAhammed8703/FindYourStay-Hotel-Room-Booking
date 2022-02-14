@@ -1,0 +1,358 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<form action="" method="post" id="check-out">
+    <div class="hom-com">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="hp-section">
+                            <div class="hp-sub-tit">
+                                {{#each room.hotel}}
+                                <h1>{{this.propertyName}}</h1>
+                                <p>{{this.Address}}</p>
+                                <h4><span>{{room.category}}</span> Room</h4>
+                                {{/each}}
+
+
+                            </div>
+                            <div>
+
+                                <h4 for="">Upload ID proof</h4>
+                                <input class="form-control" type="file" accept="images/*"
+                                    style="border: solid;border-width: 1px;" required>
+
+
+                            </div>
+                            <div style="overflow: visible;">
+
+                                <h4 for="">Select a payment method</h4>
+                                <div class="switch">
+                                    <label
+                                        style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
+                                        Online payment
+                                        <input type="checkbox" name="payment" id="payment"> <span class="lever"></span>
+                                        Pay at hotel
+                                    </label><br><br>
+                                    <div id="online" style="margin-left: 40px;">
+                                    <label
+                                        style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
+                                        Razorpay
+                                        <input type="checkbox" name="onlinepayment" id="onlinepayment"> <span class="lever"></span>
+                                        Paypal
+                                    </label>
+                                    </div>
+                                    {{!-- <div class="row" id="online">
+                                        <div class="col s12 m6 l6 ">
+
+                                            <button type="submit" id="rzp-button1" value="razor"
+                                                style="border: none;margin-top: 30px;height: 40px; width: 100%;background-color: rgb(236, 0, 79);"><a
+                                                    style="text-align: center;color: white;">Pay using
+                                                    RazorPay</a></button>
+                                        </div>
+                                        <div class="col s12 m6 l6">
+                                            <button type="submit"
+                                                style="border: none;margin-top: 30px;height: 40px; width: 100%;background-color: rgb(236, 0, 79);"><a
+                                                    style="text-align: center;color: white;">Pay using
+                                                    PayPal</a></button>
+                                        </div>
+
+                                    </div> --}}
+
+                                </div>
+                                <button type="submit"
+                                    style="border: none;margin-top: 30px;height: 40px; width: 100%;background-color: rgb(236, 0, 79);display: block;"
+                                    id="pay"><a style="text-align: center;color: white;">BOOK ROOM</a></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!--=========================================-->
+                    <div class="hp-call hp-right-com">
+                        <div class="hp-call-in">
+                            <div style="width: 100%;">
+                                <h1 style="float: left;">{{room.id}}</h1>
+                                <h1 style="float: right;color: red;">₹{{room.price}}</h1>
+
+                            </div>
+                            <div style="width: 100%;height: 100px;">
+
+
+                            </div>
+                            <div>
+
+                                <div class="hp-main-overview">
+                                    <ul>
+                                        <li>Check In: <span style="color: rgb(0, 0, 0);">{{details.from}}</span>
+                                            <input type="text" value="{{room._id}}" name="roomid" hidden>
+                                            <input type="text" value="{{details.from}}" name="from" hidden>
+                                        </li>
+                                        <li>Check Out: <span style="color: rgb(0, 0, 0);">{{details.to}}</span>
+                                            <input type="text" value="{{details.to}}" name="to" hidden>
+                                        </li>
+                                        <li>Room Price: <span style="color: rgb(0, 0, 0);">₹{{room.price}}</span>
+                                            <input type="text" value="{{room.price}}" name="price" hidden>
+                                        </li>
+                                        <li>No. of days : <span style="color: rgb(0, 0, 0);">{{details.days}}</span>
+                                            <input type="text" value="{{details.days}}" name="days" hidden>
+                                        </li>
+                                        <li>No. of rooms : <span style="color: rgb(0, 0, 0);">{{details.room}}</span>
+                                            <input type="text" value="{{details.room}}" name="room" hidden>
+                                        </li>
+                                        <li>No. of guests : <span style="color: rgb(0, 0, 0);">{{details.guest}}</span>
+                                            <input type="text" value="{{details.guest}}" name="guest" hidden>
+                                        </li>
+
+                                        <li style="font-size: 18px;">Total : <span class=""
+                                                style="color: black;font-size: 18px;">₹{{details.total}}</span>
+                                            <input type="text" value="{{details.total}}" name="total" hidden>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+</form>
+</div>
+</div>
+<!--=========================================-->
+<!--=========================================-->
+
+<!--=========================================-->
+</div>
+</div>
+</div>
+</div>
+<div class="">
+    <div>
+        <!--TOP SECTION-->
+
+        </section>
+        <!--END HEADER SECTION-->
+        <footer class="site-footer clearfix">
+            <div class="sidebar-container">
+                <div class="sidebar-inner">
+                    <div class="widget-area clearfix">
+                        <div class="widget widget_azh_widget">
+                            <div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 foot-logo"> <img src="images/logo1.png"
+                                                alt="logo">
+                                            <p class="hasimg">Hotels worldwide incl. Infos, Ratings and Photos. Make
+                                                your Hotel
+                                                Reservation cheap.</p>
+                                            <p class="hasimg">The top-rated hotel booking services.</p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3">
+                                            <h4>Support &amp; Help</h4>
+                                            <ul class="two-columns">
+                                                <li><a href="dashboard.html">Dashboard</a>
+                                                </li>
+                                                <li><a href="db-activity.html">DB Activity</a>
+                                                </li>
+                                                <li><a href="booking.html">Booking</a>
+                                                </li>
+                                                <li><a href="contact-us.html">Contact Us</a>
+                                                </li>
+                                                <li><a href="about-us.html">About Us</a>
+                                                </li>
+                                                <li><a href="aminities.html">Aminities</a>
+                                                </li>
+                                                <li><a href="blog.html">Blog</a>
+                                                </li>
+                                                <li><a href="menu1.html">Food Menu</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3">
+                                            <h4>Popular Services</h4>
+                                            <ul class="two-columns">
+                                                <li><a href="all-hotels.html">Our Hotels</a>
+                                                </li>
+                                                <li><a href="about-us.html">About Us</a>
+                                                </li>
+                                                <li><a href="contact-us.html">Contact Us</a>
+                                                </li>
+                                                <li><a href="all-rooms.html">Master Suite</a>
+                                                </li>
+                                                <li><a href="all-rooms.html">Mini-Suite</a>
+                                                </li>
+                                                <li><a href="all-rooms.html">Ultra Deluxe</a>
+                                                </li>
+                                                <li><a href="all-rooms.html">Luxury Room</a>
+                                                </li>
+                                                <li><a href="all-rooms.html">Normal Room</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3">
+                                            <h4>Address</h4>
+                                            <p>28800 Orchard Lake Road, Suite 180 Farmington Hills, U.S.A. Landmark :
+                                                Next To
+                                                Airport</p>
+                                            <p> <span class="foot-phone">Phone: </span> <span class="foot-phone">+01
+                                                    1245
+                                                    2541</span> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="foot-sec2">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3">
+                                            <h4>Payment Options</h4>
+                                            <p class="hasimg"> <img src="images/payment.png" alt="payment"> </p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <h4>Subscribe Now</h4>
+                                            <form>
+                                                <ul class="foot-subsc">
+                                                    <li>
+                                                        <input type="text" placeholder="Enter your email id">
+                                                    </li>
+                                                    <li>
+                                                        <input type="submit" value="submit">
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div class="col-sm-12 col-md-5 foot-social">
+                                            <h4>Follow with us</h4>
+                                            <p>Join the thousands of other There are many variations of passages of
+                                                Lorem Ipsum
+                                                available</p>
+                                            <ul>
+                                                <li><a href="#!"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li><a href="#!"><i class="fa fa-google-plus"
+                                                            aria-hidden="true"></i></a> </li>
+                                                <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li><a href="#!"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .widget-area -->
+                </div>
+                <!-- .sidebar-inner -->
+            </div>
+            <!-- #quaternary -->
+        </footer>
+        <section class="copy">
+            <div class="container">
+                <p>copyrights © 2017 RN53Themes.net. &nbsp;&nbsp;All rights reserved. </p>
+            </div>
+        </section>
+        <section>
+            <script>
+                let i = 0
+                $('#payment').change(function () {
+                    if (i == 0) {
+                        $('#online').css('display', 'none')
+                        
+                        i = 1
+                    } else {
+                        $('#online').css('display', 'block')
+                        
+                        i = 0
+                    }
+                })
+            </script>
+            <script>
+                var details
+                $("#check-out").submit(function (e) {
+                    e.preventDefault()
+                    $.ajax({
+                        url: '/orderRazorPay',
+                        method: 'post',
+                        data: $("#check-out").serialize(),
+                        success: (response) => {
+                            
+                            if(response.paypal){
+                                
+                                window.location.href=response.payment
+                                
+                            }else if(response.payAtHotel){
+                                window.location.href='/success'
+                            
+                            }else{
+                            
+                            details=response.details
+                            razorpayment(response.order)
+                            }
+                        }
+                        
+                    })
+
+                
+                });
+                function razorpayment(order) {
+                    var options = {
+                        "key": "rzp_test_8hOY0y9Me41Hz6", // Enter the Key ID generated from the Dashboard
+                        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "currency": "INR",
+                        "name": "Find your stay",
+                        "description": "Test Transaction",
+                        "image": "https://example.com/your_logo",
+                        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
+                        "handler": function (response) {
+                            alert(response.razorpay_payment_id);
+                            alert(response.razorpay_order_id);
+                            alert(response.razorpay_signature)
+                            verifypayment(response,details)
+                        },
+                        "prefill": {
+                            "name": "Gaurav Kumar",
+                            "email": "gaurav.kumar@example.com",
+                            "contact": "9999999999"
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on('payment.failed', function (response) {
+                        alert(response.error.code);
+                        alert(response.error.description);
+                        alert(response.error.source);
+                        alert(response.error.step);
+                        alert(response.error.reason);
+                        alert(response.error.metadata.order_id);
+                        alert(response.error.metadata.payment_id);
+                    });
+
+                    rzp1.open();
+
+                }
+
+                function verifypayment(response,details) {
+                    console.log("dfgd"+details)
+                    $.ajax({
+                        url: '/verifypayment',
+                        data: { response,details },
+                        method: 'post',
+                        success: (response) => {
+                            if(response.paymentsuccess){
+                                window.location.href='/success'
+                            }else{
+                                alert("payment failed")
+                            }
+                        }
+                    })
+                }
+            </script>

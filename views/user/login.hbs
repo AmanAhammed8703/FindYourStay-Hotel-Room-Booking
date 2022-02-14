@@ -1,0 +1,67 @@
+
+		<!--TOP SECTION-->
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<!--TYPOGRAPHY SECTION-->
+					<div class="col-md-6">
+						<div class="book-title">
+							<h2>There is a smarter way</h2>
+                            <p>Login using your mobile number and OTP</p>
+													</div>
+					</div>
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12" action='/login'method="post" id="userlogin">
+								
+								
+								<div class="row">
+                                    <h1>Login</h1>
+									{{#if nologin}}
+                                    <p style="color: red;">Incorrect email or password</p>
+									{{/if}}
+									<div class="input-field col s12">
+										<input type="text" class="validate" name="Email" placeholder="Email">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="password" class="validate" name="Password" placeholder="Password">
+										
+									</div>
+									
+								</div>
+                                
+								
+								
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="Login" class="form-btn"> </div>
+								</div>
+                                <p class="or">OR</p>
+                                <div class="row">
+									<div class="input-field col s12" style="text-align: center;">
+                                        <a href="/OTPlogin"class="form-btn-local" >
+										login using OTP </a></div>
+								</div>
+                                <div class="row">
+                                    <div class="input-field col s12" style="text-align: center;">
+                                        <a href="/signup" class="create">Create new account?</a>
+									</div>
+                                </div>
+							</form>
+						</div>
+					</div>
+					<!--END TYPOGRAPHY SECTION-->
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		
+	<!--END HEADER SECTION-->
+	
+	</section>
+	
+	
+	<script src="js/userLogin.js"></script>

@@ -1,0 +1,77 @@
+
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<!--TYPOGRAPHY SECTION-->
+					<div class="col-md-6">
+						<div class="book-title">
+							<h2>There is a smarter way</h2>
+                            <p>Login using your mobile number and OTP</p>
+													</div>
+					</div>
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12" action="/signup" method="post" id="signupform">
+								
+								
+								<div class="row">
+                                    <h1>Sign Up</h1>
+									{{#if exist}}
+									<p style="color: red;">User exists in given email or mobile number</p>
+									{{/if}}
+									<div class="input-field col s12">
+										<input type="text" class="validate" name="userName" placeholder="Username">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="text" class="validate" name="Email" placeholder="Email">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="password" class="validate" name="Password" placeholder="Password" id="pw">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="password" class="validate" name="confirmPassword" placeholder="Confirm Password">
+										
+									</div>
+									<div class="input-field col s12">
+										<input type="text" class="numbers" name="mobileNumber" placeholder="Mobile Number">
+										
+									</div>
+									
+								</div>
+                                
+								
+								
+								
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="Get otp" class="form-btn"> </div>
+								</div>
+                                
+                                <div class="row">
+                                    <div class="input-field col s12" style="text-align: center;">
+                                        <a href="/login" class="create">Already have an account?</a>
+									</div>
+                                </div>
+							</form>
+						</div>
+					</div>
+					<!--END TYPOGRAPHY SECTION-->
+				</div>
+			</div>
+		</div>
+		<!--TOP SECTION-->
+		<!--TOP SECTION-->
+		
+	<!--END HEADER SECTION-->
+	</section>
+	<script src="js/userSignup.js"></script>
+	<script>
+	$('.numbers').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+</script>
