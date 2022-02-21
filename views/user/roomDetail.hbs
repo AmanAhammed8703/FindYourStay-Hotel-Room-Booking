@@ -1,6 +1,5 @@
-<script src="/js/image-zoom.js"></script>
-<link rel="stylesheet" href="/css/image-zoom.css" type="text/css">
-<script src="/js/image-zoom.min.js"></script>
+
+
 <!--END HOTEL ROOMS-->
 <!--CHECK AVAILABILITY FORM-->
 <div class="check-available" style="margin-top: 60px;padding: 0%;background-color: rgb(37, 37, 37);">
@@ -15,8 +14,9 @@
 
                             </div>
                         </div>
+                        {{#if search}}
                         <div class="row">
-                            <div class="input-field col s12 m6 l2">
+                            <div class="input-field col s12 m4 l2">
                                 <input type="text" placeholder="Location" value="{{search.location}}" name="location">
                             </div>
                             <div class="input-field  col s12 m4 l2">
@@ -56,6 +56,49 @@
                                 <input type="submit" value="Search" class="form-btn">
                             </div>
                         </div>
+                        {{else}}
+                        <div class="row">
+                            <div class="input-field col s12 m4 l2">
+                                <input type="text" placeholder="Location" value="" name="location">
+                            </div>
+                            <div class="input-field  col s12 m4 l2">
+
+                                <div>
+                                    <button type="button" class="sidebutton11 col s3 " id="roomminus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
+
+                                    <input class="col s6" id="inproom" type="number" value="1" min="1"
+                                        name="room" style="display: inline;text-align:center;border-radius: 0%;"
+                                        readonly>
+                                    <button type="button" class=" col s3 " id="roomplus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
+                                </div>
+                            </div>
+                            <div class="input-field  col s12 m4 l2">
+                                <div>
+                                    <button type="button" class="sidebutton11 col s3 " id="guestminus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
+
+                                    <input class="col s6" id="inpguest" type="number" value="1" min="1"
+                                        name="guest" style="display: inline;text-align:center" readonly>
+                                    <button type="button" onclick class=" col s3 " id="guestplus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
+                                </div>
+                            </div>
+
+                            <div class="input-field col s12 m4 l2">
+                                <input type="text" id="from" name="from" placeholder="Check in" value="">
+
+                            </div>
+                            <div class="input-field col s12 m4 l2">
+                                <input type="text" id="to" name="to" placeholder="Check out" value="">
+
+                            </div>
+                            <div class="input-field col s12 m4 l2">
+                                <input type="submit" value="Search" class="form-btn">
+                            </div>
+                        </div>
+                        {{/if}}
                     </form>
                 </div>
             </div>
@@ -66,15 +109,18 @@
 <!--END CHECK AVAILABILITY FORM-->
 <div class="container">
     <div style=" margin-top:20px;">
-        <img class="pro col-sm-12 col-md-10 img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" style="padding: 0.1%  ;"
+        <div class="col-xs-12 col-sm-10">
+        <img class="pro col-xs-12 col-sm-10 img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" style="padding: 0.1%  ;display: block;"
             id="images">
-        <img class="pro-image col-sm-6 col-md-6 col-lg-2 img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" onclick="imageChange1(event)"
+            </div>
+       
+        <img class="product-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" onclick="imageChange1(event)"
             style="padding: 0.2%  ;" id="image1">
-        <img class="pro-image col-sm-6 col-md-6 col-lg-2 img-responsive" src="vendor-room-images/{{room._id}}2.jpeg" alt="" onclick="imageChange2(event)"
+        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}2.jpeg" alt="" onclick="imageChange2(event)"
             style="padding: 0.2%  ;" id="image2">
-        <img class="pro-image col-sm-6 col-md-6 col-lg-2 img-responsive" src="vendor-room-images/{{room._id}}3.jpeg" alt="" onclick="imageChange3(event)"
+        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}3.jpeg" alt="" onclick="imageChange3(event)"
             style="padding: 0.2%  ;" id="image3">
-        <img class="pro-image col-sm-6 col-md-6 col-lg-2 img-responsive" src="vendor-room-images/{{room._id}}4.jpeg" alt="" onclick="imageChange4(event)"
+        <img class="pro-image col-xs-2 img-responsive" src="vendor-room-images/{{room._id}}4.jpeg" alt="" onclick="imageChange4(event)"
             style="padding: 0.2%  ;" id="image4">
 
     </div>
@@ -293,24 +339,33 @@
             <div class="col-md-4">
                 <!--=========================================-->
                 <div class="hp-call hp-right-com" style="background-color: rgb(255, 255, 255);">
+                    {{#if room.discount}}
+                    <div class="ribbon ribbon-top-left"><span>{{room.discount}}% OFF</span>
+						</div>
+                        {{/if}}
                     <div class="hp-call-in">
                         <div style="width: 100%;top: 0;z-index: 1;height: 100px;">
                             <h1 style="float: left;">{{room.id}}</h1>
+                            {{#if room.discount}}
+                            <h1 style="float: right;color: red;">₹{{room.price}}<span class="room-price">₹{{room.ogPrice}}</span></h1>
+                            {{else}}
                             <h1 style="float: right;color: red;">₹{{room.price}}</h1>
+                            {{/if}}
 
                         </div>
                         <div style="width: 100%;height: 100px;margin-top: 50px;">
                             <form action="/roomCheck?id={{details.id}}" method="post">
+                            {{#if search}}
                                 <div class="input-field col s6" style="display: block;">
                                     <input class="datePick" type="text" id="from-book" name="from"
                                         placeholder="Check In" style="text-indent: 2px;" value="{{search.from}}"
-                                        onchange="show()" readonly>
+                                        onchange="show()" readonly required>
 
                                 </div>
 
                                 <div class="input-field col s6">
                                     <input class="datePick" type="text" id="to-book" name="to" placeholder="Check Out"
-                                        style="text-indent: 2px;" value="{{search.to}}" onchange="show()" readonly>
+                                        style="text-indent: 2px;" value="{{search.to}}" onchange="show()" readonly required>
 
                                 </div>
                                 <div class="input-field  col s12 m4 l6">
@@ -348,11 +403,61 @@
                                         style="border-radius: 0%;background-color: rgb(248, 45, 79);color: white;border: none;display: none;"
                                         id="check">CHECK</button>
                                 </div>
+                                {{else}}
+                                 <div class="input-field col s6" style="display: block;">
+                                    <input class="datePick" type="text" id="from-book" name="from"
+                                        placeholder="Check In" style="text-indent: 2px;" value={{details.from}}
+                                        onchange="show()" readonly>
+
+                                </div>
+
+                                <div class="input-field col s6">
+                                    <input class="datePick" type="text" id="to-book" name="to" placeholder="Check Out"
+                                        style="text-indent: 2px;" value="{{details.to}}" onchange="show()" readonly>
+
+                                </div>
+                                <div class="input-field  col s12 m4 l6">
+
+                                    <div>
+                                        <button type="button" class="sidebutton11 col s3 " id="roomminuscheck"
+                                            onclick="show()"
+                                            style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
+
+                                        <input class="col s6" id="inproomcheck" type="number" value="1"
+                                            min="1" name="room"
+                                            style="display: inline;text-align:center;border-radius: 0%;"
+                                            onchange="show()" readonly>
+                                        <button type="button" class=" col s3 " id="roompluscheck" onclick="show()"
+                                            style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
+                                    </div>
+
+
+                                </div>
+                                <div class="input-field  col s12 m4 l6">
+                                    <div>
+                                        <button type="button" class="sidebutton11 col s3 " id="guestminuscheck"
+                                            onclick="show()"
+                                            style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
+
+                                        <input class="col s6" id="inpguestcheck" type="number" value="1"
+                                            min="1" name="guest" style="display: inline;text-align:center;"
+                                            onchange="show()" readonly>
+                                        <button type="button" class=" col s3 " id="guestpluscheck" onclick="show()"
+                                            style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
+                                    </div>
+                                </div>
+                                <div class="col l12" style="margin-top: 10px;">
+                                    <button class="col l12"
+                                        style="border-radius: 0%;background-color: rgb(248, 45, 79);color: white;border: none;display: none;"
+                                        id="check">CHECK</button>
+                                </div>
+                                {{/if}}
                             </form>
                         </div>
 
                         <div>
                             <form action="/bookNow?id={{details.id}}" method="post">
+                            
                                 <input class="datePick" type="text" id="from-book" name="from" placeholder="Check In"
                                     style="text-indent: 2px;" value="{{search.from}}" readonly hidden>
                                 <input class="datePick" type="text" id="to-book" name="to" placeholder="Check Out"
@@ -362,6 +467,7 @@
                                     name="guest" style="display: none;text-align:center" readonly> --}}
 
                                 <div class="hp-main-overview">
+                                    
                                     <ul>
                                         <li>Room Price: <span style="color: rgb(0, 0, 0);">₹{{room.price}}</span>
                                             <input type="text" value="{{room.price}}" name="price" hidden>
@@ -381,12 +487,15 @@
                                         </li>
                                         {{/if}}
 
+
                                         <li style="font-size: 18px;">Total : <span class=""
                                                 style="color: black;font-size: 18px;">₹{{details.total}}</span>
                                             <input type="text" value="{{details.total}}" name="total" hidden>
                                         </li>
                                     </ul>
                                 </div>
+                                
+                               
                         </div>
                         {{#if isRooms}}
                         <button type="button" style="border: none;width: 100%;background-color: transparent;"><a
@@ -621,40 +730,68 @@
                 }
             </script>
             <script>
+                let i=0,j=0,k=0,r=0
                 function imageChange1(event) {
+                    
                     let url = document.getElementById('image1').src
-                    document.getElementById('images').src = url
+                    document.getElementById('imageZoom').src = url
                     document.getElementById('image1').style.border = "solid"
                     document.getElementById('image2').style.border = "none"
                     document.getElementById('image3').style.border = "none"
                     document.getElementById('image4').style.border = "none"
+                    
+                    $(function () {
+                    $('#imageZoom').imageZoom();
+                });
+                
 
                 }
                 function imageChange2(event) {
+                    
                     let url = document.getElementById('image2').src
-                    document.getElementById('images').src = url
+                    document.getElementById('imageZoom').src = url
                     document.getElementById('image1').style.border = "none"
                     document.getElementById('image2').style.border = "solid"
                     document.getElementById('image3').style.border = "none"
                     document.getElementById('image4').style.border = "none"
+                    
+                    $(function () {
+                    $('#imageZoom').imageZoom();
+                });
+                     
+
 
                 }
                 function imageChange3(event) {
+                    
                     let url = document.getElementById('image3').src
-                    document.getElementById('images').src = url
+                    document.getElementById('imageZoom').src = url
                     document.getElementById('image1').style.border = "none"
                     document.getElementById('image2').style.border = "none"
                     document.getElementById('image3').style.border = "solid"
                     document.getElementById('image4').style.border = "none"
+                    
+                    $(function () {
+                    $('#imageZoom').imageZoom();
+                });
+               
+
 
                 }
                 function imageChange4(event) {
+                    
                     let url = document.getElementById('image4').src
-                    document.getElementById('images').src = url
+                    document.getElementById('imageZoom').src = url
                     document.getElementById('image1').style.border = "none"
                     document.getElementById('image2').style.border = "none"
                     document.getElementById('image3').style.border = "none"
                     document.getElementById('image4').style.border = "solid"
+                    
+                    $(function () {
+                    $('#imageZoom').imageZoom();
+                });r=1
+                
+
 
                 }
             </script>
@@ -662,6 +799,7 @@
 
             <script>
                 $(function () {
-                    $('.pro').imageZoom();
+                    $('#images').imageZoom();
                 });
             </script>
+            

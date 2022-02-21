@@ -3,49 +3,196 @@
    
 
     <!--TOP SECTION-->
-    <div class="inn-body-section pad-bot-55" style="padding: 0%;">
+    <div class="inn-body-section pad-bot-55" style="padding: 0%;  ">
         <div class="container">
             
         </div>
-        <div class="container" style="margin-top: 30px;">
+        <div class="container" style="margin-top: 70px;">
+            <div class="row" style="background-color: rgb(37, 37, 37);;margin-bottom: 0px;">
+                <input type="button" class="btn col s3" style="background-color: rgb(0, 0, 0); color: white;border: none;" value="TODAY" id="today-btn">
+                <input type="button" class="btn col s3" style="background-color: rgb(37, 37, 37); color: white;border: none;" value="UPCOMING" id="upcoming-btn">
+                <input type="button" class="btn col s3" style="background-color: rgb(37, 37, 37); color: white;border: none;" value="CHECKED IN"id="checkedin-btn" >
+                <input type="button" class="btn col s3" style="background-color: rgb(37, 37, 37); color: white;border: none;" value="PAST "id="checkedout-btn" >
+               
+            </div>
 
-            <div class="row">
-            {{#if result}}
+            <div class="row" id="today" style="display: block;">
+                {{#if today}}
                 <!--ROOM SECTION-->
-                {{#each result}}
+                {{#each today}}
                 <div class="room">
-                    <a href="/roomDetail?id={{this._id}}" class="" style="font-size: 16px;">
+                    <a href="/roomDetail?id={{this.roomId}}" class="" style="font-size: 16px;">
                     <!--ROOM IMAGE-->
-                    <div class="r1 r-com"><img src="vendor-room-images/{{this._id}}1.jpeg" alt="" />
+                    <div class="r1 r-com"><img src="vendor-room-images/{{this.roomId}}1.jpeg" alt="" />
                     </div>
                     <!--ROOM RATING-->
                     <div class="r2 r-com col-sm-5" style="word-wrap: break-word;">
                         {{#each hotel}}
-                        <h4>{{this.propertyName}}</h4>
+                        <h4>{{this}}</h4>
                         {{/each}}
-                        <h5>{{this.category}}</h5>
-                        {{#each hotel}}
-                        <p>{{this.Address}}</p>
+
+                        
+                        {{#each category}}
+                        <p>{{this}}</p>
                         {{/each}}
+                        <p>From:{{this.from}}&nbsp;&nbsp;&nbsp;&nbsp;Days:{{this.days}}</p> 
+                        <p>To:{{this.to}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Guets:{{this.guest}}</p>
+                        
+                        
                     </div>
                     <!--ROOM AMINITIES-->
                     
                     <!--ROOM PRICE-->
                     <div class="r4 r-com col-sm-2">
-                        <p>Price for 1 night</p>
-                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.price}}</span> <span class="room-price"></span>
+                        <p>Total Price</p>
+                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.amount}}</span> <span class="room-price"></span>
                         </p>
                         
                     </div>
                     <!--ROOM BOOKING BUTTON-->
                     <div class="r5 r-com col-sm-2">
                         
-                       <a href="/roomDetail?id={{this._id}}" class="inn-room-book" style="font-size: 16px;">View Details</a>
+                       <a href="/roomDetail?id={{this.roomId}}" class="inn-room-book" style="font-size: 16px;">Cancel</a>
                     </div></a>
                 </div>
                 {{/each}}
-            {{else}}
-                <p style="text-align: center;">No matching search results</p>
+                {{else}}
+                    <p style="text-align: center; margin-top: 40px;">There is no bookings for today</p>
+                    {{/if}}
+           
+                <!--END ROOM SECTION-->
+               
+            </div>
+             <div class="row" id="checkedIn" style="display: none;">
+                 {{#if checkedIn}}
+                <!--ROOM SECTION-->
+                {{#each checkedIn}}
+                <div class="room">
+                    <a href="/roomDetail?id={{this.roomId}}" class="" style="font-size: 16px;">
+                    <!--ROOM IMAGE-->
+                    <div class="r1 r-com"><img src="vendor-room-images/{{this.roomId}}1.jpeg" alt="" />
+                    </div>
+                    <!--ROOM RATING-->
+                    <div class="r2 r-com col-sm-5" style="word-wrap: break-word;">
+                        {{#each hotel}}
+                        <h4>{{this}}</h4>
+                        {{/each}}
+
+                        
+                        {{#each category}}
+                        <p>{{this}}</p>
+                        {{/each}}
+                        <p>From:{{this.from}}&nbsp;&nbsp;&nbsp;&nbsp;Days:{{this.days}}</p> 
+                        <p>To:{{this.to}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Guets:{{this.guest}}</p>
+                        
+                        
+                    </div>
+                    <!--ROOM AMINITIES-->
+                    
+                    <!--ROOM PRICE-->
+                    <div class="r4 r-com col-sm-2">
+                        <p>Total Price</p>
+                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.amount}}</span> <span class="room-price"></span>
+                        </p>
+                        
+                    </div>
+                    <!--ROOM BOOKING BUTTON-->
+                    </a>
+                </div>
+                {{/each}}
+                {{else}}
+                 <p style="text-align: center; margin-top: 40px;">There is no upcoming bookings</p>
+                {{/if}}
+           
+                <!--END ROOM SECTION-->
+               
+            </div> 
+            <div class="row"  id="checkedOut" style="display: none;">
+                {{#if checkedOut}}
+                <!--ROOM SECTION-->
+                {{#each checkedOut}}
+                <div class="room">
+                    <a href="/roomDetail?id={{this.roomId}}" class="" style="font-size: 16px;">
+                    <!--ROOM IMAGE-->
+                    <div class="r1 r-com"><img src="vendor-room-images/{{this.roomId}}1.jpeg" alt="" />
+                    </div>
+                    <!--ROOM RATING-->
+                    <div class="r2 r-com col-sm-5" style="word-wrap: break-word;">
+                        {{#each hotel}}
+                        <h4>{{this}}</h4>
+                        {{/each}}
+
+                        
+                        {{#each category}}
+                        <p>{{this}}</p>
+                        {{/each}}
+                        <p>From:{{this.from}}&nbsp;&nbsp;&nbsp;&nbsp;Days:{{this.days}}</p> 
+                        <p>To:{{this.to}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Guets:{{this.guest}}</p>
+                        
+                        
+                    </div>
+                    <!--ROOM AMINITIES-->
+                    
+                    <!--ROOM PRICE-->
+                    <div class="r4 r-com col-sm-2">
+                        <p>Total Price</p>
+                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.amount}}</span> <span class="room-price"></span>
+                        </p>
+                        
+                    </div>
+                    <!--ROOM BOOKING BUTTON-->
+                    </a>
+                </div>
+                {{/each}}
+                {{else}}
+                 <p style="text-align: center; margin-top: 40px;">There is checked In bookings for today</p>
+                {{/if}}
+           
+                <!--END ROOM SECTION-->
+               
+            </div> <div class="row"  id="upcoming" style="display: none;">
+                {{#if upcoming}}
+                <!--ROOM SECTION-->
+                {{#each upcoming}}
+                <div class="room">
+                    <a href="/roomDetail?id={{this.roomId}}" class="" style="font-size: 16px;">
+                    <!--ROOM IMAGE-->
+                    <div class="r1 r-com"><img src="vendor-room-images/{{this.roomId}}1.jpeg" alt="" />
+                    </div>
+                    <!--ROOM RATING-->
+                    <div class="r2 r-com col-sm-5" style="word-wrap: break-word;">
+                        {{#each hotel}}
+                        <h4>{{this}}</h4>
+                        {{/each}}
+
+                        
+                        {{#each category}}
+                        <p>{{this}}</p>
+                        {{/each}}
+                        <p>From:{{this.from}}&nbsp;&nbsp;&nbsp;&nbsp;Days:{{this.days}}</p> 
+                        <p>To:{{this.to}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Guets:{{this.guest}}</p>
+                        
+                        
+                    </div>
+                    <!--ROOM AMINITIES-->
+                    
+                    <!--ROOM PRICE-->
+                    <div class="r4 r-com col-sm-2">
+                        <p>Total Price</p>
+                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.amount}}</span> <span class="room-price"></span>
+                        </p>
+                        
+                    </div>
+                    <!--ROOM BOOKING BUTTON-->
+                    <div class="r5 r-com col-sm-2">
+                        
+                        <a class="btn btn-danger"href="#!" data-id="{{this._id}}" data-amt="{{this.amount}}" data-toggle="modal" data-target="#modal1" id="cancel"> Cancel</a>
+                        
+                    </div></a>
+                </div>
+                {{/each}}
+                {{else}}
+                 <p style="text-align: center; margin-top: 40px;">There is no bookings for today</p>
                 {{/if}}
                 <!--END ROOM SECTION-->
                
@@ -169,4 +316,70 @@
     <div class="container">
         <p>copyrights © 2017 RN53Themes.net. &nbsp;&nbsp;All rights reserved. </p>
     </div>
-</section
+</section>
+<div id="modal1" class="modal fade" role="dialog">
+			<div class="log-in-pop">
+				<div class="log-in-pop-right">
+					<a href="#" class="pop-close" data-dismiss="modal"><img src="images/cancel.png" alt="" />
+					</a>
+					<h4>Cancel?</h4>
+					<p>Are you sure ?Do you want to cancel the booking?</p>
+					<p>Your payment will be refunded to your wallet</p>
+                    <a class="btn btn-danger" href="" id="cancel-btn">Cancel</a>
+					
+				</div>
+			</div>
+		</div>
+
+<script>
+    $('#today-btn').click(function(){
+        $('#today').css('display','block')
+        $('#checkedIn').css('display','none')
+        $('#checkedOut').css('display','none')
+        $('#upcoming').css('display','none')
+        $('#today-btn').css('background-color','black')
+        $('#upcoming-btn').css('background-color','rgb(37, 37, 37)')
+        $('#checkedin-btn').css('background-color','rgb(37, 37, 37)')
+        $('#checkedout-btn').css('background-color','rgb(37, 37, 37)')
+        
+    })
+    $('#upcoming-btn').click(function(){
+        $('#today').css('display','none')
+        $('#checkedIn').css('display','none')
+        $('#checkedOut').css('display','none')
+        $('#upcoming').css('display','block')
+        $('#today-btn').css('background-color','rgb(37, 37, 37)')
+        $('#upcoming-btn').css('background-color','black')
+        $('#checkedin-btn').css('background-color','rgb(37, 37, 37)')
+        $('#checkedout-btn').css('background-color','rgb(37, 37, 37)')
+    })
+    $('#checkedin-btn').click(function(){
+        $('#today').css('display','none')
+        $('#checkedIn').css('display','block')
+        $('#checkedOut').css('display','none')
+        $('#upcoming').css('display','none')
+        $('#today-btn').css('background-color','rgb(37, 37, 37)')
+        $('#upcoming-btn').css('background-color','rgb(37, 37, 37)')
+        $('#checkedin-btn').css('background-color','black')
+        $('#checkedout-btn').css('background-color','rgb(37, 37, 37)')
+    })
+    $('#checkedout-btn').click(function(){
+        $('#today').css('display','none')
+        $('#checkedIn').css('display','none')
+        $('#checkedOut').css('display','block')
+        $('#upcoming').css('display','none')
+        $('#today-btn').css('background-color','rgb(37, 37, 37)')
+        $('#upcoming-btn').css('background-color','rgb(37, 37, 37)')
+        $('#checkedin-btn').css('background-color','rgb(37, 37, 37) ')
+        $('#checkedout-btn').css('background-color','black')
+    })
+</script>
+<script>
+    $(document).on("click", "#cancel", function (e) {
+
+    var varid = $(e.target).data('id');
+    var amt = $(e.target).data('amt');
+    
+    $('.log-in-pop-right #cancel-btn').attr('href', "/cancelRoom?id="+varid+'&amt='+amt)
+  })
+</script>

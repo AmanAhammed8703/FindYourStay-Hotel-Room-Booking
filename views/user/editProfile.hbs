@@ -1,3 +1,5 @@
+
+
 <div style="margin-top: 60px;">
     <div class="container">
 
@@ -8,9 +10,10 @@
                 <div class="db-profile"> <img id="profile" src="profile-picture/{{user.userid}}.jpeg" alt="">
                     <h4>{{user.userName}}</h4>
 
-<label for="profile1" style="text-align: center;"><span style="font-family: sans-serif;font-weight: normal;color: rgb(61, 139, 255);text-decoration: underline;">Change profile picture</span></label>
-                    <input type="file" name="imgpro" id="profile1" style="display: none;"
-                        onchange="viewImage1(event)">
+                    <label for="profile1" style="text-align: center;"><span
+                            style="font-family: sans-serif;font-weight: normal;color: rgb(61, 139, 255);text-decoration: underline;">Change
+                            profile picture</span></label>
+                    <input type="file" name="imgpro" id="profile1" style="display: none;" onchange="viewImage1(event)">
 
                 </div>
                 <div>
@@ -44,12 +47,92 @@
     </div>
 </div>
 </div>
+<div id="modal1" class="modal" role="dialog" >
+    <div class="log-in-pop">
+        <div class="log-in-pop-right">
+            
+            <div class="col-lg-6">
+                <div id="image-box" style="width: 550px; display: none;border-radius: 0px ;"></div>
+                <button class="btn btn-primary mt-3" type="button" style="display: none;margin-top: 20px;" id="crop-btn" ata-dismiss="modal1">Crop</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+{{!--
 <script>
     function viewImage1(event) {
         let file = event.target.files[0].name
 
         document.getElementById('profile').src = URL.createObjectURL(event.target.files[0])
 
+
+    }
+</script> --}}
+<script>
+    function viewImage1(event) {
+        const imagebox = document.getElementById('image-box')
+        const crop_btn = document.getElementById('crop-btn')
+        var fileInput = document.getElementById('profile1');
+
+        let file1 = event.target.files[0].name
+        let file = event.target.files[0]
+        alert(file)
+        let extension = file1.split('.').pop()
+        if (extension == 'jpeg' || extension == 'png' || extension == 'jpg') {
+            document.getElementById('profile').src = URL.createObjectURL(event.target.files[0])
+            document.getElementById('profile').style.display = 'block'
+
+            $('#modal1').modal({
+                dismissible: true
+            });
+
+            //call the specific div (modal)
+            $('#modal1').modal('open');
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img  src="${url}" id="image" style="width:100%">`
+            const image = document.getElementById('image')
+            console.log(image)
+            document.getElementById('image-box').style.display = 'block'
+            
+            
+            
+            
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: false,
+                movable: false,
+                aspectRatio: 1/ 1,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 200,
+            })
+            crop_btn.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById('profile1');
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img = container.files[0]
+                    var url = URL.createObjectURL(img)
+                    fileInputElement.files = container.files;
+                    document.getElementById('profile').src = url
+                    document.getElementById('image-box').style.display = 'none'
+                    
+                   
+                });
+                $('#modal1').toggle();
+            });
+
+        } else {
+
+            document.getElementById('errormessage1').style.display = 'block'
+            $('#img1').val(null)
+        }
 
     }
 </script>

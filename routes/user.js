@@ -36,10 +36,12 @@ const activeUser = async (req, res, next) => {
 }
 const loginVerify = (req, res, next) => {
   if (req.session.user) {
+    console.log("yes");
     next()
   } else {
+    console.log("noooo");
     res.redirect('/login')
-    next()
+    
   }
 }
 /* GET home page. */
@@ -64,19 +66,26 @@ router.get('/roomDetail/', async function (req, res) {
   let isRooms = req.session.isRooms
   req.session.roomid = id
   let search = req.session.search
-  var dateOne = search.from
-  var dateTwo = search.to
-  var date1 = new Date(dateOne.split("-").reverse().join("-"))
-  var date2 = new Date(dateTwo.split("-").reverse().join("-"))
+  if (req.session.search) {
 
-  console.log(date1);
-  console.log(date2);
+    var dateOne = search.from
+    var dateTwo = search.to
+    var date1 = new Date(dateOne.split("-").reverse().join("-"))
+    var date2 = new Date(dateTwo.split("-").reverse().join("-"))
 
-
-  var diff = date2.getDate() - date1.getDate()
-  console.log(diff);
+    console.log(date1);
+    console.log(date2);
 
 
+    var diff = date2.getTime() - date1.getTime()
+    diff=diff/(1000*60*60*24)
+    if(diff==0){
+      diff=1
+    }
+
+    console.log(diff);
+
+  }
 
 
   helper.getOneRoom(id).then((response) => {
@@ -84,26 +93,57 @@ router.get('/roomDetail/', async function (req, res) {
     console.log(response);
     let details = {}
     let room = response
+    if(room.discount){
+      
+      dis=(room.price*room.discount)/100
+      disPrice=room.price-dis
+      room.ogPrice=room.price
+      room.price=disPrice
+      room.discountAmount=dis
+    }
+    console.log("room");
     console.log(room);
 
 
+    if (req.session.search) {
+      details.room = search.room
+      details.guest = search.guest
+      let guest = parseInt(search.guest)
+      let noOfRoom = parseInt(search.room)
+      let bed = 0
+      if (guest > (noOfRoom * 2)) {
+        bed = guest - (noOfRoom * 2)
+      }
+      details.bed = bed
 
-    details.room = search.room
-    details.guest = search.guest
-    let guest = parseInt(search.guest)
-    let noOfRoom = parseInt(search.room)
-    let bed = 0
-    if (guest > (noOfRoom * 2)) {
-      bed = guest - (noOfRoom * 2)
+
+      var total = parseInt(room.price) * parseInt(diff) * parseInt(search.room) + (bed * parseInt(room.bed))
+      details.total = total
+      details.days = diff
+    } else {
+      let from=new Date
+       let year1=from.getFullYear()
+       
+       let month1=from.getMonth()
+       if(month1<10){
+         month1="0"+month1
+       }
+       let date1=from.getDate()
+       if(date1<10){
+        date1="0"+date1
+      }
+      console.log(from);
+      details.from=date1+"-"+month1+"-"+year1
+      details.to=date1+"-"+month1+"-"+year1
+      details.room=1
+      details.guest=1
+      details.total = room.price
+      details.days = 1
     }
-    details.bed = bed
-
-
-    var total = parseInt(room.price) * parseInt(diff) * parseInt(search.room) + (bed * parseInt(room.bed))
-    details.total = total
-    details.days = diff
     details.id = id
+
     res.render('user/roomDetail', { room, search, details, isRooms, usertemp: true, loggedIn: req.session.user, username: req.session.username })
+
   })
 
 
@@ -127,6 +167,16 @@ router.post('/search', async function (req, res) {
       room.push(response)
     })
 
+  }
+
+  for(let i of room){
+    if(i.discount){
+      
+      dis=(i.price*i.discount)/100
+      disPrice=i.price-dis
+      i.disPrice=disPrice
+      i.discountAmount=dis
+    }
   }
   console.log(room)
 
@@ -274,14 +324,47 @@ router.get('/resend', (req, res) => {
     })
 })
 
-router.post('/bookNow/', loginVerify, (req, res) => {
+router.post('/bookNow/', loginVerify,async (req, res) => {
   let id = req.query.id
+  let resp={}
+  
   console.log(req.body);
-
-  helper.getOneRoom(id).then((response) => {
+    await helper.getUserdetails(req.session.activeNo).then((response)=>{
+      console.log(response);
+      resp=response
+    })
+    console.log(resp);
+    if(resp.wallet){
+      let balance=parseInt(resp.wallet)
+      if(parseInt(req.body.total)<=balance){
+        console.log(balance);
+        var wallet=true
+      }
+    }
+  helper.getOneRoom(id).then(async(response) => {
     let details = {}
     let room = response
+    if(room.discount){
+      
+      dis=(room.price*room.discount)/100
+      disPrice=room.price-dis
+      room.ogPrice=room.price
+      room.price=disPrice
+      room.discountAmount=dis
+    }
+    let hotelid=room.hotel[0]._id
     console.log(room)
+    let coupons=await helper.getCoupons(hotelid)
+    if(resp.coupons){
+    for(let i in coupons){
+      for(let j of resp.coupons){
+        if(coupons[i].couponCode==j){
+          coupons.splice(i,1)
+        }
+      }
+    }
+  }
+  console.log(coupons);
     details.from = req.body.from
     details.to = req.body.to
     details.price = req.body.price
@@ -289,7 +372,7 @@ router.post('/bookNow/', loginVerify, (req, res) => {
     details.room = req.body.room
     details.guest = req.body.guest
     details.total = req.body.total
-    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: true, username: req.session.username })
+    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: true, username: req.session.username ,wallet,coupons})
   })
 })
 
@@ -326,22 +409,31 @@ router.post('/book/', async (req, res) => {
   res.render('user/payment', { usertemp: true })
 
 })
-router.get('/success/', async(req, res) => {
+router.get('/success/', async (req, res) => {
   let type = req.query.type
-  let resp={}
-    resp = req.session.bookinDetail
+  let resp = {}
+  resp = req.session.bookinDetail
   if (type == "paypal") {
-    
-    resp.hotelid=ObjectId(resp.hotelid)
-    resp.roomId=ObjectId(resp.roomId)
+
+    resp.hotelid = ObjectId(resp.hotelid)
+    resp.roomId = ObjectId(resp.roomId)
     resp.payment = "Paypal"
     console.log(resp);
-    await helper.addBooking(resp).then(() => {
+    await helper.addBooking(resp).then((response) => {
       console.log("booking confirmed");
-    }) 
+      console.log(req.session.userId);
+      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
+      var newPath='./public/id-Proof/'+response.insertedId+'.jpeg'
+      if(resp.couponName){
+        helper.addCouponUser(resp.userId,resp.couponName)
+      }
+      fs.rename(oldPath,newPath,function(err){
+        if(err) throw err
+      })
+    })
 
   }
-  res.render('user/success', { usertemp: true,loggedIn:true ,resp})
+  res.render('user/success', { usertemp: true, loggedIn: true, resp })
 })
 
 router.post('/roomCheck/', (req, res) => {
@@ -426,16 +518,25 @@ router.get('/roomOneDetail/', (req, res) => {
   let id = req.query.id
   helper.getOneRoom(id).then((response) => {
     let room = response
-    res.render('user/roomDetail', { room, usertemp: true, loggedIn: req.session.user })
+    res.redirect(`/roomDetail?id=${id}`)
 
   })
 })
 router.post('/orderRazorPay', async (req, res) => {
   console.log(req.body)
-
+  let idProof=req.files.idproof
+  
+  if(req.files){
+    console.log("id yes");
+  }else{
+    console.log("id no");
+  }
+  // let idProof = req.files.idProof
+  // idProof.mv('./public/temp-id/IidProof.jpeg')
   let resp = {}
   let id = req.body.roomid
   resp.userId = req.session.userId
+  idProof.mv('./public/temp-id/'+resp.userId+'.jpeg')
   console.log(req.body);
   await helper.getOneRoom(id).then((response) => {
     resp.hotelid = response.hotel[0]._id
@@ -448,13 +549,42 @@ router.post('/orderRazorPay', async (req, res) => {
   resp.days = req.body.days
   resp.room = req.body.room
   resp.guest = req.body.guest
+  if(req.body.couponName){
+    resp.couponName=req.body.couponName
+  }
   resp.amount = req.body.total
   resp.status = "upcoming"
   req.session.bookinDetail = resp
 
 
 
+if(req.body.walletPayment){
+  resp.payment = "Pay with wallet"
 
+  console.log(req.body);
+  console.log(resp);
+  await helper.decreaseWallet(resp.userId,resp.amount).then((response)=>{
+    console.log("deducted");
+    console.log(response);
+
+  })
+
+  await helper.addBooking(resp).then((inserted) => {
+    console.log("booking confirmed");
+    response.payWithWallet = true
+    res.json(response)
+    response.payWithWallet = false
+    var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
+      var newPath='./public/id-Proof/'+inserted.insertedId+'.jpeg'
+      if(resp.couponName){
+      helper.addCouponUser(resp.userId,resp.couponName)
+    }
+      fs.rename(oldPath,newPath,function(err){
+        if(err) throw err
+      })
+    })
+  
+}else{
 
   if (req.body.payment) {
 
@@ -463,13 +593,22 @@ router.post('/orderRazorPay', async (req, res) => {
     console.log(req.body);
     console.log(resp);
 
-    await helper.addBooking(resp).then(() => {
+    await helper.addBooking(resp).then((inserted) => {
       console.log("booking confirmed");
-      response.payAtHotel=true
+      response.payAtHotel = true
       res.json(response)
-      response.payAtHotel=false
+      response.payAtHotel = false
+      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
+      var newPath='./public/id-Proof/'+inserted.insertedId+'.jpeg'
+      if(resp.couponName){
+        helper.addCouponUser(resp.userId,resp.couponName)
+      }
+      fs.rename(oldPath,newPath,function(err){
+        if(err) throw err
+      })
     })
     
+
 
   } else {
     if (req.body.onlinepayment) {
@@ -504,7 +643,7 @@ router.post('/orderRazorPay', async (req, res) => {
 
 
       paypal.payment.create(create_payment_json, function (error, payment) {
-        let response={}
+        let response = {}
         if (error) {
           throw error;
         } else {
@@ -513,7 +652,7 @@ router.post('/orderRazorPay', async (req, res) => {
               response.payment = payment.links[i].href
               response.paypal = true
               res.json(response)
-              
+
 
               console.log(payment.links[i].href);
             }
@@ -527,7 +666,7 @@ router.post('/orderRazorPay', async (req, res) => {
 
 
     } else {
-      let response={}
+      let response = {}
       var options = {
         amount: parseInt(req.body.total) * 100,  // amount in the smallest currency unit
         currency: "INR",
@@ -545,6 +684,7 @@ router.post('/orderRazorPay', async (req, res) => {
       });
     }
   }
+}
 
 
 
@@ -575,14 +715,24 @@ router.post('/verifypayment', async (req, res) => {
     resp.room = req.body['details[room]']
     resp.guest = req.body['details[guest]']
     resp.amount = req.body['details[total]']
+    resp.couponName = req.body['details[couponName]']
     resp.status = "upcoming"
     resp.payment = "Razorpay"
 
     console.log(req.body);
     console.log(resp);
 
-    await helper.addBooking(resp).then(() => {
+    await helper.addBooking(resp).then((response) => {
       console.log("booking confirmed");
+      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
+      var newPath='./public/id-Proof/'+response.insertedId+'.jpeg'
+      if(resp.couponName){
+        console.log("yessss");
+        helper.addCouponUser(resp.userId,resp.couponName)
+      }
+      fs.rename(oldPath,newPath,function(err){
+        if(err) throw err
+      })
     })
 
 
@@ -594,9 +744,37 @@ router.post('/verifypayment', async (req, res) => {
 
 
 })
-router.get('/myBookings',(req,res)=>{
-  
-  res.render('user/mybookings',{usertemp:true,loggedIn:true,username: req.session.username })
+router.get('/myBookings', async (req, res) => {
+  let id = req.session.userId
+  console.log(id);
+  await helper.getUserBookings(id).then((response) => {
+    let today = response.today
+    let checkedIn = response.checkedIn
+    let checkedOut = response.checkedOut
+    let upcoming = response.upcoming
+    console.log(response);
+    res.render('user/mybookings', { usertemp: true, loggedIn: true, username: req.session.username, today, checkedIn, checkedOut, upcoming })
+
+  })
+})
+router.get('/cancelRoom/', async (req, res) => {
+  let id = req.query.id
+  let amt = req.query.amt
+  let payOption
+  console.log(amt);
+  let userId = req.session.userId
+  helper.getBookingDetails(id).then((response) => {
+    payOption = response.payment
+  })
+  await helper.cancelRoom(id).then((response) => {
+    console.log('cancel confirmed');
+  })
+  if (payOption !== "Pay at Hotel") {
+    helper.addToWallet(userId, amt).then((response) => {
+      console.log(response);
+    })
+  }
+  res.redirect('/myBookings')
 })
 
 

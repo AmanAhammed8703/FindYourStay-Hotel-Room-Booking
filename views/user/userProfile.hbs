@@ -5,7 +5,12 @@
 
         <div class="db-profile"> <img src="profile-picture/{{user._id}}.jpeg" alt="">
         
-            <h4>{{user.userName}}</h4>
+            <h4>{{user.userName}}</h4><br><br>
+            {{#if user.wallet}}
+            <h4> Wallet balance:₹{{user.wallet}}</h4>
+            {{else}}
+            <h4> Wallet balance:₹0</h4>
+            {{/if}}
         </div>
         <div class="db-profile-edit" >
             {{#if emailNumber}}

@@ -101,26 +101,26 @@ module.exports = {
                     from: collection.ROOM_COLLECTION,
                     localField: '_id',
                     foreignField: 'hotelId',
-                    as: 'rooms'
-                }
+                     as: 'rooms'
+                 }
             }, {
-                $project: { rooms: 1 }
-            }
-                , {
-                $project: { rooms: 1, roomId: '$rooms._id' }
-            },
-            {
-                $lookup: {
-                    from: collection.BOOKINGS_COLLECTION,
-                    localField: 'roomId',
-                    foreignField: 'roomId',
-                    as: 'Bookedrooms'
-                }
-            }, {
+                 $project: { rooms: 1 ,discount:1}
+             }
+                 , {
+                 $project: { rooms: 1, roomId: '$rooms._id' ,discount:1}
+             },
+             {
+                 $lookup: {
+                     from: collection.BOOKINGS_COLLECTION,
+                     localField: 'roomId',
+                     foreignField: 'roomId',
+                     as: 'Bookedrooms'
+                 }
+             }, {
                 $project: { rooms: 1, roomId: 1, Bookedrooms: 1, bookedfrom: '$Bookedrooms.from', bookedto: '$Bookedrooms.to' }
             }
             ]).toArray()
-
+            console.log(result);
             let roomData = await db.get().collection(collection.ROOM_COLLECTION).find({}).toArray()
             let qty
             const rooms = []
@@ -229,7 +229,7 @@ module.exports = {
                 }, {
                     $project: {
                         price: 1, category: 1, id: 1, bed: 1, Aminity1: 1, Aminity2: 1, Aminity3: 1, Aminity4: 1, Aminity5: 1,
-                        hotel: 1
+                        hotel: 1,discount:1
                     }
 
                 }]).toArray()
@@ -239,9 +239,9 @@ module.exports = {
     },
     addBooking: (data) => {
         return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.BOOKINGS_COLLECTION).insertOne(data).then(() => {
+            await db.get().collection(collection.BOOKINGS_COLLECTION).insertOne(data).then((response) => {
                 console.log("booked");
-                resolve()
+                resolve(response)
             })
         })
     },
@@ -352,6 +352,177 @@ module.exports = {
                 }
                 resolve(response)
             })
+
+        })
+    },
+    getUserBookings: (id) => {
+        let response={}
+        return new Promise(async (resolve, reject) => {
+            let bookings = await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
+                $match: { userId: id }
+            }, {
+                $lookup: {
+                    from: collection.ROOM_COLLECTION,
+                    localField: 'roomId',
+                    foreignField: '_id',
+                    as: "room"
+                }
+            }, {
+                $project: { userId: 1, hotelid: 1, roomId: 1, from: 1, to: 1, days: 1, guest: 1, amount: 1, status: 1, payment: 1, category: '$room.category' }
+            }, {
+                $lookup: {
+                    from: collection.VENDOR_COLLECTION,
+                    localField: 'hotelid',
+                    foreignField: '_id',
+                    as: 'hotel'
+                }
+            }, {
+                $project: { userId: 1, hotelid: 1, roomId: 1, from: 1, to: 1, days: 1, guest: 1, amount: 1, status: 1, payment: 1, category: 1, hotel: '$hotel.propertyName' }
+            }
+
+            ]).toArray()
+            let upcoming = []
+            let CheckedOut = []
+            let CheckedIn = []
+            let today = []
+            for (let i of bookings) {
+                let from = new Date(i.from.split("-").reverse().join("-"))
+                
+                let to = new Date(i.to.split("-").reverse().join("-"))
+                to.setHours(12);
+                console.log(from);
+                console.log(to);
+                date = new Date()
+                date.setHours(0);
+                date.setMilliseconds(0)
+                date.setMinutes(0)
+                date.setSeconds(0)
+                // date = new Date(date.split(' ')[0])
+                console.log(date);
+                if (to < date) {
+                    console.log("yes");
+                }
+                if (to < date) {
+                    CheckedOut.push(i)
+                } else if (from == date) {
+                    today.push(i)
+                } else if (from > date) {
+                    upcoming.push(i)
+                } else {
+                    CheckedIn.push(i)
+                }
+            }
+            response.today=today
+            response.checkedIn=CheckedIn
+            response.checkedOut=CheckedOut
+            response.upcoming=upcoming
+            
+            resolve(response)
+            
+            
+        })
+    },
+    cancelRoom:(id)=>{
+        console.log(id);
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.BOOKINGS_COLLECTION).deleteOne({_id:ObjectId(id)}).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+        })
+    },
+    addToWallet:(id,amt)=>{
+        
+        return new Promise(async(resolve,reject)=>{
+            
+            let user=await db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(id)})
+            if(user.wallet){
+                let wallet=parseInt(user.wallet)+parseInt(amt)
+                db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{wallet:wallet}})
+            }else{
+                let wallet=parseInt(amt)
+                db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{wallet:wallet}})
+            }
+        })
+    },
+    getBookingDetails:(id)=>{
+        return new Promise(async(resolve,reject)=>{
+            let booking=await db.get().collection(collection.BOOKINGS_COLLECTION).findOne({_id:ObjectId(id)})
+            resolve(booking)
+        })
+    },
+    decreaseWallet:(id,amount)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user=await db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(id)})
+                let wallet=parseInt(user.wallet)-parseInt(amount)
+                db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{wallet:wallet}}).then((response)=>{
+                    resolve(response)
+                })
+           
+        })
+    },
+    getCoupons:(id)=>{
+        return new Promise(async(resolve,reject)=>{
+            console.log(id);
+            
+            let users=await db.get().collection(collection.USER_COLLECTION).find({}).toArray()
+            let coupons=await db.get().collection(collection.COUPONS_COLLECTION).find({$or:[{auth:'admin'},{auth:id}]}).toArray()
+            console.log(coupons);
+            let date = new Date()
+            date.setHours(5)
+            date.setMinutes(30)
+            date.setSeconds(0)
+            date.setMilliseconds(0)
+            console.log(date);
+            for (let i of coupons) {
+                console.log(i);
+                if (date >= new Date(i.couponExpiry)) {
+                    console.log("yes");
+                    let coupon=await db.get().collection(collection.COUPONS_COLLECTION).findOne({_id: i._id})
+                    await db.get().collection(collection.COUPONS_COLLECTION).deleteOne({ _id: i._id }).then(async()=>{
+                        for(let i in users){
+                            if(users[i].coupons){
+                                for(let j in users[i].coupons){
+                                    if(users[i].coupons[j]==coupon.couponCode){
+                                        await db.get().collection(collection.USER_COLLECTION).updateOne({_id:users[i]._id},{$pull:{coupons:coupon.couponCode}})
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+            coupons=await db.get().collection(collection.COUPONS_COLLECTION).find({$or:[{auth:'admin'},{auth:id}]}).toArray()
+            resolve(coupons)
+        })
+    },
+    getOffers:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let offers=await db.get().collection(collection.OFFERS_COLLECTION).find({}).toArray()
+            console.log(offers);
+            let date = new Date()
+            date.setHours(5)
+            date.setMinutes(30)
+            date.setSeconds(0)
+            date.setMilliseconds(0)
+            console.log(date);
+            for (let i of offers) {
+                console.log(i);
+                if (date >= new Date(i.offerExpiry)) {
+                    console.log("yes");
+                    await db.get().collection(collection.OFFERS_COLLECTION).deleteOne({ _id: i._id }).then(()=>{
+                        db.get().collection(collection.ROOM_COLLECTION).updateOne({hotelId:i.auth,category:i.offerCategory},{$unset:{discount:""}})
+                    })
+    
+                }
+            }
+             offers=await db.get().collection(collection.OFFERS_COLLECTION).find({}).toArray()
+            resolve(offers)
+        })
+    },
+    addCouponUser:(id,coupon)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{ $push: { coupons: coupon } })
 
         })
     }

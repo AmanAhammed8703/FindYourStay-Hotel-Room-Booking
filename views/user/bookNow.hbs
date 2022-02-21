@@ -19,8 +19,9 @@
                             <div>
 
                                 <h4 for="">Upload ID proof</h4>
-                                <input class="form-control" type="file" accept="images/*"
-                                    style="border: solid;border-width: 1px;" required>
+                                <img src="" id="img1" style="width: 100px;display: none;">
+                                <input class="form-control" type="file" accept="images/*" onchange="viewImage1(event)"
+                                    style="border: solid;border-width: 1px;" name="idproof" id="idproof" required>
 
 
                             </div>
@@ -28,36 +29,37 @@
 
                                 <h4 for="">Select a payment method</h4>
                                 <div class="switch">
+                                    {{#if wallet}}
                                     <label
                                         style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
-                                        Online payment
-                                        <input type="checkbox" name="payment" id="payment"> <span class="lever"></span>
-                                        Pay at hotel
+                                        Other payments
+                                        {{!--
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        --}}
+                                        <input type="checkbox" name="walletPayment" id="walletPayment"> <span
+                                            class="lever"></span>
+                                        Pay from wallet
                                     </label><br><br>
+                                    {{/if}}
+                                    <div id="payAt">
+                                        <label
+                                            style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
+                                            Online payment
+                                            <input type="checkbox" name="payment" id="payment"> <span
+                                                class="lever"></span>
+                                            Pay at hotel
+                                        </label>
+                                    </div><br><br>
                                     <div id="online" style="margin-left: 40px;">
-                                    <label
-                                        style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
-                                        Razorpay
-                                        <input type="checkbox" name="onlinepayment" id="onlinepayment"> <span class="lever"></span>
-                                        Paypal
-                                    </label>
+                                        <label
+                                            style="font-family: sans-serif;font-size: 15px; font-weight: 200;color: black;">
+                                            Razorpay
+                                            <input type="checkbox" name="onlinepayment" id="onlinepayment"> <span
+                                                class="lever"></span>
+                                            Paypal
+                                        </label>
                                     </div>
-                                    {{!-- <div class="row" id="online">
-                                        <div class="col s12 m6 l6 ">
 
-                                            <button type="submit" id="rzp-button1" value="razor"
-                                                style="border: none;margin-top: 30px;height: 40px; width: 100%;background-color: rgb(236, 0, 79);"><a
-                                                    style="text-align: center;color: white;">Pay using
-                                                    RazorPay</a></button>
-                                        </div>
-                                        <div class="col s12 m6 l6">
-                                            <button type="submit"
-                                                style="border: none;margin-top: 30px;height: 40px; width: 100%;background-color: rgb(236, 0, 79);"><a
-                                                    style="text-align: center;color: white;">Pay using
-                                                    PayPal</a></button>
-                                        </div>
-
-                                    </div> --}}
 
                                 </div>
                                 <button type="submit"
@@ -71,10 +73,19 @@
                 <div class="col-md-4">
                     <!--=========================================-->
                     <div class="hp-call hp-right-com">
+                        {{#if room.discount}}
+                        <div class="ribbon ribbon-top-left"><span>{{room.discount}}% OFF</span>
+                        </div>
+                        {{/if}}
                         <div class="hp-call-in">
                             <div style="width: 100%;">
                                 <h1 style="float: left;">{{room.id}}</h1>
+                                {{#if room.discount}}
+                                <h1 style="float: right;color: red;">₹{{room.price}}<span
+                                        class="room-price">₹{{room.ogPrice}}</span></h1>
+                                {{else}}
                                 <h1 style="float: right;color: red;">₹{{room.price}}</h1>
+                                {{/if}}
 
                             </div>
                             <div style="width: 100%;height: 100px;">
@@ -104,12 +115,35 @@
                                         <li>No. of guests : <span style="color: rgb(0, 0, 0);">{{details.guest}}</span>
                                             <input type="text" value="{{details.guest}}" name="guest" hidden>
                                         </li>
+                                        <li style="display: none;" id="couponList">Applied Coupon:<span
+                                                style="color: rgb(0, 0, 0);text-transform: uppercase;"
+                                                id="couponName"></span>
+                                            <input type="text" value="" id="couponNameInp" name="couponName" hidden>
+
+                                        </li>
+                                        <li style="display: none;color: green;" id="youSaved">You Saved:<span
+                                                style="color: rgb(0, 0, 0);text-transform: uppercase;color: green;"
+                                                id="save"></span>
+
+                                        </li>
 
                                         <li style="font-size: 18px;">Total : <span class=""
-                                                style="color: black;font-size: 18px;">₹{{details.total}}</span>
-                                            <input type="text" value="{{details.total}}" name="total" hidden>
+                                                style="color: black;font-size: 18px;"
+                                                id="total">₹{{details.total}}</span>
+                                            <input type="text" value="{{details.total}}" name="total" id="totalinp"
+                                                hidden>
+                                            <input type="text" value="{{details.total}}" name="realTotal" id="realTotal"
+                                                hidden>
                                         </li>
+
                                     </ul>
+
+                                    <a class="btn btn-danger" href="#!" data-toggle="modal" data-target="#modal1"
+                                        id="applyCoupon" style="height: 50px;"> Apply Coupon</a>
+                                    <a class="btn btn-danger" href="#!" id="removeCoupon" onclick="removeCoupon(event)"
+                                        style="height: 50px;background-color: rgb(240, 240, 240);color: black;display: none;">Remove
+                                        Coupon</a>
+                                    </button>
                                 </div>
                             </div>
 
@@ -254,105 +288,286 @@
             <div class="container">
                 <p>copyrights © 2017 RN53Themes.net. &nbsp;&nbsp;All rights reserved. </p>
             </div>
+            <div id="modal1" class="modal fade" role="dialog" style="margin-top: 100px;">
+                <div class="log-in-pop" style="border-radius: 5px;background-color: transparent;">
+                    <div class="container" style="width: 100%;background-color: rgb(66, 66, 66);border-radius: 5px;">
+                        <a href="#" class="pop-close" data-dismiss="modal"><img src="images/cancel.png" alt="" />
+                        </a>
+
+                        <div class="row" style="margin-top: 40px;padding: 40px;">
+                            <h1 style="color: white;margin-left: 10px;">Coupons</h1>
+                            {{#each coupons}}
+
+                            <button class="col s11 m5 l2"
+                                style="padding: 0%;background-color: transparent;border: none;margin: 10px;"
+                                onclick="coupon(event,{{this.couponPercentage}},'{{this.couponCode}}')"
+                                data-dismiss="modal">
+                                <div class="col s12 m12 l12"
+                                    style="height: 210px;background-color: rgb(110, 31, 175);border-radius: 5px;">
+                                    <div
+                                        style="text-align: center; padding: 10%;padding-top: 40px;font-family: sans-serif;padding-bottom: 0px;">
+                                        <h1
+                                            style="margin: 1%;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;color: white;">
+                                            {{this.couponPercentage}}%</h1>
+                                        <h5 style="color: white;">OFF</h5>
+                                    </div>
+                                    <h6 style="margin: 0%;text-align: center;color: white;">APPLY</h6>
+                                    <div style="width: 100%;height: 20px;background-color: white;">
+                                        <h4
+                                            style="text-align: center;text-transform: uppercase;font-size: 100%  ;padding-top: 3px;">
+                                            {{this.couponCode}}</h4>
+                                    </div>
+                                    <h6
+                                        style="margin: 0%;text-align: center;color: white;word-wrap: break-word;margin-top: 4px;">
+                                        Expiry:{{this.couponExpiry}}</h6>
+                                </div>
+                            </button>
+                            {{/each}}
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div id="modal2" class="modal " role="dialog">
+                <div class="log-in-pop">
+                    <div class="log-in-pop-right">
+                         
+                        <div class="col-lg-6">
+                            <div id="image-box" style="width: 550px; display: none;border-radius: 0px ;"></div>
+                            <button class="btn btn-primary mt-3" type="button" style="display: none;margin-top: 20px;"
+                                id="crop-btn" data-dismiss="modal1">Crop</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-        <section>
-            <script>
-                let i = 0
-                $('#payment').change(function () {
-                    if (i == 0) {
-                        $('#online').css('display', 'none')
-                        
-                        i = 1
-                    } else {
-                        $('#online').css('display', 'block')
-                        
-                        i = 0
+        <script>
+            let i = 0
+            $('#walletPayment').change(function () {
+                if (i == 0) {
+                    $('#online').css('display', 'none')
+                    $('#payAt').css('display', 'none')
+
+                    i = 1
+                } else {
+                    $('#online').css('display', 'block')
+                    $('#payAt').css('display', 'block')
+
+                    i = 0
+                }
+            })
+        </script>
+        <script>
+            let j = 0
+            $('#payment').change(function () {
+                if (j == 0) {
+                    $('#online').css('display', 'none')
+
+                    j = 1
+                } else {
+                    $('#online').css('display', 'block')
+
+                    j = 0
+                }
+            })
+        </script>
+
+        <script>
+
+            var details
+            $("#check-out").submit(function (e) {
+
+                e.preventDefault()
+                data = document.getElementById('check-out')
+                let formData = new FormData(data)
+                formData.append("file", idproof.files[0])
+                $.ajax({
+                    url: '/orderRazorPay',
+                    method: 'post',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+
+                        if (response.paypal) {
+
+                            window.location.href = response.payment
+
+                        } else if (response.payAtHotel) {
+                            window.location.href = '/success'
+
+                        } else if (response.payWithWallet) {
+                            window.location.href = '/success'
+                        }
+                        else {
+
+                            details = response.details
+                            razorpayment(response.order)
+                        }
+                    }
+
+                })
+
+
+            });
+            function razorpayment(order) {
+                var options = {
+                    "key": "rzp_test_8hOY0y9Me41Hz6", // Enter the Key ID generated from the Dashboard
+                    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "currency": "INR",
+                    "name": "Find your stay",
+                    "description": "Test Transaction",
+                    "image": "https://example.com/your_logo",
+                    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
+                    "handler": function (response) {
+                      
+                        verifypayment(response, details)
+                    },
+                    "prefill": {
+                        "name": "Anas KT",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9446406469"
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response) {
+                    alert(response.error.code);
+                    alert(response.error.description);
+                    alert(response.error.source);
+                    alert(response.error.step);
+                    alert(response.error.reason);
+                    alert(response.error.metadata.order_id);
+                    alert(response.error.metadata.payment_id);
+                });
+
+                rzp1.open();
+
+            }
+
+            function verifypayment(response, details) {
+                console.log("dfgd" + details)
+                $.ajax({
+                    url: '/verifypayment',
+                    data: { response, details },
+                    method: 'post',
+                    success: (response) => {
+                        if (response.paymentsuccess) {
+                            window.location.href = '/success'
+                        } else {
+                            alert("payment failed")
+                        }
                     }
                 })
-            </script>
-            <script>
-                var details
-                $("#check-out").submit(function (e) {
-                    e.preventDefault()
-                    $.ajax({
-                        url: '/orderRazorPay',
-                        method: 'post',
-                        data: $("#check-out").serialize(),
-                        success: (response) => {
-                            
-                            if(response.paypal){
-                                
-                                window.location.href=response.payment
-                                
-                            }else if(response.payAtHotel){
-                                window.location.href='/success'
-                            
-                            }else{
-                            
-                            details=response.details
-                            razorpayment(response.order)
-                            }
-                        }
-                        
-                    })
+            }
+        </script>
+        <script>
+            function coupon(event, percentage, code) {
+                let total = document.getElementById('totalinp').value
+                console.log(total)
+                console.log(percentage)
+                let save = parseInt((total * percentage) / 100)
+                total = parseInt(total - save)
+                console.log(total)
+                document.getElementById('total').innerHTML = "₹" + total
+                document.getElementById('applyCoupon').style.display = 'none'
+                document.getElementById('removeCoupon').style.display = 'block'
+                document.getElementById('couponList').style.display = 'block'
+                document.getElementById('youSaved').style.display = 'block'
+                console.log(code)
+                document.getElementById('couponName').innerHTML = code
+                document.getElementById('couponNameInp').disabled = false
+                document.getElementById('couponNameInp').value = code
+                document.getElementById('save').innerHTML = "₹" + save
+                document.getElementById('totalinp').value = total
 
-                
-                });
-                function razorpayment(order) {
-                    var options = {
-                        "key": "rzp_test_8hOY0y9Me41Hz6", // Enter the Key ID generated from the Dashboard
-                        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                        "currency": "INR",
-                        "name": "Find your stay",
-                        "description": "Test Transaction",
-                        "image": "https://example.com/your_logo",
-                        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
-                        "handler": function (response) {
-                            alert(response.razorpay_payment_id);
-                            alert(response.razorpay_order_id);
-                            alert(response.razorpay_signature)
-                            verifypayment(response,details)
-                        },
-                        "prefill": {
-                            "name": "Gaurav Kumar",
-                            "email": "gaurav.kumar@example.com",
-                            "contact": "9999999999"
-                        },
-                        "notes": {
-                            "address": "Razorpay Corporate Office"
-                        },
-                        "theme": {
-                            "color": "#3399cc"
-                        }
-                    };
-                    var rzp1 = new Razorpay(options);
-                    rzp1.on('payment.failed', function (response) {
-                        alert(response.error.code);
-                        alert(response.error.description);
-                        alert(response.error.source);
-                        alert(response.error.step);
-                        alert(response.error.reason);
-                        alert(response.error.metadata.order_id);
-                        alert(response.error.metadata.payment_id);
+            }
+            function removeCoupon(event) {
+                let realTotal = document.getElementById('realTotal').value
+                console.log(realTotal)
+                document.getElementById('total').innerHTML = "₹" + realTotal
+                document.getElementById('applyCoupon').style.display = 'block'
+                document.getElementById('removeCoupon').style.display = 'none'
+                document.getElementById('couponList').style.display = 'none'
+                document.getElementById('totalinp').value = realTotal
+                document.getElementById('youSaved').style.display = 'none'
+                document.getElementById('couponNameInp').disabled = true
+            }
+        </script>
+        <script>
+            function viewImage1(event) {
+                const imagebox = document.getElementById('image-box')
+                const crop_btn = document.getElementById('crop-btn')
+                var fileInput = document.getElementById('idproof');
+
+                let file1 = event.target.files[0].name
+                let file = event.target.files[0]
+                let extension = file1.split('.').pop()
+                if (extension == 'jpeg' || extension == 'png' || extension == 'jpg') {
+                    document.getElementById('img1').src = URL.createObjectURL(event.target.files[0])
+                    document.getElementById('img1').style.display = 'block'
+
+                    $('#modal2').modal({
+                        dismissible: true
                     });
 
-                    rzp1.open();
+                    //call the specific div (modal)
+                    $('#modal2').modal('open');
+                    const img_data = fileInput.files[0]
+                    const url = URL.createObjectURL(img_data)
+                    imagebox.innerHTML = `<img  src="${url}" id="image" style="width:100%">`
+                    const image = document.getElementById('image')
+                    console.log(image)
+                    document.getElementById('image-box').style.display = 'block'
+                    document.getElementById('crop-btn').style.display = 'block'
 
-                }
 
-                function verifypayment(response,details) {
-                    console.log("dfgd"+details)
-                    $.ajax({
-                        url: '/verifypayment',
-                        data: { response,details },
-                        method: 'post',
-                        success: (response) => {
-                            if(response.paymentsuccess){
-                                window.location.href='/success'
-                            }else{
-                                alert("payment failed")
-                            }
-                        }
+
+                    const cropper = new Cropper(image, {
+                        autoCropArea: 1,
+                        viewMode: 1,
+                        scalable: false,
+                        zoomable: false,
+                        movable: false,
+                        aspectRatio: 16 / 9,
+                        //  preview: '.preview',
+                        minCropBoxWidth: 180,
+                        minCropBoxHeight: 200,
                     })
+                    crop_btn.addEventListener('click', () => {
+                        cropper.getCroppedCanvas().toBlob((blob) => {
+                            let fileInputElement = document.getElementById('idproof');
+                            let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                            let container = new DataTransfer();
+
+                            container.items.add(file);
+                            const img = container.files[0]
+                            var url = URL.createObjectURL(img)
+                            fileInputElement.files = container.files;
+                            document.getElementById('img1').src = url
+                            document.getElementById('image-box').style.display = 'none'
+                            document.getElementById('crop-btn').style.display = 'none'
+
+                        });
+                        $('#modal2').toggle();
+                    });
+
+                } else {
+
+                    document.getElementById('errormessage1').style.display = 'block'
+                    $('#img1').val(null)
                 }
-            </script>
+
+            }
+        </script>

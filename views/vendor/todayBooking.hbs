@@ -1,0 +1,204 @@
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+
+                    <h1 style="font-weight: 700;">Upcoming bookings <i class="fas fa-chevron-right"></i>
+                        {{hotel.propertyName}}</h1><br><br>
+
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="display" style="min-width: 845px;color: black;">
+                                <thead>
+                                    <tr>
+
+                                        <th scope="col">User</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                        <th scope="col">Days</th>
+                                        <th scope="col">Rooms</th>
+                                        <th scope="col">Guests</th>
+                                        <th scope="col">Total price</th>
+                                        <th scope="col">Payment method</th>
+                                        <th scope="col">Id proof</th>
+                                        <th scope="col">Controlls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each data}}
+                                    <tr>
+                                        <td>{{this.userName}}</td>
+                                        <td>{{this.userMobile}}</td>
+                                        <td>{{this.categoty}}</td>
+                                        <td>{{this.from}}</td>
+                                        <td>{{this.to}}</td>
+                                        <td>{{this.days}}</td>
+                                        <td>{{this.room}}</td>
+                                        <td>{{this.guest}}</td>
+                                        <td>{{this.amount}}</td>
+                                        <td>{{this.payment}}</td>
+                                        <td>
+                                            <button type="button" data-id="{{this._id}}" id="show"
+                                                class="show btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal2">
+                                                Show
+                                            </button>
+                                            <div class="modal fade" id="exampleModal2" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">ID Proof
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                             <input type="text" id="#inp" value="">
+                                                            <img src="" id="image" alt="image" style="width: 500px;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        </td>
+
+
+
+                                        <td><button type="button" data-id="{{this._id}}" data-amt="{{this.amount}}"
+                                                data-user="{{this.userId}}" class="cancel btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Cancel
+                                            </button>
+                                            <a href="/vendor/statusUpdate?id={{this._id}}" class="btn btn-success">Check
+                                                in</a>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Modal title
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                                <input type="text" id="#inp">
+                                                            Are you sure?Do you want to Cancel this Booking?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <a href="" id="cancel" type="button"
+                                                                class="btn btn-danger">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+
+<!--**********************************
+            Content body end
+        ***********************************-->
+{{!--
+<script>
+    $(function () {
+        $('#adminHotel').DataTable({
+            responsive: true;
+        });
+
+    });
+</script> --}}
+{{!--
+<script>
+    $(document).on("click", ".delete", function () {
+
+        var varid = $(this).data('id');
+
+        $('.modal-footer #delete').attr('href', "/admin/deleteHotel?id=" + varid)
+    })
+</script> --}}
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+<!-- Required vendors -->
+<script src="/admin-temp/vendor/global/global.min.js"></script>
+<script src="/admin-temp/js/quixnav-init.js"></script>
+<script src="/admin-temp/js/custom.min.js"></script>
+
+<script>
+    $(document).on("click", ".cancel", function (e) {
+
+        var varid = $(e.target).data('id');
+        var amt = $(e.target).data('amt');
+        var userId = $(e.target).data('user');
+        $('.modal-body #inp').attr('value', varid)
+        $('.modal-footer #cancel').attr('href', "/vendor/cancelRoomToday?id=" + varid + "&amt=" + amt + "&userId=" + userId)
+    })
+</script>
+<script>
+  $(document).on("click", ".show", function (e) {
+
+    var varid = $(e.target).data('id');
+
+    $('.modal-body #image').attr('src', "/id-Proof/" + varid + ".jpeg")
+
+  })
+</script>
+<!-- Datatable -->
+<script src="/admin-temp/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/admin-temp/js/plugins-init/datatables.init.js"></script>
+
+{{!--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+--}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>

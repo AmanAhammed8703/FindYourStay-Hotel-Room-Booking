@@ -88,6 +88,10 @@
                 {{#each result}}
                 <div class="room">
                     <a href="/roomDetail?id={{this._id}}" class="" style="font-size: 16px;">
+                    {{#if discount}}
+                    <div class="ribbon ribbon-top-left"><span>{{this.discount}}% OFF</span>
+						</div>
+                    {{/if}}
                     <!--ROOM IMAGE-->
                     <div class="r1 r-com"><img src="vendor-room-images/{{this._id}}1.jpeg" alt="" />
                     </div>
@@ -104,12 +108,22 @@
                     <!--ROOM AMINITIES-->
                     
                     <!--ROOM PRICE-->
+                    {{#if this.discount}}
+                     <div class="r4 r-com col-sm-2">
+                        <p>Price for 1 night</p>
+                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.disPrice}}</span> <span class="room-price">₹{{this.price}}</span>
+                        </p>
+                        
+                    </div>
+
+                    {{else}}
                     <div class="r4 r-com col-sm-2">
                         <p>Price for 1 night</p>
                        <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.price}}</span> <span class="room-price"></span>
                         </p>
                         
                     </div>
+                    {{/if}}
                     <!--ROOM BOOKING BUTTON-->
                     <div class="r5 r-com col-sm-2">
                         

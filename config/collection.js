@@ -4,4 +4,6 @@ module.exports={
     VENDOR_COLLECTION:'vendor',
     ROOM_COLLECTION:'room',
     BOOKINGS_COLLECTION:'bookings',
+    COUPONS_COLLECTION:'coupons',
+    OFFERS_COLLECTION:'offers'
 }

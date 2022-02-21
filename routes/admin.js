@@ -6,11 +6,14 @@ var fs=require('fs')
 
 
 var nodemailer = require('nodemailer');
+const { Db } = require('mongodb');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   if(req.session.admin){
-    res.redirect('/admin/adminHotel')
+    let counts=await helper.dashCounts()
+
+    res.render('admin/adminDash',{admintemp:true,counts})
   }else{
   res.render ('admin/adminLogin',{admin:true,adminerr:req.session.adminerr});
   req.session.adminerr=false
@@ -32,7 +35,7 @@ router.post('/adminLogin',(req,res)=>{
   helper.doLogin(req.body).then((response)=>{
     if(response.admin){
       req.session.admin=true
-      res.redirect('/admin/adminHotel')
+      res.redirect('/admin')
     }else{
       req.session.adminerr=true
       res.redirect('/admin')
@@ -108,5 +111,34 @@ router.get('/requestAccept/',(req,res)=>{
 router.get('/adminLogout',(req,res)=>{
   req.session.admin=false
   res.redirect('/admin')
+})
+router.get('/adminCoupons',async(req,res)=>{
+  let coupons=await helper.getAdminCoupons()
+  let couponExist=req.session.couponExist
+  res.render('admin/Coupons',{admintemp:true,coupons,couponExist})
+  req.session.couponExist=false
+})
+router.post('/addCoupons',async(req,res)=>{
+  var details=req.body
+  details.auth='admin'
+  console.log(req.body);
+  helper.addCoupon(details).then((response)=>{
+    if(response.couponExist){
+      req.session.couponExist=true
+    }
+    res.redirect('/admin/adminCoupons')
+  })
+  
+})
+router.get('/deleteCoupon/',(req,res)=>{
+  let id=req.query.id
+  helper.deleteCoupon(id).then((response)=>{
+    console.log(response);
+    res.redirect('/admin/adminCoupons')
+  })
+})
+router.get('/getChartData',async(req,res)=>{
+  let bookings=await helper.getChartData()
+  res.json(bookings)
 })
 module.exports = router;

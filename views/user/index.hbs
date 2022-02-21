@@ -1,4 +1,16 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+ 
+<style>
+#geocoder {
+z-index: 1;
+margin: 0px;
 
+}
+.mapboxgl-ctrl-geocoder {
+min-width: 100%;
+}
+</style>
 	<!--TOP SECTION-->
 	<!--TOP SECTION-->
 	<div class="inn-body-section inn-booking">
@@ -14,7 +26,8 @@
 				<div class="col-md-6">
 					<div class="book-form inn-com-form">
 						<form class="col s12" method="post" action="/search" id="indexsearch">
-
+							{{!-- <div id="geocoder"></div>
+							<input type="text" id="result" > --}}
 							<div class="row">
 								<div class="input-field col s12">
 									<input type="text" id="searchTextField" class="validate" 
@@ -80,7 +93,7 @@
 	<!--TOP SECTION-->
 	<!--TOP SECTION-->
 	<!-- HOTEL GRID -->
-	<div class="hom1 hom-com pad-bot-40">
+	{{!-- <div class="hom1 hom-com pad-bot-40">
 		<div class="container">
 			<div class="row">
 				<div class="hom1-title">
@@ -123,7 +136,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> --}}
 </section>
 <!--END HEADER SECTION-->
 <footer class="site-footer clearfix">
@@ -278,3 +291,26 @@
 		color: red;
 	}
 </style>
+<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYW1hbm1hcmFra2FyIiwiYSI6ImNrenFlaGU3MzNyMm4ybm55eHBwY3ZnYTAifQ.opk1k-6yUnPi23g7pMWo-g';
+const geocoder = new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+types: 'country,region,place,postcode,locality,neighborhood'
+});
+ 
+geocoder.addTo('#geocoder');
+ 
+// Get the geocoder results container.
+const results = document.getElementById('result');
+ 
+// Add geocoder result to container.
+geocoder.on('result', (e) => {
+results.value= JSON.stringify(e.result, null, 2);
+});
+ 
+// Clear results container when search is cleared.
+geocoder.on('clear', () => {
+results.innerText = '';
+});
+</script>
