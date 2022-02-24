@@ -12,8 +12,10 @@ const { Db } = require('mongodb');
 router.get('/', async function(req, res, next) {
   if(req.session.admin){
     let counts=await helper.dashCounts()
-
-    res.render('admin/adminDash',{admintemp:true,counts})
+    let most=await helper.mostBooked()
+    let average=await helper.averageData()
+    let lastBookings=await helper.lastBookings()
+    res.render('admin/adminDash',{admintemp:true,counts,most,average,lastBookings})
   }else{
   res.render ('admin/adminLogin',{admin:true,adminerr:req.session.adminerr});
   req.session.adminerr=false
@@ -141,4 +143,5 @@ router.get('/getChartData',async(req,res)=>{
   let bookings=await helper.getChartData()
   res.json(bookings)
 })
+
 module.exports = router;

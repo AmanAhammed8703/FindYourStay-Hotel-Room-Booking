@@ -140,6 +140,14 @@
                         </p>
                         
                     </div>
+                     <div class="r5 r-com col-sm-2">
+                        {{#ifEquals this.status "Cancelled"}}
+                       <p style="color: red;">Cancelled</p>
+                       {{else}}
+                       
+                       <a href="/addReview?id={{this.roomId}}" class="inn-room-book" style="font-size: 16px;">Add review</a>
+                       {{/ifEquals}}
+                    </div>
                     <!--ROOM BOOKING BUTTON-->
                     </a>
                 </div>

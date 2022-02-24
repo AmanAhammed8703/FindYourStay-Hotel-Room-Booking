@@ -1,0 +1,11 @@
+<div class="container" style="margin-top: 70px;">
+    <h1>Add Review</h1>
+    <div>
+        <form action="/addReview" method="post">
+        <input type="text" value="{{id}}"name="roomId" hidden>
+        <input type="text" value="{{username}}"name="userName" hidden>
+        <textarea id="" cols="30" rows="10" name="review" style="height: 200px;border: solid;border-radius: 10px;border-width: 1px;padding: 10px;"></textarea>
+        <button type="submit" class="btn btn-danger" style="float: right;margin-top: 20px;">Add Review</button>
+        </form>
+    </div>
+</div>

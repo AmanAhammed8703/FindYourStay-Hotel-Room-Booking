@@ -90,7 +90,7 @@ router.get('/roomDetail/', async function (req, res) {
 
   helper.getOneRoom(id).then((response) => {
 
-    console.log(response);
+    //console.log(response);
     let details = {}
     let room = response
     if(room.discount){
@@ -102,9 +102,25 @@ router.get('/roomDetail/', async function (req, res) {
       room.discountAmount=dis
     }
     console.log("room");
-    console.log(room);
-
-
+    //console.log(room);
+    let finalReviews=[]
+    let review=room.review
+    let reviewUser=room.reviewUser
+    console.log(review);
+    console.log(reviewUser);
+    for(let i of review){
+      for(let j of reviewUser){
+        if(i.userId.toString()==j._id.toString()){
+          let mergedReview={}
+          mergedReview.userId=i.userId
+          mergedReview.userName=j.userName
+          mergedReview.review=i.review
+          finalReviews.push(mergedReview)
+        }
+      }
+    }
+    console.log("final");
+    console.log(finalReviews);
     if (req.session.search) {
       details.room = search.room
       details.guest = search.guest
@@ -142,7 +158,7 @@ router.get('/roomDetail/', async function (req, res) {
     }
     details.id = id
 
-    res.render('user/roomDetail', { room, search, details, isRooms, usertemp: true, loggedIn: req.session.user, username: req.session.username })
+    res.render('user/roomDetail', { room, search, details, isRooms, usertemp: true, loggedIn: req.session.user, username: req.session.username ,finalReviews})
 
   })
 
@@ -372,7 +388,7 @@ router.post('/bookNow/', loginVerify,async (req, res) => {
     details.room = req.body.room
     details.guest = req.body.guest
     details.total = req.body.total
-    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: true, username: req.session.username ,wallet,coupons})
+    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: req.session.user, username: req.session.username ,wallet,coupons})
   })
 })
 
@@ -433,7 +449,7 @@ router.get('/success/', async (req, res) => {
     })
 
   }
-  res.render('user/success', { usertemp: true, loggedIn: true, resp })
+  res.render('user/success', { usertemp: true, loggedIn: req.session.user, resp })
 })
 
 router.post('/roomCheck/', (req, res) => {
@@ -462,7 +478,7 @@ router.get('/userProfile', (req, res) => {
     let emailNumber = req.session.updateEmailNumberError
     let number = req.session.updateNumberError
     let email = req.session.updateEmailError
-    res.render('user/userProfile', { usertemp: true, user, emailNumber, number, email, loggedIn: true, username: req.session.username })
+    res.render('user/userProfile', { usertemp: true, user, emailNumber, number, email, loggedIn: req.session.user, username: req.session.username })
     req.session.updateEmailNumberError = false
     req.session.updateNumberError = false
     req.session.updateEmailError = false
@@ -471,8 +487,7 @@ router.get('/userProfile', (req, res) => {
 })
 router.post('/editProfile', (req, res) => {
   user = req.body
-
-  res.render('user/editProfile', { usertemp: true, user, loggedIn: true, username: req.session.username })
+  res.render('user/editProfile', { usertemp: true, user, loggedIn: req.session.user, username: req.session.username })
 })
 router.post('/updateProfile/', (req, res) => {
   let id = ObjectId(req.query.id)
@@ -497,7 +512,7 @@ router.get('/updatePassword/', (req, res) => {
   let error = req.session.updatePasswordError
   let id = req.query.id
   console.log("id" + id);
-  res.render('user/updatePassword', { usertemp: true, id, error, loggedIn: true, username: req.session.username })
+  res.render('user/updatePassword', { usertemp: true, id, error, loggedIn: req.session.user, username: req.session.username })
   req.session.updatePasswordError = false
 })
 
@@ -753,7 +768,7 @@ router.get('/myBookings', async (req, res) => {
     let checkedOut = response.checkedOut
     let upcoming = response.upcoming
     console.log(response);
-    res.render('user/mybookings', { usertemp: true, loggedIn: true, username: req.session.username, today, checkedIn, checkedOut, upcoming })
+    res.render('user/mybookings', { usertemp: true, loggedIn: req.session.user, username: req.session.username, today, checkedIn, checkedOut, upcoming })
 
   })
 })
@@ -776,9 +791,20 @@ router.get('/cancelRoom/', async (req, res) => {
   }
   res.redirect('/myBookings')
 })
+router.get('/addReview',(req,res)=>{
+  let id=req.query.id
+  res.render('user/addReview',{usertemp:true,loggedIn:req.session.user, username: req.session.username,id })
+})
 
-
-
+router.post('/addReview',(req,res)=>{
+  console.log(req.body);
+  let id=ObjectId(req.body.roomId)
+  let review={}
+  review.userId=ObjectId(req.session.userId)
+  review.review=req.body.review
+  helper.addReview(id,review)
+  res.redirect('/myBookings')
+})
 
 
 module.exports = router;

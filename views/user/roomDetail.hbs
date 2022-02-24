@@ -1,5 +1,3 @@
-
-
 <!--END HOTEL ROOMS-->
 <!--CHECK AVAILABILITY FORM-->
 <div class="check-available" style="margin-top: 60px;padding: 0%;background-color: rgb(37, 37, 37);">
@@ -67,9 +65,8 @@
                                     <button type="button" class="sidebutton11 col s3 " id="roomminus"
                                         style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
 
-                                    <input class="col s6" id="inproom" type="number" value="1" min="1"
-                                        name="room" style="display: inline;text-align:center;border-radius: 0%;"
-                                        readonly>
+                                    <input class="col s6" id="inproom" type="number" value="1" min="1" name="room"
+                                        style="display: inline;text-align:center;border-radius: 0%;" readonly>
                                     <button type="button" class=" col s3 " id="roomplus"
                                         style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
                                 </div>
@@ -79,8 +76,8 @@
                                     <button type="button" class="sidebutton11 col s3 " id="guestminus"
                                         style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
 
-                                    <input class="col s6" id="inpguest" type="number" value="1" min="1"
-                                        name="guest" style="display: inline;text-align:center" readonly>
+                                    <input class="col s6" id="inpguest" type="number" value="1" min="1" name="guest"
+                                        style="display: inline;text-align:center" readonly>
                                     <button type="button" onclick class=" col s3 " id="guestplus"
                                         style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
                                 </div>
@@ -110,18 +107,18 @@
 <div class="container">
     <div style=" margin-top:20px;">
         <div class="col-xs-12 col-sm-10">
-        <img class="pro col-xs-12 col-sm-10 img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" style="padding: 0.1%  ;display: block;"
-            id="images">
-            </div>
-       
-        <img class="product-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt="" onclick="imageChange1(event)"
-            style="padding: 0.2%  ;" id="image1">
-        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}2.jpeg" alt="" onclick="imageChange2(event)"
-            style="padding: 0.2%  ;" id="image2">
-        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}3.jpeg" alt="" onclick="imageChange3(event)"
-            style="padding: 0.2%  ;" id="image3">
-        <img class="pro-image col-xs-2 img-responsive" src="vendor-room-images/{{room._id}}4.jpeg" alt="" onclick="imageChange4(event)"
-            style="padding: 0.2%  ;" id="image4">
+            <img class="pro col-xs-12 col-sm-10 img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt=""
+                style="padding: 0.1%  ;display: block;" id="images">
+        </div>
+
+        <img class="product-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}1.jpeg" alt=""
+            onclick="imageChange1(event)" style="padding: 0.2%  ;" id="image1">
+        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}2.jpeg" alt=""
+            onclick="imageChange2(event)" style="padding: 0.2%  ;" id="image2">
+        <img class="pro-image col-xs-2  img-responsive" src="vendor-room-images/{{room._id}}3.jpeg" alt=""
+            onclick="imageChange3(event)" style="padding: 0.2%  ;" id="image3">
+        <img class="pro-image col-xs-2 img-responsive" src="vendor-room-images/{{room._id}}4.jpeg" alt=""
+            onclick="imageChange4(event)" style="padding: 0.2%  ;" id="image4">
 
     </div>
 
@@ -137,14 +134,14 @@
                             {{#each room.hotel}}
                             <h1>{{this.propertyName}}</h1>
                             <p>{{this.Address}}</p>
-                            {{/each}}
+
 
                             <h4><span>{{room.category}}</span> Room</h4>
 
-                            <p>Aliquam id tempor sem. Cras molestie risus et lobortis congue. Donec id est
-                                consectetur, cursus tellus at, mattis lacus.</p>
-                        </div>
 
+                        </div>
+                        <p>{{this.Description}}</p>
+                        {{/each}}
                     </div>
                     <div class="hp-section">
                         <div class="hp-sub-tit">
@@ -175,162 +172,22 @@
                     <div class="hp-section last-sec-spa">
                         <div class="hp-sub-tit">
                             <h4><span>USER</span> REVIEWS</h4>
-                            <p>Aliquam id tempor sem. Cras molestie risus et lobortis congue. Donec id est
-                                consectetur, cursus tellus at, mattis lacus.</p>
+        
                         </div>
                         <div class="lp-ur-all-rat">
                             <ul>
+                                {{#each finalReviews}}
+
                                 <li>
-                                    <div class="lr-user-wr-img"> <img src="images/users/2.png" alt=""> </div>
+                                    <div class="lr-user-wr-img"> <img style="border-radius: 999px;" src="/profile-picture/{{this.userId}}.jpeg" alt=""> </div>
                                     <div class="lr-user-wr-con">
-                                        <h6>Jacob Michael <span>4.5 <i class="fa fa-star" aria-hidden="true"></i></span>
-                                        </h6> <span class="lr-revi-date">19th January, 2017</span>
-                                        <p>Good service... nice and clean rooms... very good spread of buffet and
-                                            friendly staffs. Located in heart of city and easy to reach any places
-                                            in a short distance. </p>
-                                        <ul>
-                                            <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
+                                        <h6>{{this.userName}} 
+                                        </h6>
+                                        <p>{{this.review}} </p>
+                                        
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="lr-user-wr-img"> <img src="images/users/3.png" alt=""> </div>
-                                    <div class="lr-user-wr-con">
-                                        <h6>Gabriel Elijah <span>5.0 <i class="fa fa-star"
-                                                    aria-hidden="true"></i></span></h6> <span class="lr-revi-date">21th
-                                            July, 2016</span>
-                                        <p>The hotel is clean, convenient and good value for money. Staff are
-                                            courteous and helpful. However, they need more training to be efficient.
-                                        </p>
-                                        <ul>
-                                            <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="lr-user-wr-img"> <img src="images/users/4.png" alt=""> </div>
-                                    <div class="lr-user-wr-con">
-                                        <h6>Luke Mason <span>4.2 <i class="fa fa-star" aria-hidden="true"></i></span>
-                                        </h6> <span class="lr-revi-date">21th March, 2018</span>
-                                        <p>Too much good experience with hospitality, cleanliness, facility and
-                                            privacy and good value for money... To keep mind relaxing... Keep it
-                                            up... </p>
-                                        <ul>
-                                            <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="lr-user-wr-img"> <img src="images/users/5.png" alt=""> </div>
-                                    <div class="lr-user-wr-con">
-                                        <h6>Kevin Jack <span>3.6 <i class="fa fa-star" aria-hidden="true"></i></span>
-                                        </h6> <span class="lr-revi-date">21th Aug, 2018</span>
-                                        <p>I am deaf. Bar is closed and Restaurant is okay ... It should be more
-                                            decoration as beautiful. I enjoyed swimming top floor and weather is
-                                            good</p>
-                                        <ul>
-                                            <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="lr-user-wr-img"> <img src="images/users/6.png" alt=""> </div>
-                                    <div class="lr-user-wr-con">
-                                        <h6>Nicholas Tyler <span>4.4 <i class="fa fa-star"
-                                                    aria-hidden="true"></i></span></h6> <span class="lr-revi-date">21th
-                                            Aug, 2018</span>
-                                        <p>Overall, it was good experience. Rooms were spacious and they were kept
-                                            very clean and tidy. Room service was good.</p>
-                                        <ul>
-                                            <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                        aria-hidden="true"></i></a> </li>
-                                            <li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
+                                {{/each}}
                             </ul>
                         </div>
                     </div>
@@ -341,13 +198,14 @@
                 <div class="hp-call hp-right-com" style="background-color: rgb(255, 255, 255);">
                     {{#if room.discount}}
                     <div class="ribbon ribbon-top-left"><span>{{room.discount}}% OFF</span>
-						</div>
-                        {{/if}}
+                    </div>
+                    {{/if}}
                     <div class="hp-call-in">
                         <div style="width: 100%;top: 0;z-index: 1;height: 100px;">
                             <h1 style="float: left;">{{room.id}}</h1>
                             {{#if room.discount}}
-                            <h1 style="float: right;color: red;">₹{{room.price}}<span class="room-price">₹{{room.ogPrice}}</span></h1>
+                            <h1 style="float: right;color: red;">₹{{room.price}}<span
+                                    class="room-price">₹{{room.ogPrice}}</span></h1>
                             {{else}}
                             <h1 style="float: right;color: red;">₹{{room.price}}</h1>
                             {{/if}}
@@ -355,7 +213,7 @@
                         </div>
                         <div style="width: 100%;height: 100px;margin-top: 50px;">
                             <form action="/roomCheck?id={{details.id}}" method="post">
-                            {{#if search}}
+                                {{#if search}}
                                 <div class="input-field col s6" style="display: block;">
                                     <input class="datePick" type="text" id="from-book" name="from"
                                         placeholder="Check In" style="text-indent: 2px;" value="{{search.from}}"
@@ -365,7 +223,8 @@
 
                                 <div class="input-field col s6">
                                     <input class="datePick" type="text" id="to-book" name="to" placeholder="Check Out"
-                                        style="text-indent: 2px;" value="{{search.to}}" onchange="show()" readonly required>
+                                        style="text-indent: 2px;" value="{{search.to}}" onchange="show()" readonly
+                                        required>
 
                                 </div>
                                 <div class="input-field  col s12 m4 l6">
@@ -404,7 +263,7 @@
                                         id="check">CHECK</button>
                                 </div>
                                 {{else}}
-                                 <div class="input-field col s6" style="display: block;">
+                                <div class="input-field col s6" style="display: block;">
                                     <input class="datePick" type="text" id="from-book" name="from"
                                         placeholder="Check In" style="text-indent: 2px;" value={{details.from}}
                                         onchange="show()" readonly>
@@ -423,9 +282,8 @@
                                             onclick="show()"
                                             style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
 
-                                        <input class="col s6" id="inproomcheck" type="number" value="1"
-                                            min="1" name="room"
-                                            style="display: inline;text-align:center;border-radius: 0%;"
+                                        <input class="col s6" id="inproomcheck" type="number" value="1" min="1"
+                                            name="room" style="display: inline;text-align:center;border-radius: 0%;"
                                             onchange="show()" readonly>
                                         <button type="button" class=" col s3 " id="roompluscheck" onclick="show()"
                                             style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
@@ -439,9 +297,9 @@
                                             onclick="show()"
                                             style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
 
-                                        <input class="col s6" id="inpguestcheck" type="number" value="1"
-                                            min="1" name="guest" style="display: inline;text-align:center;"
-                                            onchange="show()" readonly>
+                                        <input class="col s6" id="inpguestcheck" type="number" value="1" min="1"
+                                            name="guest" style="display: inline;text-align:center;" onchange="show()"
+                                            readonly>
                                         <button type="button" class=" col s3 " id="guestpluscheck" onclick="show()"
                                             style="display: inline;height: 24px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
                                     </div>
@@ -457,7 +315,7 @@
 
                         <div>
                             <form action="/bookNow?id={{details.id}}" method="post">
-                            
+
                                 <input class="datePick" type="text" id="from-book" name="from" placeholder="Check In"
                                     style="text-indent: 2px;" value="{{search.from}}" readonly hidden>
                                 <input class="datePick" type="text" id="to-book" name="to" placeholder="Check Out"
@@ -467,7 +325,7 @@
                                     name="guest" style="display: none;text-align:center" readonly> --}}
 
                                 <div class="hp-main-overview">
-                                    
+
                                     <ul>
                                         <li>Room Price: <span style="color: rgb(0, 0, 0);">₹{{room.price}}</span>
                                             <input type="text" value="{{room.price}}" name="price" hidden>
@@ -494,8 +352,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                                
-                               
+
+
                         </div>
                         {{#if isRooms}}
                         <button type="button" style="border: none;width: 100%;background-color: transparent;"><a
@@ -647,159 +505,158 @@
                 <p>copyrights © 2017 RN53Themes.net. &nbsp;&nbsp;All rights reserved. </p>
             </div>
         </section>
-       
-            <script src="/js/indexSearch.js"></script>
-            <script>
 
-                $("#roomplus").click(function () {
-                    var val = parseInt($("#inproom").val())
+        <script src="/js/indexSearch.js"></script>
+        <script>
 
-                    if (val < 4) {
-                        val = val + 1
-                    }
-                    $("#inproom").val(val)
-                })
-                $("#roomminus").click(function () {
-                    var val = parseInt($("#inproom").val())
-                    var guest = parseInt($("#inpguest").val())
-                    if (val != 1) {
-                        val = val - 1
-                    }
-                    $("#inproom").val(val)
-                    if (guest > (val * 4))
-                        $("#inpguest").val(val * 4)
+            $("#roomplus").click(function () {
+                var val = parseInt($("#inproom").val())
 
-                })
-                $("#guestplus").click(function () {
-                    var val = parseInt($("#inpguest").val())
-                    var room = parseInt($("#inproom").val())
-                    if (val < room * 4) {
-                        val = val + 1
-                    }
-                    $("#inpguest").val(val)
-                })
-                $("#guestminus").click(function () {
-                    var val = parseInt($("#inpguest").val())
-                    if (val != 1) {
-                        val = val - 1
-                    }
-                    $("#inpguest").val(val)
-                })
-            </script>
-            <script>
-
-                $("#roompluscheck").click(function () {
-                    var val = parseInt($("#inproomcheck").val())
-
-                    if (val < 4) {
-                        val = val + 1
-                    }
-                    $("#inproomcheck").val(val)
-                })
-                $("#roomminuscheck").click(function () {
-                    var val = parseInt($("#inproomcheck").val())
-                    var guest = parseInt($("#inpguestcheck").val())
-                    if (val != 1) {
-                        val = val - 1
-                    }
-                    $("#inproomcheck").val(val)
-                    if (guest > (val * 4))
-                        $("#inpguestcheck").val(val * 4)
-
-                })
-                $("#guestpluscheck").click(function () {
-                    var val = parseInt($("#inpguestcheck").val())
-                    var room = parseInt($("#inproomcheck").val())
-                    if (val < room * 4) {
-                        val = val + 1
-                    }
-                    $("#inpguestcheck").val(val)
-                })
-                $("#guestminuscheck").click(function () {
-                    var val = parseInt($("#inpguestcheck").val())
-                    if (val != 1) {
-                        val = val - 1
-                    }
-                    $("#inpguestcheck").val(val)
-                })
-            </script>
-            <script>
-                function show() {
-                    document.getElementById("check").style.display = "block"
-                    document.getElementById("booknow").style.display = "none"
+                if (val < 4) {
+                    val = val + 1
                 }
-            </script>
-            <script>
-                let i=0,j=0,k=0,r=0
-                function imageChange1(event) {
-                    
-                    let url = document.getElementById('image1').src
-                    document.getElementById('imageZoom').src = url
-                    document.getElementById('image1').style.border = "solid"
-                    document.getElementById('image2').style.border = "none"
-                    document.getElementById('image3').style.border = "none"
-                    document.getElementById('image4').style.border = "none"
-                    
-                    $(function () {
-                    $('#imageZoom').imageZoom();
-                });
-                
-
+                $("#inproom").val(val)
+            })
+            $("#roomminus").click(function () {
+                var val = parseInt($("#inproom").val())
+                var guest = parseInt($("#inpguest").val())
+                if (val != 1) {
+                    val = val - 1
                 }
-                function imageChange2(event) {
-                    
-                    let url = document.getElementById('image2').src
-                    document.getElementById('imageZoom').src = url
-                    document.getElementById('image1').style.border = "none"
-                    document.getElementById('image2').style.border = "solid"
-                    document.getElementById('image3').style.border = "none"
-                    document.getElementById('image4').style.border = "none"
-                    
-                    $(function () {
-                    $('#imageZoom').imageZoom();
-                });
-                     
+                $("#inproom").val(val)
+                if (guest > (val * 4))
+                    $("#inpguest").val(val * 4)
 
-
+            })
+            $("#guestplus").click(function () {
+                var val = parseInt($("#inpguest").val())
+                var room = parseInt($("#inproom").val())
+                if (val < room * 4) {
+                    val = val + 1
                 }
-                function imageChange3(event) {
-                    
-                    let url = document.getElementById('image3').src
-                    document.getElementById('imageZoom').src = url
-                    document.getElementById('image1').style.border = "none"
-                    document.getElementById('image2').style.border = "none"
-                    document.getElementById('image3').style.border = "solid"
-                    document.getElementById('image4').style.border = "none"
-                    
-                    $(function () {
-                    $('#imageZoom').imageZoom();
-                });
-               
-
-
+                $("#inpguest").val(val)
+            })
+            $("#guestminus").click(function () {
+                var val = parseInt($("#inpguest").val())
+                if (val != 1) {
+                    val = val - 1
                 }
-                function imageChange4(event) {
-                    
-                    let url = document.getElementById('image4').src
-                    document.getElementById('imageZoom').src = url
-                    document.getElementById('image1').style.border = "none"
-                    document.getElementById('image2').style.border = "none"
-                    document.getElementById('image3').style.border = "none"
-                    document.getElementById('image4').style.border = "solid"
-                    
-                    $(function () {
-                    $('#imageZoom').imageZoom();
-                });r=1
-                
+                $("#inpguest").val(val)
+            })
+        </script>
+        <script>
 
+            $("#roompluscheck").click(function () {
+                var val = parseInt($("#inproomcheck").val())
 
+                if (val < 4) {
+                    val = val + 1
                 }
-            </script>
+                $("#inproomcheck").val(val)
+            })
+            $("#roomminuscheck").click(function () {
+                var val = parseInt($("#inproomcheck").val())
+                var guest = parseInt($("#inpguestcheck").val())
+                if (val != 1) {
+                    val = val - 1
+                }
+                $("#inproomcheck").val(val)
+                if (guest > (val * 4))
+                    $("#inpguestcheck").val(val * 4)
 
+            })
+            $("#guestpluscheck").click(function () {
+                var val = parseInt($("#inpguestcheck").val())
+                var room = parseInt($("#inproomcheck").val())
+                if (val < room * 4) {
+                    val = val + 1
+                }
+                $("#inpguestcheck").val(val)
+            })
+            $("#guestminuscheck").click(function () {
+                var val = parseInt($("#inpguestcheck").val())
+                if (val != 1) {
+                    val = val - 1
+                }
+                $("#inpguestcheck").val(val)
+            })
+        </script>
+        <script>
+            function show() {
+                document.getElementById("check").style.display = "block"
+                document.getElementById("booknow").style.display = "none"
+            }
+        </script>
+        <script>
+            let i = 0, j = 0, k = 0, r = 0
+            function imageChange1(event) {
 
-            <script>
+                let url = document.getElementById('image1').src
+                document.getElementById('imageZoom').src = url
+                document.getElementById('image1').style.border = "solid"
+                document.getElementById('image2').style.border = "none"
+                document.getElementById('image3').style.border = "none"
+                document.getElementById('image4').style.border = "none"
+
                 $(function () {
-                    $('#images').imageZoom();
+                    $('#imageZoom').imageZoom();
                 });
-            </script>
-            
+
+
+            }
+            function imageChange2(event) {
+
+                let url = document.getElementById('image2').src
+                document.getElementById('imageZoom').src = url
+                document.getElementById('image1').style.border = "none"
+                document.getElementById('image2').style.border = "solid"
+                document.getElementById('image3').style.border = "none"
+                document.getElementById('image4').style.border = "none"
+
+                $(function () {
+                    $('#imageZoom').imageZoom();
+                });
+
+
+
+            }
+            function imageChange3(event) {
+
+                let url = document.getElementById('image3').src
+                document.getElementById('imageZoom').src = url
+                document.getElementById('image1').style.border = "none"
+                document.getElementById('image2').style.border = "none"
+                document.getElementById('image3').style.border = "solid"
+                document.getElementById('image4').style.border = "none"
+
+                $(function () {
+                    $('#imageZoom').imageZoom();
+                });
+
+
+
+            }
+            function imageChange4(event) {
+
+                let url = document.getElementById('image4').src
+                document.getElementById('imageZoom').src = url
+                document.getElementById('image1').style.border = "none"
+                document.getElementById('image2').style.border = "none"
+                document.getElementById('image3').style.border = "none"
+                document.getElementById('image4').style.border = "solid"
+
+                $(function () {
+                    $('#imageZoom').imageZoom();
+                }); r = 1
+
+
+
+            }
+        </script>
+
+
+        <script>
+            $(function () {
+                $('#images').imageZoom();
+            });
+        </script>

@@ -4,7 +4,8 @@ const { response } = require('../app');
 var router = express.Router();
 var helper = require('../helper/vendorHelper')
 var ObjectId = require('mongodb').ObjectId;
-var userhelper = require('../helper/userHelper')
+var userhelper = require('../helper/userHelper');
+const async = require('hbs/lib/async');
 
 
 
@@ -21,11 +22,20 @@ router.get('/', function (req, res, next) {
 
 });
 router.get('/Dash', (req, res) => {
+    
     res.render('vendor/vendorDash', { admintemp: true })
 })
-router.get('/vendorHome', function (req, res, next) {
+router.get('/vendorHome',async function (req, res, next) {
     if (req.session.vendor) {
-        res.render('vendor/vendorDash', { vendortemp: true });
+        let id=ObjectId(req.session.vendorId)
+        let counts=await helper.dashCount(id)
+        let lastBookings=await helper.lastBookings(id)
+        let today=await helper.todayBooking(id)
+         today=today.length
+        let checkedIn=await helper.checkedinBooking(id)
+        checkedIn=checkedIn.length
+        console.log(checkedIn);
+        res.render('vendor/vendorDash', { vendortemp: true,today,checkedIn ,counts,lastBookings});
     } else {
         res.render('vendor/vendorLogin')
     }
@@ -311,6 +321,7 @@ router.post('/addOffers', async (req, res) => {
 })
 router.get('/deleteOffers/',(req,res)=>{
     let id=req.query.id
+
     helper.deleteOffers(id).then((response)=>{
       console.log(response);
       res.redirect('/vendor/vendorOffers')
@@ -318,17 +329,50 @@ router.get('/deleteOffers/',(req,res)=>{
   })
 router.get('/vendorProfile',async(req,res)=>{
     let profile=await helper.getProfile(req.session.vendorId)
+    let pword=req.session.wrongVendorPassword
     console.log(profile);
-    res.render('vendor/vendorProfile',{vendortemp:true,profile})
+    res.render('vendor/vendorProfile',{vendortemp:true,profile ,pword})
+    req.session.wrongVendorPassword=false
 })
 router.post('/editProfile',(req,res)=>{
     console.log(req.body);
     let profile=req.body
-    res.render('vendor/editProfile',{vendortemp:true,profile})
+    
+    let emailMobile=req.session.vendorExistEmailMobile
+    let email=req.session.vendorExistEmail
+    let mobile=req.session.vendorExistMobile
+    res.render('vendor/editProfile',{vendortemp:true,profile,email,mobile,emailMobile})
+    req.session.vendorExistEmailMobile=false
+    req.session.vendorExistEmail=false
+    req.session.vendorExistMobile=false
 })
-router.post('/updateProfile',(req,res)=>{
+router.post('/updateProfile',async(req,res)=>{
     console.log(req.body);
-    helper.vendorProfileUpdate(req.session.vendorId,req.body)
+    await helper.vendorProfileUpdate(req.session.vendorId,req.body).then((response)=>{
+
+        req.session.vendorExistEmailMobile=response.vendorExistEmailMobile
+        req.session.vendorExistEmail=response.vendorExistEmail
+        req.session.vendorExistMobile=response.vendorExistMobile
+    })
     res.redirect('/vendor/vendorProfile')
 })
+router.get('/changePassword',(req,res)=>{
+    res.render('vendor/changePassword',{vendortemp:true})
+})
+router.post('/updatePassword',async(req,res)=>{
+    let wrong
+    console.log(req.body);
+     await helper.updatePassword(req.session.vendorId,req.body).then((response)=>{
+        
+            req.session.wrongVendorPassword=response.wrongVendorPassword
+      
+    })
+    res.redirect('/vendor/vendorProfile')
+})
+router.get('/getChartData',async(req,res)=>{
+    let id=ObjectId(req.session.vendorId)
+    let bookings=await helper.getChartData(id)
+    res.json(bookings)
+  })
+
 module.exports = router;

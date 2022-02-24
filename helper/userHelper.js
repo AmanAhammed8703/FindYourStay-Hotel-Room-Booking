@@ -229,10 +229,26 @@ module.exports = {
                 }, {
                     $project: {
                         price: 1, category: 1, id: 1, bed: 1, Aminity1: 1, Aminity2: 1, Aminity3: 1, Aminity4: 1, Aminity5: 1,
-                        hotel: 1,discount:1
+                        hotel: 1,discount:1,userId:"$review.userId",review:1
                     }
 
-                }]).toArray()
+                },
+                {
+                    $lookup:{
+                        from:collection.USER_COLLECTION,
+                        localField:"userId",
+                        foreignField:"_id",
+                        as:"reviewUser"
+                    }
+                },
+                {
+                    $project: {
+                        price: 1, category: 1, id: 1, bed: 1, Aminity1: 1, Aminity2: 1, Aminity3: 1, Aminity4: 1, Aminity5: 1,
+                        hotel: 1,discount:1,reviewUser:1,review:1
+                    }
+
+                },
+            ]).toArray()
             console.log(result);
             resolve(result[0])
         })
@@ -402,11 +418,11 @@ module.exports = {
                 if (to < date) {
                     console.log("yes");
                 }
-                if (to < date) {
+                if (to < date||i.status=="CheckedOut"||i.status=="Cancelled") {
                     CheckedOut.push(i)
                 } else if (from == date) {
                     today.push(i)
-                } else if (from > date) {
+                } else if (from > date && i.status!="Cancelled") {
                     upcoming.push(i)
                 } else {
                     CheckedIn.push(i)
@@ -425,7 +441,7 @@ module.exports = {
     cancelRoom:(id)=>{
         console.log(id);
         return new Promise((resolve,reject)=>{
-            db.get().collection(collection.BOOKINGS_COLLECTION).deleteOne({_id:ObjectId(id)}).then((response)=>{
+            db.get().collection(collection.BOOKINGS_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{status:"Cancelled"}}).then((response)=>{
                 console.log(response);
                 resolve(response)
             })
@@ -524,6 +540,11 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{ $push: { coupons: coupon } })
 
+        })
+    },
+    addReview:(id,review)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ROOM_COLLECTION).updateOne({_id:id},{$push:{review:review}})
         })
     }
 
