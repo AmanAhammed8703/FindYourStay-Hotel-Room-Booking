@@ -78,7 +78,7 @@ router.get('/OTPlogin', async function (req, res) {
   res.render('user/OTPlogin', { nomobile: req.session.nomobile, usertemp: true })
   req.session.nomobile = false
 })
-router.get('/roomDetail/',loginVerify,isBlocked, async function (req, res) {
+router.get('/roomDetail/', async function (req, res) {
   let locations=await helper.getLocations()
   let id = req.query.id
   let isRooms = req.session.isRooms
@@ -191,7 +191,7 @@ router.get('/roomDetail/',loginVerify,isBlocked, async function (req, res) {
 
 
 
-router.post('/search/',loginVerify,isBlocked, async function (req, res) {
+router.post('/search/', async function (req, res) {
   let locations=await helper.getLocations()
   let result = []
   let room = []
@@ -556,10 +556,10 @@ router.get('/success/',loginVerify,isBlocked, async (req, res) => {
     })
 
   }
-  res.render('user/success', { usertemp: true, loggedIn: req.session.user, resp })
+  res.render('user/success', { usertemp: true, loggedIn: req.session.user, resp, username: req.session.username })
 })
 
-router.post('/roomCheck/',loginVerify,isBlocked, (req, res) => {
+router.post('/roomCheck/', (req, res) => {
   let id = req.query.id
   let isRooms
   req.session.search = req.body
