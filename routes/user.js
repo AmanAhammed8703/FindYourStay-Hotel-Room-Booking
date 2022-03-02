@@ -41,27 +41,45 @@ const loginVerify = (req, res, next) => {
   } else {
     console.log("noooo");
     res.redirect('/login')
-    
+
   }
 }
+const isBlocked=async(req,res,next)=>{
+  if(req.session.user){
+  let user=await helper.getUserdetails(req.session.activeNo)
+  if(req.session.user){
+    if(user.Blocked){
+      req.session.userBlock=true
+      res.redirect('/login')
+      
+    }else{
+      next()
+    }
+  }
+}else{
+  next()
+}
+  
+}
 /* GET home page. */
-router.get('/', activeUser, async function (req, res, next) {
-  let rooms = await helper.getRoomDetails()
-  console.log(rooms);
-  res.render('user/index', { rooms, loggedIn: req.session.user, usertemp: true, username: req.session.username });
+router.get('/', activeUser,async function (req, res, next) {
+  
+  let locations=await helper.getLocations()
+  res.render('user/index', { loggedIn: req.session.user, usertemp: true, username: req.session.username,locations });
 });
 router.get('/login', function (req, res) {
   console.log(req.body)
-  res.render('user/login', { nologin: req.session.nologin, usertemp: true })
+  res.render('user/login', { nologin: req.session.nologin, usertemp: true,userBlock:req.session.userBlock })
   req.session.nologin = false
+  req.session.userBlock=false
 })
 router.get('/OTPlogin', async function (req, res) {
 
   res.render('user/OTPlogin', { nomobile: req.session.nomobile, usertemp: true })
   req.session.nomobile = false
 })
-router.get('/roomDetail/', async function (req, res) {
-
+router.get('/roomDetail/',loginVerify,isBlocked, async function (req, res) {
+  let locations=await helper.getLocations()
   let id = req.query.id
   let isRooms = req.session.isRooms
   req.session.roomid = id
@@ -78,9 +96,9 @@ router.get('/roomDetail/', async function (req, res) {
 
 
     var diff = date2.getTime() - date1.getTime()
-    diff=diff/(1000*60*60*24)
-    if(diff==0){
-      diff=1
+    diff = diff / (1000 * 60 * 60 * 24)
+    if (diff == 0) {
+      diff = 1
     }
 
     console.log(diff);
@@ -93,34 +111,40 @@ router.get('/roomDetail/', async function (req, res) {
     //console.log(response);
     let details = {}
     let room = response
-    if(room.discount){
-      
-      dis=(room.price*room.discount)/100
-      disPrice=room.price-dis
-      room.ogPrice=room.price
-      room.price=disPrice
-      room.discountAmount=dis
+
+    if (room.discount) {
+
+      dis = (room.price * room.discount) / 100
+      disPrice = room.price - dis
+      room.ogPrice = room.price
+      room.price = disPrice
+      room.discountAmount = dis
     }
     console.log("room");
     //console.log(room);
-    let finalReviews=[]
-    let review=room.review
-    let reviewUser=room.reviewUser
-    console.log(review);
-    console.log(reviewUser);
-    for(let i of review){
-      for(let j of reviewUser){
-        if(i.userId.toString()==j._id.toString()){
-          let mergedReview={}
-          mergedReview.userId=i.userId
-          mergedReview.userName=j.userName
-          mergedReview.review=i.review
-          finalReviews.push(mergedReview)
+
+    let finalReviews = []
+    if (room.review) {
+      let review = room.review
+      let reviewUser = room.reviewUser
+      console.log(review);
+      console.log(reviewUser);
+
+      for (let i of review) {
+        for (let j of reviewUser) {
+          if (i.userId.toString() == j._id.toString()) {
+            let mergedReview = {}
+            mergedReview.userId = i.userId
+            mergedReview.userName = j.userName
+            mergedReview.review = i.review
+            finalReviews.push(mergedReview)
+          }
         }
       }
     }
     console.log("final");
     console.log(finalReviews);
+
     if (req.session.search) {
       details.room = search.room
       details.guest = search.guest
@@ -137,28 +161,28 @@ router.get('/roomDetail/', async function (req, res) {
       details.total = total
       details.days = diff
     } else {
-      let from=new Date
-       let year1=from.getFullYear()
-       
-       let month1=from.getMonth()
-       if(month1<10){
-         month1="0"+month1
-       }
-       let date1=from.getDate()
-       if(date1<10){
-        date1="0"+date1
+      let from = new Date
+      let year1 = from.getFullYear()
+
+      let month1 = from.getMonth()
+      if (month1 < 10) {
+        month1 = "0" + month1
+      }
+      let date1 = from.getDate()
+      if (date1 < 10) {
+        date1 = "0" + date1
       }
       console.log(from);
-      details.from=date1+"-"+month1+"-"+year1
-      details.to=date1+"-"+month1+"-"+year1
-      details.room=1
-      details.guest=1
+      details.from = date1 + "-" + month1 + "-" + year1
+      details.to = date1 + "-" + month1 + "-" + year1
+      details.room = 1
+      details.guest = 1
       details.total = room.price
       details.days = 1
     }
     details.id = id
 
-    res.render('user/roomDetail', { room, search, details, isRooms, usertemp: true, loggedIn: req.session.user, username: req.session.username ,finalReviews})
+    res.render('user/roomDetail', { room, search, details, isRooms, usertemp: true, loggedIn: req.session.user, username: req.session.username, finalReviews ,locations})
 
   })
 
@@ -167,38 +191,147 @@ router.get('/roomDetail/', async function (req, res) {
 
 
 
-router.post('/search', async function (req, res) {
+router.post('/search/',loginVerify,isBlocked, async function (req, res) {
+  let locations=await helper.getLocations()
   let result = []
   let room = []
   let search = req.body
   req.session.search = search
+
+
   console.log(search);
   await helper.getSearchResults(req.body).then((resp) => {
 
     result = resp
 
   })
-  for (let i of result) {
-    await helper.getOneRoom(i).then((response) => {
-      room.push(response)
-    })
+  if (search.suite || search.superdelux || search.delux || search.standard) {
+    if (search.suite) {
+      for (let i of result) {
+        await helper.getOneRoom(i).then((response) => {
+          if (response.category == "Suite Room") {
+            room.push(response)
+            
+          }
+        })
+
+      }
+    }
+    if (search.superdelux) {
+      for (let i of result) {
+        await helper.getOneRoom(i).then((response) => {
+          if (response.category == "Super Delux") {
+            room.push(response)
+          }
+        })
+
+      }
+    }
+    if (search.delux) {
+      for (let i of result) {
+        await helper.getOneRoom(i).then((response) => {
+          if (response.category == "Delux") {
+            room.push(response)
+          }
+        })
+
+      }
+    }
+    if (search.standard) {
+      for (let i of result) {
+        await helper.getOneRoom(i).then((response) => {
+          if (response.category == "Standard") {
+            room.push(response)
+          }
+        })
+
+      }
+    }
+  } else {
+
+    for (let i of result) {
+      await helper.getOneRoom(i).then((response) => {
+        
+          room.push(response)
+        
+      })
+
+    }
 
   }
+if(search.sort){
+  
+  if(search.sort=="LowToHigh"){
+    function lowHigh(a, b) {
+      console.log("sort");
+      // Use toUpperCase() to ignore character casing
+      const bandA = a.price
+      const bandB = b.price
+    
+      let comparison = 0;
+      if (bandA > bandB) {
+        comparison = 1;
+      } else if (bandA < bandB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    
+    room.sort(lowHigh);
+    
+  }else{
+    function highLow(a, b) {
+      console.log("sort");
+      // Use toUpperCase() to ignore character casing
+      const bandA = a.price
+      const bandB = b.price
+    
+      let comparison = 0;
+      if (bandA < bandB) {
+        comparison = 1;
+      } else if (bandA > bandB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    
+    room.sort(highLow);
+  }
 
-  for(let i of room){
-    if(i.discount){
-      
-      dis=(i.price*i.discount)/100
-      disPrice=i.price-dis
-      i.disPrice=disPrice
-      i.discountAmount=dis
+}
+
+
+
+
+  // for (let i of result) {
+  //   await helper.getOneRoom(i).then((response) => {
+  //     room.push(response)
+  //   })
+
+  // }
+
+  for (let i of room) {
+    if (i.discount) {
+
+      dis = (i.price * i.discount) / 100
+      disPrice = i.price - dis
+      i.disPrice = disPrice
+      i.discountAmount = dis
     }
   }
   console.log(room)
 
-  res.render('user/all-rooms', { result: room, search: search, usertemp: true, loggedIn: req.session.user, username: req.session.username })
+  res.render('user/all-rooms', { result: room, search: search, usertemp: true, loggedIn: req.session.user, username: req.session.username ,locations})
 
 })
+router.post('/filter',loginVerify,isBlocked, (req, res) => {
+  console.log(req.body);
+  req.session.filter = req.body
+  res.redirect('/search')
+})
+
+
+
 router.get('/signup', function (req, res) {
 
   res.render('user/signup', { exist: req.session.userExist, usertemp: true })
@@ -290,7 +423,12 @@ router.post('/login', (req, res) => {
       res.redirect('/')
 
     } else {
-      req.session.nologin = true
+      if(response.block){
+        req.session.userBlock=true
+      }else{
+        req.session.nologin = true
+      }
+      
       res.redirect('/login')
     }
 
@@ -340,47 +478,48 @@ router.get('/resend', (req, res) => {
     })
 })
 
-router.post('/bookNow/', loginVerify,async (req, res) => {
+router.post('/bookNow/', loginVerify,isBlocked, async (req, res) => {
   let id = req.query.id
-  let resp={}
-  
+  let resp = {}
+
   console.log(req.body);
-    await helper.getUserdetails(req.session.activeNo).then((response)=>{
-      console.log(response);
-      resp=response
-    })
-    console.log(resp);
-    if(resp.wallet){
-      let balance=parseInt(resp.wallet)
-      if(parseInt(req.body.total)<=balance){
-        console.log(balance);
-        var wallet=true
-      }
+  await helper.getUserdetails(req.session.activeNo).then((response) => {
+    console.log(response);
+    resp = response
+  })
+  console.log(resp);
+  if (resp.wallet) {
+    let balance = parseInt(resp.wallet)
+    if (parseInt(req.body.total) <= balance) {
+      console.log(balance);
+      var wallet = true
     }
-  helper.getOneRoom(id).then(async(response) => {
+  }
+  helper.getOneRoom(id).then(async (response) => {
     let details = {}
     let room = response
-    if(room.discount){
-      
-      dis=(room.price*room.discount)/100
-      disPrice=room.price-dis
-      room.ogPrice=room.price
-      room.price=disPrice
-      room.discountAmount=dis
+    if (room.discount) {
+
+      dis = (room.price * room.discount) / 100
+      disPrice = room.price - dis
+      room.ogPrice = room.price
+      room.price = disPrice
+      room.discountAmount = dis
     }
-    let hotelid=room.hotel[0]._id
+    req.session.grandTotal = room.price
+    let hotelid = room.hotel[0]._id
     console.log(room)
-    let coupons=await helper.getCoupons(hotelid)
-    if(resp.coupons){
-    for(let i in coupons){
-      for(let j of resp.coupons){
-        if(coupons[i].couponCode==j){
-          coupons.splice(i,1)
+    let coupons = await helper.getCoupons(hotelid)
+    if (resp.coupons) {
+      for (let i in coupons) {
+        for (let j of resp.coupons) {
+          if (coupons[i].couponCode == j) {
+            coupons.splice(i, 1)
+          }
         }
       }
     }
-  }
-  console.log(coupons);
+    console.log(coupons);
     details.from = req.body.from
     details.to = req.body.to
     details.price = req.body.price
@@ -388,44 +527,12 @@ router.post('/bookNow/', loginVerify,async (req, res) => {
     details.room = req.body.room
     details.guest = req.body.guest
     details.total = req.body.total
-    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: req.session.user, username: req.session.username ,wallet,coupons})
+    res.render('user/bookNow', { room, details, usertemp: true, loggedIn: req.session.user, username: req.session.username, wallet, coupons })
   })
 })
 
-router.post('/book/', async (req, res) => {
-  let resp = {}
-  let id = req.query.id
-  resp.userId = req.session.userId
-  console.log(req.body);
-  await helper.getOneRoom(id).then((response) => {
-    resp.hotelid = response.hotel[0]._id
-  })
 
-  resp.roomId = ObjectId(id)
-  resp.from = req.body.from
-  resp.to = req.body.to
-  resp.to = req.body.to
-  resp.days = req.body.days
-  resp.room = req.body.room
-  resp.guest = req.body.guest
-  resp.amount = req.body.total
-  resp.status = "upcoming"
-  if (req.body.payment) {
-    resp.payment = "Pay at Hotel"
-  } else {
-    resp.payment = "Online"
-  }
-  console.log(req.body);
-  console.log(resp);
-
-  helper.addBooking(resp).then(() => {
-    console.log("booking confirmed");
-  })
-
-  res.render('user/payment', { usertemp: true })
-
-})
-router.get('/success/', async (req, res) => {
+router.get('/success/',loginVerify,isBlocked, async (req, res) => {
   let type = req.query.type
   let resp = {}
   resp = req.session.bookinDetail
@@ -438,13 +545,13 @@ router.get('/success/', async (req, res) => {
     await helper.addBooking(resp).then((response) => {
       console.log("booking confirmed");
       console.log(req.session.userId);
-      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
-      var newPath='./public/id-Proof/'+response.insertedId+'.jpeg'
-      if(resp.couponName){
-        helper.addCouponUser(resp.userId,resp.couponName)
+      var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
+      var newPath = './public/id-Proof/' + response.insertedId + '.jpeg'
+      if (resp.couponName) {
+        helper.addCouponUser(resp.userId, resp.couponName)
       }
-      fs.rename(oldPath,newPath,function(err){
-        if(err) throw err
+      fs.rename(oldPath, newPath, function (err) {
+        if (err) throw err
       })
     })
 
@@ -452,7 +559,7 @@ router.get('/success/', async (req, res) => {
   res.render('user/success', { usertemp: true, loggedIn: req.session.user, resp })
 })
 
-router.post('/roomCheck/', (req, res) => {
+router.post('/roomCheck/',loginVerify,isBlocked, (req, res) => {
   let id = req.query.id
   let isRooms
   req.session.search = req.body
@@ -467,7 +574,7 @@ router.post('/roomCheck/', (req, res) => {
     res.redirect(`/roomDetail?id=${id}`)
   })
 })
-router.get('/userProfile', (req, res) => {
+router.get('/userProfile',loginVerify,isBlocked, (req, res) => {
   console.log(req.session.activeNo);
   helper.getUserMobile(req.session.activeNo).then((response) => {
     console.log(response);
@@ -485,11 +592,11 @@ router.get('/userProfile', (req, res) => {
   })
 
 })
-router.post('/editProfile', (req, res) => {
+router.post('/editProfile',loginVerify,isBlocked,(req, res) => {
   user = req.body
   res.render('user/editProfile', { usertemp: true, user, loggedIn: req.session.user, username: req.session.username })
 })
-router.post('/updateProfile/', (req, res) => {
+router.post('/updateProfile/',loginVerify, (req, res) => {
   let id = ObjectId(req.query.id)
   let phn = '+91' + req.body.mobileNumber
   console.log("phn" + phn);
@@ -508,7 +615,7 @@ router.post('/updateProfile/', (req, res) => {
 
 
 })
-router.get('/updatePassword/', (req, res) => {
+router.get('/updatePassword/',loginVerify,isBlocked,(req, res) => {
   let error = req.session.updatePasswordError
   let id = req.query.id
   console.log("id" + id);
@@ -516,7 +623,7 @@ router.get('/updatePassword/', (req, res) => {
   req.session.updatePasswordError = false
 })
 
-router.post('/updatePassword/', (req, res) => {
+router.post('/updatePassword/',loginVerify,isBlocked, (req, res) => {
   let id = req.query.id
   helper.updatePassword(id, req.body).then((response) => {
     if (response.wrongPassword) {
@@ -537,21 +644,29 @@ router.get('/roomOneDetail/', (req, res) => {
 
   })
 })
-router.post('/orderRazorPay', async (req, res) => {
+router.post('/orderRazorPay', loginVerify,async (req, res) => {
+  let grandTotal = req.session.grandTotal
   console.log(req.body)
-  let idProof=req.files.idproof
-  
-  if(req.files){
+  let resp = {}
+  let idProof = req.files.idproof
+  if (req.body.couponName) {
+    let usedCoupon = await helper.getCoupon(req.body.couponName)
+    grandTotal = (req.session.grandTotal) - ((req.session.grandTotal) * (usedCoupon.couponPercentage)) / 100
+    console.log(usedCoupon);
+    resp.couponPercentage=usedCoupon.couponPercentage
+    req.body.couponPercentage=usedCoupon.couponPercentage
+  }
+  if (req.files) {
     console.log("id yes");
-  }else{
+  } else {
     console.log("id no");
   }
   // let idProof = req.files.idProof
   // idProof.mv('./public/temp-id/IidProof.jpeg')
-  let resp = {}
+  
   let id = req.body.roomid
   resp.userId = req.session.userId
-  idProof.mv('./public/temp-id/'+resp.userId+'.jpeg')
+  idProof.mv('./public/temp-id/' + resp.userId + '.jpeg')
   console.log(req.body);
   await helper.getOneRoom(id).then((response) => {
     resp.hotelid = response.hotel[0]._id
@@ -564,142 +679,142 @@ router.post('/orderRazorPay', async (req, res) => {
   resp.days = req.body.days
   resp.room = req.body.room
   resp.guest = req.body.guest
-  if(req.body.couponName){
-    resp.couponName=req.body.couponName
+  if (req.body.couponName) {
+    resp.couponName = req.body.couponName
   }
-  resp.amount = req.body.total
+  resp.amount = req.session.grandTotal
   resp.status = "upcoming"
   req.session.bookinDetail = resp
 
 
 
-if(req.body.walletPayment){
-  resp.payment = "Pay with wallet"
-
-  console.log(req.body);
-  console.log(resp);
-  await helper.decreaseWallet(resp.userId,resp.amount).then((response)=>{
-    console.log("deducted");
-    console.log(response);
-
-  })
-
-  await helper.addBooking(resp).then((inserted) => {
-    console.log("booking confirmed");
-    response.payWithWallet = true
-    res.json(response)
-    response.payWithWallet = false
-    var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
-      var newPath='./public/id-Proof/'+inserted.insertedId+'.jpeg'
-      if(resp.couponName){
-      helper.addCouponUser(resp.userId,resp.couponName)
-    }
-      fs.rename(oldPath,newPath,function(err){
-        if(err) throw err
-      })
-    })
-  
-}else{
-
-  if (req.body.payment) {
-
-    resp.payment = "Pay at Hotel"
+  if (req.body.walletPayment) {
+    resp.payment = "Pay with wallet"
 
     console.log(req.body);
     console.log(resp);
+    await helper.decreaseWallet(resp.userId, resp.amount).then((response) => {
+      console.log("deducted");
+      console.log(response);
+
+    })
 
     await helper.addBooking(resp).then((inserted) => {
       console.log("booking confirmed");
-      response.payAtHotel = true
+      response.payWithWallet = true
       res.json(response)
-      response.payAtHotel = false
-      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
-      var newPath='./public/id-Proof/'+inserted.insertedId+'.jpeg'
-      if(resp.couponName){
-        helper.addCouponUser(resp.userId,resp.couponName)
+      response.payWithWallet = false
+      var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
+      var newPath = './public/id-Proof/' + inserted.insertedId + '.jpeg'
+      if (resp.couponName) {
+        helper.addCouponUser(resp.userId, resp.couponName)
       }
-      fs.rename(oldPath,newPath,function(err){
-        if(err) throw err
+      fs.rename(oldPath, newPath, function (err) {
+        if (err) throw err
       })
     })
-    
-
 
   } else {
-    if (req.body.onlinepayment) {
 
+    if (req.body.payment) {
 
-      var create_payment_json = {
-        "intent": "sale",
-        "payer": {
-          "payment_method": "paypal"
-        },
-        "redirect_urls": {
-          "return_url": "http://localhost:3000/success?type=paypal",
-          "cancel_url": "http://localhost:3000/"
-        },
-        "transactions": [{
-          "item_list": {
-            "items": [{
-              "name": req.body.total,
-              "sku": "item",
-              "price": parseInt(parseInt(req.body.total) / 75),
-              "currency": "USD",
-              "quantity": 1
-            }]
-          },
-          "amount": {
-            "currency": "USD",
-            "total": parseInt(parseInt(req.body.total) / 75),
-          },
-          "description": "This is the payment description."
-        }]
-      };
+      resp.payment = "Pay at Hotel"
 
+      console.log(req.body);
+      console.log(resp);
 
-      paypal.payment.create(create_payment_json, function (error, payment) {
-        let response = {}
-        if (error) {
-          throw error;
-        } else {
-          for (let i = 0; i < payment.links.length; i++) {
-            if (payment.links[i].rel === 'approval_url') {
-              response.payment = payment.links[i].href
-              response.paypal = true
-              res.json(response)
-
-
-              console.log(payment.links[i].href);
-            }
-          }
-          console.log("Create Payment Response");
-          console.log(payment);
+      await helper.addBooking(resp).then((inserted) => {
+        console.log("booking confirmed");
+        response.payAtHotel = true
+        res.json(response)
+        response.payAtHotel = false
+        var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
+        var newPath = './public/id-Proof/' + inserted.insertedId + '.jpeg'
+        if (resp.couponName) {
+          helper.addCouponUser(resp.userId, resp.couponName)
         }
-      });
-
+        fs.rename(oldPath, newPath, function (err) {
+          if (err) throw err
+        })
+      })
 
 
 
     } else {
-      let response = {}
-      var options = {
-        amount: parseInt(req.body.total) * 100,  // amount in the smallest currency unit
-        currency: "INR",
-        receipt: "order_rcptid_11"
-      };
-      instance.orders.create(options, function (err, order) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(order);
-          response.order = order
-          response.details = req.body
-          res.json(response)
-        }
-      });
+      if (req.body.onlinepayment) {
+
+
+        var create_payment_json = {
+          "intent": "sale",
+          "payer": {
+            "payment_method": "paypal"
+          },
+          "redirect_urls": {
+            "return_url": "http://localhost:3000/success?type=paypal",
+            "cancel_url": "http://localhost:3000/"
+          },
+          "transactions": [{
+            "item_list": {
+              "items": [{
+                "name": req.body.total,
+                "sku": "item",
+                "price": parseInt(parseInt(grandTotal) / 75),
+                "currency": "USD",
+                "quantity": 1
+              }]
+            },
+            "amount": {
+              "currency": "USD",
+              "total": parseInt(parseInt(grandTotal) / 75),
+            },
+            "description": "This is the payment description."
+          }]
+        };
+
+
+        paypal.payment.create(create_payment_json, function (error, payment) {
+          let response = {}
+          if (error) {
+            throw error;
+          } else {
+            for (let i = 0; i < payment.links.length; i++) {
+              if (payment.links[i].rel === 'approval_url') {
+                response.payment = payment.links[i].href
+                response.paypal = true
+                res.json(response)
+
+
+                console.log(payment.links[i].href);
+              }
+            }
+            console.log("Create Payment Response");
+            console.log(payment);
+          }
+        });
+
+
+
+
+      } else {
+        let response = {}
+        var options = {
+          amount: parseInt(grandTotal) * 100,  // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "order_rcptid_11"
+        };
+        instance.orders.create(options, function (err, order) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(order);
+            response.order = order
+            response.details = req.body
+            res.json(response)
+          }
+        });
+      }
     }
   }
-}
 
 
 
@@ -731,6 +846,7 @@ router.post('/verifypayment', async (req, res) => {
     resp.guest = req.body['details[guest]']
     resp.amount = req.body['details[total]']
     resp.couponName = req.body['details[couponName]']
+    resp.couponPercentage = req.body['details[couponPercentage]']
     resp.status = "upcoming"
     resp.payment = "Razorpay"
 
@@ -739,14 +855,14 @@ router.post('/verifypayment', async (req, res) => {
 
     await helper.addBooking(resp).then((response) => {
       console.log("booking confirmed");
-      var oldPath='./public/temp-id/'+req.session.userId+'.jpeg'
-      var newPath='./public/id-Proof/'+response.insertedId+'.jpeg'
-      if(resp.couponName){
+      var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
+      var newPath = './public/id-Proof/' + response.insertedId + '.jpeg'
+      if (resp.couponName) {
         console.log("yessss");
-        helper.addCouponUser(resp.userId,resp.couponName)
+        helper.addCouponUser(resp.userId, resp.couponName)
       }
-      fs.rename(oldPath,newPath,function(err){
-        if(err) throw err
+      fs.rename(oldPath, newPath, function (err) {
+        if (err) throw err
       })
     })
 
@@ -759,7 +875,7 @@ router.post('/verifypayment', async (req, res) => {
 
 
 })
-router.get('/myBookings', async (req, res) => {
+router.get('/myBookings',loginVerify, async (req, res) => {
   let id = req.session.userId
   console.log(id);
   await helper.getUserBookings(id).then((response) => {
@@ -772,7 +888,7 @@ router.get('/myBookings', async (req, res) => {
 
   })
 })
-router.get('/cancelRoom/', async (req, res) => {
+router.get('/cancelRoom/',loginVerify,isBlocked, async (req, res) => {
   let id = req.query.id
   let amt = req.query.amt
   let payOption
@@ -791,20 +907,21 @@ router.get('/cancelRoom/', async (req, res) => {
   }
   res.redirect('/myBookings')
 })
-router.get('/addReview',(req,res)=>{
-  let id=req.query.id
-  res.render('user/addReview',{usertemp:true,loggedIn:req.session.user, username: req.session.username,id })
+router.get('/addReview', loginVerify,isBlocked,(req, res) => {
+  let id = req.query.id
+  res.render('user/addReview', { usertemp: true, loggedIn: req.session.user, username: req.session.username, id })
 })
 
-router.post('/addReview',(req,res)=>{
+router.post('/addReview',loginVerify,isBlocked, (req, res) => {
   console.log(req.body);
-  let id=ObjectId(req.body.roomId)
-  let review={}
-  review.userId=ObjectId(req.session.userId)
-  review.review=req.body.review
-  helper.addReview(id,review)
+  let id = ObjectId(req.body.roomId)
+  let review = {}
+  review.userId = ObjectId(req.session.userId)
+  review.review = req.body.review  
+  helper.addReview(id, review)
   res.redirect('/myBookings')
 })
+
 
 
 module.exports = router;

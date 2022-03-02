@@ -1,96 +1,170 @@
+<!--TOP SECTION-->
+<!--TOP BANNER-->
+<div class="check-available" style="margin-top: 60px;padding: 0%;background-color: rgb(37, 37, 37);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="inn-com-form">
+                    <form class="col s12" method="post" action="/search" id="indexsearch"
+                        style="background-color: rgb(37, 37, 37);">
+                        <div class="row">
+                            <div class="col s12 avail-title">
 
-    <!--TOP SECTION-->
-    <!--TOP BANNER-->
-    <div class="check-available" style="margin-top: 60px;padding: 0%;background-color: rgb(37, 37, 37);">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="inn-com-form">
-                        <form class="col s12" method="post" action="/search" id="indexsearch"style="background-color: rgb(37, 37, 37);">
-                            <div class="row">
-                                <div class="col s12 avail-title">
+                            </div>
+                        </div>
+                        <div class="row" style="background-color: rgb(37, 37, 37);">
+                            <div class="input-field col s12 m4 l2">
+                                <input list="locations"type="text" id="" class="" autocomplete="off"value="{{search.location}}"
+										placeholder="Location" name="location" style="">
+										<datalist id="locations">
+											{{#each locations}}
+											<option value="{{this._id}}">{{this._id}}</option>
+											{{/each}}
+										</datalist>
+                                {{!-- <input type="text" placeholder="Location" value="{{search.location}}" name="location"> --}}
+                            </div>
+                            <div class="input-field  col s12 m4 l2">
 
+                                <div>
+                                    <button type="button" class="sidebutton11 col s3 " id="roomminus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
+
+                                    <input class="col s6" id="inproom" type="number" value="{{search.room}}" min="1"
+                                        name="room" style="display: inline;text-align:center;border-radius: 0%;"
+                                        readonly>
+                                    <button type="button" class=" col s3 " id="roomplus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
                                 </div>
                             </div>
-                            <div class="row"style="background-color: rgb(37, 37, 37);">
-                                <div class="input-field col s12 m4 l2">
-                                    <input type="text" placeholder="Location" value="{{search.location}}" name="location">
-                                </div>
-                               <div class="input-field  col s12 m4 l2" >
-									
-									<div>
-									<button type="button" class="sidebutton11 col s3 " id="roomminus" style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;"
-										>-</button>
+                            <div class="input-field  col s12 m4 l2">
+                                <div>
+                                    <button type="button" class="sidebutton11 col s3 " id="guestminus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;">-</button>
 
-									<input class="col s6" id="inproom" type="number" value="{{search.room}}" min="1" name="room"
-										style="display: inline;text-align:center;border-radius: 0%;"readonly>
-									<button type="button" class=" col s3 " id="roomplus" style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;"
-										>+</button>
-									</div>
-								</div>
-                                <div class="input-field  col s12 m4 l2">
-									<div>
-									<button type="button" class="sidebutton11 col s3 " id="guestminus"style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-right: none;"
-										>-</button>
-
-									<input class="col s6" id="inpguest" type="number" value="{{search.guest}}" min="1" name="guest" 
-										style="display: inline;text-align:center" readonly>
-									<button type="button"onclick class=" col s3 " id="guestplus" style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;"
-										>+</button>
-									</div>
-								</div>
-                                
-                                <div class="input-field col s12 m4 l2">
-                                    <input type="text" id="from" name="from" placeholder="Check in" value="{{search.from}}" autocomplete="off">
-
-                                </div>
-                                <div class="input-field col s12 m4 l2">
-                                    <input type="text" id="to" name="to" placeholder="Check out" value="{{search.to}}"autocomplete="off">
-
-                                </div>
-                                <div class="input-field col s12 m4 l2">
-                                    <input type="submit" value="Search" class="form-btn">
+                                    <input class="col s6" id="inpguest" type="number" value="{{search.guest}}" min="1"
+                                        name="guest" style="display: inline;text-align:center" readonly>
+                                    <button type="button" onclick class=" col s3 " id="guestplus"
+                                        style="display: inline;height: 45px;border:none;font-size:20px;background:white;border:solid;border-width: 1px;border-color: rgb(218, 218, 218);border-left: none;">+</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div class="input-field col s12 m4 l2">
+                                <input type="text" id="from" name="from" placeholder="Check in" value="{{search.from}}"
+                                    autocomplete="off">
+
+                            </div>
+                            <div class="input-field col s12 m4 l2">
+                                <input type="text" id="to" name="to" placeholder="Check out" value="{{search.to}}"
+                                    autocomplete="off">
+
+                            </div>
+                            <div class="input-field col s12 m4 l2">
+                                <input type="submit" value="Search" class="form-btn">
+                            </div>
+                        </div>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!--TOP SECTION-->
-    <div class="inn-body-section pad-bot-55" style="padding: 0%;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12" style="padding: 0%;">
+<!--TOP SECTION-->
+<div class="inn-body-section pad-bot-55" style="padding: 0%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding: 0%;">
 
-                    <ul class="collapsible" data-collapsible="accordion" style="padding: 0%;box-shadow: none;">
-                        <li class="col-md-12" style="padding: 0%;">
-                            <div class="collapsible-header" style="border: solid;"><i class="fas fa-filter"></i>Filter</div>
-                            <div class="collapsible-body" style="background-color: rgb(255, 255, 255);">
-                                <div>
-                                    <h1>hello</h1>
+                <ul class="collapsible" data-collapsible="accordion" style="padding: 0%;box-shadow: none;">
+                    <li class="col-md-12" style="padding: 0%;">
+                        <div class="collapsible-header" style="border: solid;"><i class="fas fa-filter"></i>Filter</div>
+                        <div class="collapsible-body" style="background-color: rgb(255, 255, 255);border: none;">
+                            <div class="row">
+                                <div class="col s3">
+                                    {{#if search.suite}}
+                                    <p>
+                                        <input type="checkbox" id="suite" name="suite" checked="on" />
+                                        <label for="suite">Suit Room</label>
+                                    </p>
+                                    {{else}}
+                                    <p>
+                                        <input type="checkbox" id="suite" name="suite" />
+                                        <label for="suite">Suit Room</label>
+                                    </p>
+                                    {{/if}}
+                                    {{#if search.superdelux}}
+                                    <p>
+                                        <input type="checkbox" id="super delux" name="superdelux" checked="on" />
+                                        <label for="super delux">Super delux</label>
+                                    </p>
+                                    {{else}}
+                                    <p>
+                                        <input type="checkbox" id="super delux" name="superdelux" />
+                                        <label for="super delux">Super delux</label>
+                                    </p>
+                                    {{/if}}
+                                    {{#if search.delux}}
+                                    <p>
+                                        <input type="checkbox" id="delux" name="delux" checked="on" />
+                                        <label for="delux">Delux</label>
+                                    </p>
+                                    {{else}}
+                                    <p>
+                                        <input type="checkbox" id="delux" name="delux" />
+                                        <label for="delux">Delux</label>
+                                    </p>
+                                    {{/if}}
+                                    {{#if search.standard}}
+                                    <p>
+                                        <input type="checkbox" id="standard" name="standard" checked="on" />
+                                        <label for="standard">Standard</label>
+                                    </p>
+                                    {{else}}
+                                    <p>
+                                        <input type="checkbox" id="standard" name="standard" />
+                                        <label for="standard">Standard</label>
+                                    </p>
+                                    {{/if}}
+
+
+
                                 </div>
+                                <div class="col s3">
+                                    <p>
+                                        <input type="radio" id="standard1" name="sort" value="LowToHigh"  />
+                                        <label for="LowToHigh" style="font-size: 11px;">Price: Low to high</label>
+                                    </p>
+                                    <p>
+                                        <input type="radio" id="standard2" name="sort" value="HighToLow"/>
+                                        <label for="HighToLow" style="font-size: 11px;">Price: High to Low</label>
+                                    </p>
+                                    <p>
+                                    
+                                    </p>
+                                </div>
+
                             </div>
-                        </li>
+                            <button type="submit" class="btn btn-success" style="float: right; ">Apply </button>
+                            </form>
+                        </div>
+                    </li>
 
-                    </ul>
+                </ul>
 
-                </div>
             </div>
         </div>
-        <div class="container" style="margin-top: 30px;">
+    </div>
+    <div class="container" style="margin-top: 30px;">
 
-            <div class="row">
+        <div class="row">
             {{#if result}}
-                <!--ROOM SECTION-->
-                {{#each result}}
-                <div class="room">
-                    <a href="/roomDetail?id={{this._id}}" class="" style="font-size: 16px;">
+            <!--ROOM SECTION-->
+            {{#each result}}
+            <div class="room">
+                <a href="/roomDetail?id={{this._id}}" class="" style="font-size: 16px;">
                     {{#if discount}}
                     <div class="ribbon ribbon-top-left"><span>{{this.discount}}% OFF</span>
-						</div>
+                    </div>
                     {{/if}}
                     <!--ROOM IMAGE-->
                     <div class="r1 r-com"><img src="vendor-room-images/{{this._id}}1.jpeg" alt="" />
@@ -106,42 +180,46 @@
                         {{/each}}
                     </div>
                     <!--ROOM AMINITIES-->
-                    
+
                     <!--ROOM PRICE-->
                     {{#if this.discount}}
-                     <div class="r4 r-com col-sm-2">
+                    <div class="r4 r-com col-sm-2">
                         <p>Price for 1 night</p>
-                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.disPrice}}</span> <span class="room-price">₹{{this.price}}</span>
+                        <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.disPrice}}</span> <span
+                                class="room-price">₹{{this.price}}</span>
                         </p>
-                        
+
                     </div>
 
                     {{else}}
                     <div class="r4 r-com col-sm-2">
                         <p>Price for 1 night</p>
-                       <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.price}}</span> <span class="room-price"></span>
+                        <p><span class="room-price-1" style="color: rgb(231, 0, 0);">₹{{this.price}}</span> <span
+                                class="room-price"></span>
                         </p>
-                        
+
                     </div>
                     {{/if}}
                     <!--ROOM BOOKING BUTTON-->
                     <div class="r5 r-com col-sm-2">
-                        
-                       <a href="/roomDetail?id={{this._id}}" class="inn-room-book" style="font-size: 16px;">View Details</a>
-                    </div></a>
-                </div>
-                {{/each}}
-            {{else}}
-                <p style="text-align: center;">No matching search results</p>
-                {{/if}}
-                <!--END ROOM SECTION-->
-               
+
+                        <a href="/roomDetail?id={{this._id}}" class="inn-room-book" style="font-size: 16px;">View
+                            Details</a>
+                    </div>
+                </a>
             </div>
+            {{/each}}
+            {{else}}
+            <p style="text-align: center;">No matching search results</p>
+            {{/if}}
+            <!--END ROOM SECTION-->
+
         </div>
     </div>
-    <!--TOP SECTION-->
-    <!--TOP SECTION-->
-   
+</div>
+<!--TOP SECTION-->
+<!--TOP SECTION-->
+
 <!--END HEADER SECTION-->
 <footer class="site-footer clearfix">
     <div class="sidebar-container">
@@ -260,38 +338,38 @@
 <script src="/js/indexSearch.js"></script>
 <script>
 
-	$("#roomplus").click(function () {
-		var val = parseInt($("#inproom").val())
+    $("#roomplus").click(function () {
+        var val = parseInt($("#inproom").val())
 
-		if (val < 4){
-			val = val + 1
-			}
-		$("#inproom").val(val)
-	})
-	$("#roomminus").click(function () {
-		var val = parseInt($("#inproom").val())
-		var guest=parseInt($("#inpguest").val())
-		if (val != 1) {
-			val = val - 1
-		}
-		$("#inproom").val(val)
-		if(guest>(val*4))
-		$("#inpguest").val(val*4)
-		
-	})
-	$("#guestplus").click(function () {
-		var val = parseInt($("#inpguest").val())
-		var room=parseInt($("#inproom").val())
-		if (val < room*4){
-			val = val + 1
-			}
-		$("#inpguest").val(val)
-	})
-	$("#guestminus").click(function () {
-		var val = parseInt($("#inpguest").val())
-		if (val != 1) {
-			val = val - 1
-		}
-		$("#inpguest").val(val)
-	})
+        if (val < 4) {
+            val = val + 1
+        }
+        $("#inproom").val(val)
+    })
+    $("#roomminus").click(function () {
+        var val = parseInt($("#inproom").val())
+        var guest = parseInt($("#inpguest").val())
+        if (val != 1) {
+            val = val - 1
+        }
+        $("#inproom").val(val)
+        if (guest > (val * 4))
+            $("#inpguest").val(val * 4)
+
+    })
+    $("#guestplus").click(function () {
+        var val = parseInt($("#inpguest").val())
+        var room = parseInt($("#inproom").val())
+        if (val < room * 4) {
+            val = val + 1
+        }
+        $("#inpguest").val(val)
+    })
+    $("#guestminus").click(function () {
+        var val = parseInt($("#inpguest").val())
+        if (val != 1) {
+            val = val - 1
+        }
+        $("#inpguest").val(val)
+    })
 </script>

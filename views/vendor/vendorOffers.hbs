@@ -68,7 +68,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit Profile</button>
+                            <button type="submit" class="btn btn-primary">Add Offer</button>
                             </form>
                         </div>
                     </div>
@@ -175,19 +175,20 @@
 <script>
     $(document).ready(function () {
         var today = new Date();
-        var year = today.getFullYear()
-        var month = today.getMonth() + 1
-        var date = today.getDate() + 1
-        if (date < 10) {
-            date = '0' + date;
+        var nextDay=new Date(today)
+        nextDay.setDate(nextDay.getDate()+1)
+         var year = nextDay.getFullYear()
+        var month = nextDay.getMonth()+1
+        var date = nextDay.getDate()
+        if(month<10){
+            month="0"+month
         }
-
-        if (month < 10) {
-            month = '0' + month;
+        if(date<10){
+            date="0"+date
         }
-        today = year + '-' + month + '-' + date;
-
-        document.getElementById("dtpick").setAttribute("min", today);
+        let nDate=year+'-'+month+'-'+date
+        console.log(nDate)
+        document.getElementById("dtpick").setAttribute("min", nDate);
     })
 </script>
 
@@ -208,3 +209,10 @@
     crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+           
+        });
+    });
+</script>

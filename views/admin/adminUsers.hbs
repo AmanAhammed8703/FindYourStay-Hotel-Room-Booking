@@ -1,0 +1,121 @@
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="row page-titles mx-0">
+      <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+          <h4 style="font-size: 40px;">Users</h4>
+          
+        </div>
+      </div>
+      <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+          <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
+        </ol>
+      </div>
+    </div>
+    <!-- row -->
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="example" class="display" style="min-width: 845px;color: black;">
+                <thead>
+                  <tr>
+                   
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile Number</th>
+                    <th scope="col">Block</th>
+                    <th scope="col">Controlls</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each users}}
+                  <tr>
+                    
+                    <td>{{this.userName}}</td>
+                    <td>{{this.Email}}</td>
+                    <td>{{this.mobileNumber}}</td>
+                    <td>{{this.Blocked}}</td>
+
+                    <td>
+                      {{#if this.Blocked}}
+                      <a  class="btn btn-danger"href="/admin/userUnblock?id={{{this._id}}}" class="btn" style="width: 80px;color: black;">Unblock</a>
+                      {{else}}
+                      <a class="btn btn-danger" href="/admin/userBlock?id={{{this._id}}}" class="btn" style="width: 80px;color: black;">Block</a>
+                      {{/if}}
+
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!--**********************************
+            Content body end
+        ***********************************-->
+{{!--
+<script>
+  $(function () {
+    $('#adminHotel').DataTable({
+      responsive: true;
+    });
+
+  });
+</script> --}}
+
+<script>
+  $(document).on("click", ".delete", function (e) {
+
+    var varid = $(e.target).data('id');
+    $('.modal-body #inp').attr('value',varid)
+    $('.modal-footer #delete').attr('href', "/admin/deleteHotel?id="+varid)
+  })
+</script>
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+<!-- Required vendors -->
+<script src="/admin-temp/vendor/global/global.min.js"></script>
+<script src="/admin-temp/js/quixnav-init.js"></script>
+<script src="/admin-temp/js/custom.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+           
+        });
+    });
+</script>
+
+
+<!-- Datatable -->
+<script src="/admin-temp/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/admin-temp/js/plugins-init/datatables.init.js"></script>
+
+{{!--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+--}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>

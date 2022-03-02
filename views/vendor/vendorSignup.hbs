@@ -91,6 +91,7 @@
 								<div class="col m6">
 									<input type="text" class=" validate" name="Location"
 										style="margin: 0.5%;  " placeholder="Location">
+									
 
 								</div>
 							</div>
@@ -144,5 +145,28 @@
 	<script>
 	$('.numbers').keyup(function () { 
     this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+</script>
+<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYW1hbm1hcmFra2FyIiwiYSI6ImNrenFlaGU3MzNyMm4ybm55eHBwY3ZnYTAifQ.opk1k-6yUnPi23g7pMWo-g';
+const geocoder = new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+types: 'country,region,place,postcode,locality,neighborhood'
+});
+ 
+geocoder.addTo('#geocoder');
+ 
+// Get the geocoder results container.
+const results = document.getElementById('result');
+ 
+// Add geocoder result to container.
+geocoder.on('result', (e) => {
+results.value= JSON.stringify(e.result, null, 2);
+});
+ 
+// Clear results container when search is cleared.
+geocoder.on('clear', () => {
+results.innerText = '';
 });
 </script>

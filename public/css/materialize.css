@@ -5350,13 +5350,9 @@ textarea.materialize-textarea {
 }
 /* Radio Buttons
    ========================================================================== */
-
+/* 
 [type="radio"]:not(:checked),
-[type="radio"]:checked {
-    position: absolute;
-    left: -9999px;
-    opacity: 0;
-}
+
 [type="radio"]:not(:checked) + label,
 [type="radio"]:checked + label {
     position: relative;
@@ -5367,7 +5363,7 @@ textarea.materialize-textarea {
     line-height: 25px;
     font-size: 1rem;
     transition: .28s ease;
-    /* webkit (konqueror) browsers */
+   
     
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -5386,7 +5382,7 @@ textarea.materialize-textarea {
     z-index: 0;
     transition: .28s ease;
 }
-/* Unchecked styles */
+
 
 [type="radio"]:not(:checked) + label:before,
 [type="radio"]:not(:checked) + label:after,
@@ -5404,7 +5400,7 @@ textarea.materialize-textarea {
     -webkit-transform: scale(0);
     transform: scale(0);
 }
-/* Checked styles */
+
 
 [type="radio"]:checked + label:before {
     border: 2px solid transparent;
@@ -5416,18 +5412,18 @@ textarea.materialize-textarea {
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
 }
-/* Radio With gap */
+
 
 [type="radio"].with-gap:checked + label:after {
     -webkit-transform: scale(0.5);
     transform: scale(0.5);
 }
-/* Focused styles */
+
 
 [type="radio"].tabbed:focus + label:before {
     box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
 }
-/* Disabled Radio With gap */
+
 
 [type="radio"].with-gap:disabled:checked + label:before {
     border: 2px solid rgba(0, 0, 0, 0.26);
@@ -5435,8 +5431,7 @@ textarea.materialize-textarea {
 [type="radio"].with-gap:disabled:checked + label:after {
     border: none;
     background-color: rgba(0, 0, 0, 0.26);
-}
-/* Disabled style */
+
 
 [type="radio"]:disabled:not(:checked) + label:before,
 [type="radio"]:disabled:checked + label:before {
@@ -5452,7 +5447,7 @@ textarea.materialize-textarea {
 [type="radio"]:disabled:checked + label:after {
     background-color: rgba(0, 0, 0, 0.26);
     border-color: #BDBDBD;
-}
+} */
 /***** CSS Magic to Highlight Stars on Hover *****/
 
 .rating > input:checked ~ label,
@@ -5689,8 +5684,9 @@ form p:last-child {
     height: 0;
 }
 .switch label input[type=checkbox]:checked + .lever {
-    background-color: #84c7c1;
+    background-color: #2f7566;
 }
+
 .switch label input[type=checkbox]:checked + .lever:after {
     background-color: #26a69a;
     left: 24px;
@@ -5701,7 +5697,7 @@ form p:last-child {
     position: relative;
     width: 40px;
     height: 15px;
-    background-color: #818181;
+    background-color: #64ccb5;
     border-radius: 15px;
     margin-right: 10px;
     transition: background 0.3s ease;
@@ -5714,7 +5710,7 @@ form p:last-child {
     display: inline-block;
     width: 21px;
     height: 21px;
-    background-color: #F1F1F1;
+    background-color: #64ccb5;
     border-radius: 21px;
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
     left: -5px;
@@ -5734,6 +5730,60 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::after {
 }
 .switch label input[type=checkbox][disabled] + .lever:after,
 .switch label input[type=checkbox][disabled]:checked + .lever:after {
+    background-color: #BDBDBD;
+}
+
+
+
+
+
+.switch label input[type=checkbox]:checked + .lever1 {
+    background-color: #3c9ce6;
+}
+
+.switch label input[type=checkbox]:checked + .lever1:after {
+    background-color: #3c9ce6;
+    left: 24px;
+}
+.switch label .lever1 {
+    content: "";
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 15px;
+    background-color: #fa4d4d;
+    border-radius: 15px;
+    margin-right: 10px;
+    transition: background 0.3s ease;
+    vertical-align: middle;
+    margin: 0 16px;
+}
+.switch label .lever1:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background-color: #fa4d4d;
+    border-radius: 21px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+    left: -5px;
+    top: -3px;
+    transition: left 0.3s ease, background .3s ease, box-shadow 0.1s ease;
+}
+input[type=checkbox]:checked:not(:disabled) ~ .lever1:active::after,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever1::after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(38, 166, 154, 0.1);
+}
+input[type=checkbox]:not(:disabled) ~ .lever1:active:after,
+input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever1::after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(0, 0, 0, 0.08);
+}
+.switch input[type=checkbox][disabled] + .lever1 {
+    cursor: default;
+}
+.switch label input[type=checkbox][disabled] + .lever1:after,
+.switch label input[type=checkbox][disabled]:checked + .lever1:after {
     background-color: #BDBDBD;
 }
 /* Select Field

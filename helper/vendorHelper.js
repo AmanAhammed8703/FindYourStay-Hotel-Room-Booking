@@ -841,6 +841,86 @@ module.exports = {
         }]).sort({_id:-1}).limit(10).toArray()
             resolve(lastbookings)
         })
+    },
+    getVendorBooking:(id)=>{
+        return new Promise(async(resolve,reject)=>{
+            
+            let vendorBookings=await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
+                $match:{hotelid:ObjectId(id)}
+            },
+                {
+                $project:{from:1,amount:{$toInt:"$amount"}}
+            },{
+                $group: { _id: '$from', count: { $sum: 1 } ,amount:{$sum:"$amount"}}
+                
+            }]).toArray()
+            
+            resolve(vendorBookings)
+            
+        })
+    },
+    getToadyAvailable:(id,from,to,qty)=>{
+        let hotelid=ObjectId(id)
+        let availableRooms=[]
+        console.log(hotelid);
+        return new Promise(async(resolve,reject)=>{
+            let booked=await db.get().collection(collection.ROOM_COLLECTION).aggregate([{
+                $match:{hotelId:hotelid}
+            },{
+                $project:{_id:1,category:1,quantity:1,price:1,discount:1,bed:1}
+            },{
+                $lookup:{
+                    from:collection.BOOKINGS_COLLECTION,
+                    localField:'_id',
+                    foreignField:'roomId',
+                    as:"booked"
+                }
+            },{
+                $project:{booked:"$booked",quantity:1,price:1,category:1,discount:1,bed:1}
+            }]).toArray()
+            
+            for(let i of booked){
+                let totalqty=parseInt(i.quantity)
+                console.log(totalqty);
+                for(let j of i.booked){
+
+                let bookFrom=new Date(j.from.split("-").reverse().join("-"))
+                let bookTo=new Date(j.to.split("-").reverse().join("-"))
+                console.log(bookFrom,bookTo,from,to);
+                    if(bookFrom<=from && from<=bookTo){
+                        totalqty--
+                    }else if(bookFrom<=to && to<=bookTo){
+                        totalqty--
+                    }else  if(from<bookFrom && bookTo<to){
+                        totalqty--
+                    }
+                
+                }
+
+                console.log(totalqty,qty);
+                if(totalqty>=qty){
+                    console.log("yes");
+                    console.log(totalqty,qty);
+                    i.remaining=totalqty
+
+                    availableRooms.push(i)
+                }
+            }
+            console.log(availableRooms);
+            resolve(availableRooms)
+        })
+    },
+    offlineBooking:(data)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.BOOKINGS_COLLECTION).insertOne(data)
+            resolve()
+        })
+    },
+    getVendor:(id)=>{
+        return new Promise(async (resolve,reject)=>{
+            let vendor=await db.get().collection(collection.VENDOR_COLLECTION).findOne({_id:ObjectId(id)})
+            resolve(vendor)
+        })
     }
 
 }

@@ -1,0 +1,224 @@
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+
+                    <h1 style="font-weight: 700;">Add booking <i class="fas fa-chevron-right"></i> </h1><br><br>
+
+
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Select dates</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="/vendor/addBooking" method="post" style="col-sm-12">
+                        <div class="container">
+                            <div class="row">
+                                {{#if search}}
+                                
+                                <label for="" style="margin-top: 10px;color: black;">From:</label>
+                                <input style="margin: 10px;border-color: black;" class="form-control col-sm-2" name="fromDate"type="date" id="fromDate" value="{{search.fromDate}}"required>
+                                <label for="" style="margin-top: 10px;color: black;">To:</label>
+                                <input style="margin: 10px;border-color: black;"class="form-control col-sm-2"name="toDate" type="date" id="toDate" min=""value="{{search.toDate}}" required>
+                                <label for="" style="margin-top: 10px;color: black;">Rooms:</label>
+                                <input style="margin: 10px;border-color: black;"class="number form-control col-sm-2"name="room" type="number" id="room" min="1"onkeydown="return false"value="{{search.room}}"  required >
+                                <label for="" style="margin-top: 10px;color: black;">Guests:</label>
+                                <input style="margin: 10px;border-color: black;"class="number form-control col-sm-2"name="guest" type="number" id="guest" min="1"onkeydown="return false"value="{{search.guest}}"  required >
+                                {{else}}
+                                
+                                <label for="" style="margin-top: 10px;color: black;">From:</label>
+                                <input style="margin: 10px;border-color: black;" class="form-control col-sm-2" name="fromDate"type="date" id="fromDate"required>
+                                <label for="" style="margin-top: 10px;color: black;">To:</label>
+                                <input style="margin: 10px;border-color: black;"class="form-control col-sm-2"name="toDate" type="date" id="toDate" min="" required>
+                                <label for="" style="margin-top: 10px;color: black;">Rooms:</label>
+                                <input style="margin: 10px;border-color: black;"class="number form-control col-sm-2"name="room" type="number" id="room" min="1"onkeydown="return false"  required >
+                                <label for="" style="margin-top: 10px;color: black;">Guests:</label>
+                                <input style="margin: 10px;border-color: black;"class="number form-control col-sm-2"name="guest" type="number" id="guest" min="1"onkeydown="return false"  required >
+                               
+                                
+                           
+                               
+                                {{/if}}
+                                <button class="btn btn-success"style="margin: 10px;">Submit</button>
+                               
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                        <div class="table-responsive">
+                            <table id="example" class="display" style="min-width: 845px;color: black;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Currently  Available</th>
+                                        <th scope="col"> Price</th>
+                                        <th scope="col"> Price for extra bed</th>
+                                        <th scope="col"> Total Price</th>
+                                        <th scope="col"> Controlls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each rooms}}
+                                    <tr>
+
+                                        <td >{{this.category}}</td>
+                                        <td>{{this.quantity}}</td>
+                                        <td>{{this.remaining}}</td>
+                                        <td>{{this.price}}</td>
+                                        <td>{{this.bed}}</td>
+                                        <td>{{this.totalAmount}}</td>
+                                        <td><button type="button" data-id="{{this._id}}" id="booknow"
+                                                class="booknow btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal2">
+                                                Book Now
+                                            </button>
+                                            <div class="modal fade" id="exampleModal2" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Check Out
+                                                            </h5>
+
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <a href="" class="book btn btn-Success" id="book"
+                                                                >Book Now</a>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!--**********************************
+            Content body end
+        ***********************************-->
+
+
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+<!-- Required vendors -->
+<script src="/admin-temp/vendor/global/global.min.js"></script>
+<script src="/admin-temp/js/quixnav-init.js"></script>
+<script src="/admin-temp/js/custom.min.js"></script>
+
+
+
+<!-- Datatable -->
+<script src="/admin-temp/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/admin-temp/js/plugins-init/datatables.init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable( {
+        
+    } );
+} );
+</script>
+<script>
+    $('#toDate').on('click',function () {
+        let fromDate=document.getElementById('fromDate').value
+        
+        var today = new Date(fromDate);
+        
+        var nextDay=new Date(today)
+        nextDay.setDate(nextDay.getDate()+1)
+         var year = nextDay.getFullYear()
+        var month = nextDay.getMonth()+1
+        var date = nextDay.getDate()
+        if(month<10){
+            month="0"+month
+        }
+        if(date<10){
+            date="0"+date
+        }
+        let nDate=year+'-'+month+'-'+date
+        
+        console.log(nDate)
+        document.getElementById("toDate").setAttribute("min", nDate);
+    })
+</script>
+{{!-- <script>
+    $(document).ready(function(){
+
+        document.getElementById("room").value=1
+        document.getElementById("guest").value=1
+    })
+</script> --}}
+<script>
+	$('#room').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+	$('#guest').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+});
+    $('#guest,#room').on('change',function(){
+        var room=document.getElementById("room").value
+        var guest=document.getElementById('guest').value
+        if(guest>(room*4)){
+            document.getElementById('guest').value=(room*4)
+        }
+    })
+</script>
+<script>
+  $(document).on("click", ".booknow", function (e) {
+
+    var varid = $(e.target).data('id');
+    
+    $('.modal-footer #book').attr('href', "/vendor/bookNow?id="+varid)
+  })
+</script>

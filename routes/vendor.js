@@ -6,9 +6,29 @@ var helper = require('../helper/vendorHelper')
 var ObjectId = require('mongodb').ObjectId;
 var userhelper = require('../helper/userHelper');
 const async = require('hbs/lib/async');
+const { Db } = require('mongodb');
 
+const loginVerify = (req, res, next) => {
+    if (req.session.vendor) {
+      console.log("yes");
+      next()
+    } else {
+      console.log("noooo");
+      res.redirect('/vendor')
+  
+    }
+  }
 
-
+  const isVendorBlocked=async(req,res,next)=>{
+      let vendor=await helper.getVendor(req.session.vendorId)
+      if(vendor.Block){
+          req.session.vendor=false
+          req.session.vendorBlock=true
+          res.redirect('/vendor')
+      }else{
+          next()
+      }
+  }
 /* GET users listing. */
 router.get('/', function (req, res, next) {
     if (req.session.vendor) {
@@ -25,8 +45,8 @@ router.get('/Dash', (req, res) => {
     
     res.render('vendor/vendorDash', { admintemp: true })
 })
-router.get('/vendorHome',async function (req, res, next) {
-    if (req.session.vendor) {
+router.get('/vendorHome',loginVerify,isVendorBlocked,async function (req, res, next) {
+    
         let id=ObjectId(req.session.vendorId)
         let counts=await helper.dashCount(id)
         let lastBookings=await helper.lastBookings(id)
@@ -36,12 +56,10 @@ router.get('/vendorHome',async function (req, res, next) {
         checkedIn=checkedIn.length
         console.log(checkedIn);
         res.render('vendor/vendorDash', { vendortemp: true,today,checkedIn ,counts,lastBookings});
-    } else {
-        res.render('vendor/vendorLogin')
-    }
+    
 
 });
-router.get('/addRoom/', function (req, res, next) {
+router.get('/addRoom/',loginVerify,isVendorBlocked, function (req, res, next) {
     let type = req.query.type
     console.log(type);
 
@@ -90,7 +108,7 @@ router.post('/addCount/', (req, res) => {
         }
     })
 })
-router.get('/showRooms', async (req, res) => {
+router.get('/showRooms',loginVerify,isVendorBlocked, async (req, res) => {
     let rooms = {}
     await helper.getRooms(req.session.vendorId).then((response) => {
         rooms = response
@@ -99,7 +117,7 @@ router.get('/showRooms', async (req, res) => {
 })
 router.get('/vendorSignup', function (req, res, next) {
     if (req.session.vendor) {
-        res.render('vendor/vendorHom');
+        res.render('vendor/vendorHome');
     } else {
         res.render('vendor/vendorSignup', { vendorErr: req.session.vendorErr })
         req.session.vendorErr = false
@@ -108,6 +126,7 @@ router.get('/vendorSignup', function (req, res, next) {
 
 });
 router.post('/vendorSignup', function (req, res, next) {
+   
     helper.doSignup(req.body).then((response) => {
         if (response.exist) {
             req.session.vendorErr = true
@@ -139,7 +158,7 @@ router.post('/vendorLogin', (req, res) => {
         }
     })
 })
-router.post('/addRoom', (req, res) => {
+router.post('/addRoom',loginVerify,isVendorBlocked, (req, res) => {
     console.log(req.body);
     helper.addRoom(req.body, req.session.vendorId).then((response) => {
         if (response.exist) {
@@ -166,14 +185,14 @@ router.get('/vendorLogout', (req, res) => {
     req.session.vendor = false
     res.redirect('/vendor')
 })
-router.get('/roomView/', (req, res) => {
+router.get('/roomView/',loginVerify,isVendorBlocked, (req, res) => {
     let id = req.query.id
     helper.getRoomDetails(id).then((response) => {
 
         res.render('vendor/vendorRoomView', { rooms: response, vendortemp: true })
     })
 })
-router.get('/todayBooking', async (req, res) => {
+router.get('/todayBooking',loginVerify,isVendorBlocked, async (req, res) => {
     let data = []
     vendorId = req.session.vendorId
     console.log(vendorId);
@@ -183,7 +202,7 @@ router.get('/todayBooking', async (req, res) => {
     })
     res.render('vendor/todayBooking', { vendortemp: true, data })
 })
-router.get('/upcomingBooking', async (req, res) => {
+router.get('/upcomingBooking',loginVerify,isVendorBlocked, async (req, res) => {
     let data = []
     vendorId = req.session.vendorId
     console.log(vendorId);
@@ -194,7 +213,7 @@ router.get('/upcomingBooking', async (req, res) => {
     console.log("data" + data);
     res.render('vendor/upcomingBooking', { vendortemp: true, data })
 })
-router.get('/checkedinBooking', async (req, res) => {
+router.get('/checkedinBooking',loginVerify,isVendorBlocked, async (req, res) => {
     let data = []
     vendorId = req.session.vendorId
     console.log(vendorId);
@@ -205,7 +224,7 @@ router.get('/checkedinBooking', async (req, res) => {
     console.log("data" + data);
     res.render('vendor/checkedinBooking', { vendortemp: true, data })
 })
-router.get('/pastBooking', async (req, res) => {
+router.get('/pastBooking',loginVerify,isVendorBlocked, async (req, res) => {
     let data = []
     vendorId = req.session.vendorId
     console.log(vendorId);
@@ -216,7 +235,7 @@ router.get('/pastBooking', async (req, res) => {
     console.log("data" + data);
     res.render('vendor/pastBooking', { vendortemp: true, data })
 })
-router.get('/cancelRoom/', async (req, res) => {
+router.get('/cancelRoom/',loginVerify,isVendorBlocked, async (req, res) => {
     let id = req.query.id
     let amt = req.query.amt
     let userId = req.query.userId
@@ -237,7 +256,7 @@ router.get('/cancelRoom/', async (req, res) => {
     }
     res.redirect('/vendor/upcomingBooking')
 })
-router.get('/cancelRoomToday/', async (req, res) => {
+router.get('/cancelRoomToday/',loginVerify,isVendorBlocked, async (req, res) => {
     let id = req.query.id
     let amt = req.query.amt
     let userId = req.query.userId
@@ -258,7 +277,7 @@ router.get('/cancelRoomToday/', async (req, res) => {
     }
     res.redirect('/vendor/todayBooking')
 })
-router.get('/statusUpdate/', async (req, res) => {
+router.get('/statusUpdate/',loginVerify,isVendorBlocked, async (req, res) => {
     let id = req.query.id
 
     await helper.statusUpdate(id).then((response) => {
@@ -266,7 +285,7 @@ router.get('/statusUpdate/', async (req, res) => {
         res.redirect('/vendor/todayBooking')
     })
 })
-router.get('/statusUpdateOut/', async (req, res) => {
+router.get('/statusUpdateOut/',loginVerify,isVendorBlocked, async (req, res) => {
     let id = req.query.id
 
     await helper.statusUpdate(id).then((response) => {
@@ -274,13 +293,13 @@ router.get('/statusUpdateOut/', async (req, res) => {
         res.redirect('/vendor/checkedinBooking')
     })
 })
-router.get('/vendorCoupons', async (req, res) => {
+router.get('/vendorCoupons',loginVerify,isVendorBlocked, async (req, res) => {
     let coupons = await helper.getVendorCoupons(req.session.vendorId)
     let vendorCouponExist = req.session.vendorCouponExist
     res.render('vendor/vendorCoupon', { vendortemp: true, coupons, vendorCouponExist })
     req.session.vendorCouponExist = false
 })
-router.post('/addCoupons', async (req, res) => {
+router.post('/addCoupons',loginVerify,isVendorBlocked, async (req, res) => {
     var details = req.body
     details.auth = ObjectId(req.session.vendorId)
     console.log(req.body);
@@ -300,7 +319,7 @@ router.get('/deleteCoupon/',(req,res)=>{
     })
   })
 
-router.get('/vendorOffers',async(req,res)=>{
+router.get('/vendorOffers',loginVerify,isVendorBlocked,async(req,res)=>{
     let offers=await helper.getOffers(req.session.vendorId)
     let vendorOfferExist =  req.session.vendorOfferExist
     res.render('vendor/vendorOffers',{vendortemp:true ,offers,vendorOfferExist})
@@ -327,14 +346,14 @@ router.get('/deleteOffers/',(req,res)=>{
       res.redirect('/vendor/vendorOffers')
     })
   })
-router.get('/vendorProfile',async(req,res)=>{
+router.get('/vendorProfile',loginVerify,isVendorBlocked,async(req,res)=>{
     let profile=await helper.getProfile(req.session.vendorId)
     let pword=req.session.wrongVendorPassword
     console.log(profile);
     res.render('vendor/vendorProfile',{vendortemp:true,profile ,pword})
     req.session.wrongVendorPassword=false
 })
-router.post('/editProfile',(req,res)=>{
+router.post('/editProfile',loginVerify,isVendorBlocked,(req,res)=>{
     console.log(req.body);
     let profile=req.body
     
@@ -356,7 +375,7 @@ router.post('/updateProfile',async(req,res)=>{
     })
     res.redirect('/vendor/vendorProfile')
 })
-router.get('/changePassword',(req,res)=>{
+router.get('/changePassword',loginVerify,isVendorBlocked,(req,res)=>{
     res.render('vendor/changePassword',{vendortemp:true})
 })
 router.post('/updatePassword',async(req,res)=>{
@@ -374,5 +393,166 @@ router.get('/getChartData',async(req,res)=>{
     let bookings=await helper.getChartData(id)
     res.json(bookings)
   })
+router.get('/vendorReport',loginVerify,isVendorBlocked,async(req,res)=>{
+    let from
+    let to
+    if(req.session.salesUserData){
+        from=req.session.salesUserData.fromDate
+        to=req.session.salesUserData.toDate
+    }else{
+        let date=new Date()
+        date.setHours(5)
+        date.setMinutes(30)
+        date.setSeconds(0)
+        date.setMilliseconds(0)
+        from=new Date(date)
+        console.log(from);
+        from.setDate(from.getDate()-7)
+        console.log(from);
+        to=new Date(date)
+        to.setDate(to.getDate()-1)
+        console.log(to);
+    }
 
+    
+    let reqBookings = []
+  requestFrom = new Date(from)
+  requestTo = new Date(to)
+  console.log(requestFrom, requestTo);
+    let vendorBooking=await helper.getVendorBooking(req.session.vendorId)
+    
+    for (let i of vendorBooking) {
+        let from = new Date(i._id.split("-").reverse().join("-"))
+        if (requestFrom <= from && from <= requestTo) {
+          reqBookings.push(i)
+        }
+      }
+      console.log(vendorBooking);
+      let finalBooking = []
+      let diff = (requestTo - requestFrom) / (1000 * 60 * 60 * 24)
+      console.log(diff); 
+      let checkDate = requestFrom
+      for (let i = 0; i <= diff; i++) {
+        
+        var k= 0
+        for (let j of reqBookings) {
+          let jfrom = new Date(j._id.split("-").reverse().join("-"))
+          console.log("jfrom");
+          console.log(jfrom,checkDate);
+          if (jfrom.getTime() == checkDate.getTime()) {
+            let afterprofit=(j.amount)-((j.amount*10)/100)
+            j.afterprofit=parseInt(afterprofit)
+            finalBooking.push(j)
+            k = 1
+            
+          }
+    
+    
+        }
+        if (k == 0) {
+          if((checkDate.getMonth()+1)<10){
+            let date = checkDate.getDate() + "-0" + (checkDate.getMonth() + 1) + "-" + checkDate.getFullYear()
+            if(checkDate.getDate()<10){
+              date = "0"+checkDate.getDate() + "-0" + (checkDate.getMonth() + 1) + "-" + checkDate.getFullYear()
+            }
+          finalBooking.push({_id:date,count:0,amount:0,afterprofit:0})
+          }else{
+            let date = checkDate.getDate() + "-" + (checkDate.getMonth() + 1) + "-" + checkDate.getFullYear()
+            if(checkDate.getDate()<10){
+              date = "0"+checkDate.getDate() + "-" + (checkDate.getMonth() + 1) + "-" + checkDate.getFullYear()
+            }
+          finalBooking.push({_id:date,count:0,amount:0,afterprofit:0})
+          }
+        }
+        checkDate.setDate(checkDate.getDate() + 1)
+      }
+      console.log(finalBooking);
+      let search=req.session.salesUserData
+      req.session.salesUserData=false
+      
+    res.render('vendor/salesReport',{vendortemp:true,finalBooking,search})
+})
+router.post('/vendorReport',async(req,res)=>{
+    console.log(req.body);
+    req.session.salesUserData=req.body
+    res.redirect('/vendor/vendorReport')
+})
+router.get('/addBooking',loginVerify,async(req,res)=>{
+    let from
+    let to
+    let quantity
+    let search
+    let guest
+    if(req.session.vendorBooking){
+         search=req.session.vendorBooking
+         search.room=parseInt(search.room)
+         search.guest=parseInt(search.guest)
+        from=search.fromDate
+        to=search.toDate
+        guest=search.guest
+        quantity=search.room
+    }else{
+         from=new Date()
+        from.setHours(5)
+        from.setMinutes(30)
+        from.setSeconds(0)
+        from.setMilliseconds(0)
+         to=new Date(from)
+        to.setDate(from.getDate()+1)
+        guest=1
+        quantity=1
+    }
+    let rooms=await helper.getToadyAvailable(req.session.vendorId,from,to,quantity)
+    console.log(rooms);
+    let diff=(new Date(to)-new Date(from))/(1000*60*60*24)
+    for(let i of rooms){
+        
+       
+        
+        let totalAmount=(parseInt(i.price)*diff)+(parseInt(i.bed)*parseInt(guest))
+        
+        i.totalAmount=totalAmount
+    }
+    let checkOut=[]
+    for(let i of rooms){
+        let totals={}
+        
+        totals.hotelid=ObjectId(req.session.vendorId)
+        totals.roomId=i._id
+        totals.from=((from.toString()).split("-").reverse().join("-"))
+        totals.to=((to.toString()).split("-").reverse().join("-"))
+        totals.days=diff.toString()
+        totals.room=quantity.toString()
+        totals.guest=guest.toString()
+        totals.amount=i.totalAmount.toString()
+        totals.status="upcoming"
+        totals.payment="Pay at Hotel"
+        checkOut.push(totals)
+    }
+    console.log(rooms);
+    req.session.offlineBookingsTotal=checkOut
+    res.render('vendor/addBooking',{vendortemp:true,rooms,search,vendorid:ObjectId(req.session.vendorId)})
+    req.session.vendorBooking=false
+})
+router.post('/addBooking',(req,res)=>{
+    console.log(req.body);
+    req.session.vendorBooking=req.body
+    res.redirect('/vendor/addBooking')
+})
+router.get('/bookNow/',loginVerify,isVendorBlocked,async(req,res)=>{
+    let id=req.query.id
+    let check=req.session.offlineBookingsTotal
+    console.log(check);
+    
+    console.log(check);
+    for(let i of check){
+        i.hotelid=ObjectId(i.hotelid)
+    i.roomId=ObjectId(i.roomId)
+        if(i.roomId==id){
+            await helper.offlineBooking(i)
+        }
+    }
+    res.redirect("/vendor")    
+
+}) 
 module.exports = router;

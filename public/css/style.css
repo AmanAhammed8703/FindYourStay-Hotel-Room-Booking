@@ -4291,7 +4291,7 @@ form .stars {
 form .stars input[type="radio"] {
     position: absolute;
     opacity: 0;
-    filter: alpha(opacity=0);
+    filter: alpha(opacity=100);
 }
 form .stars input[type="radio"].star-5:checked ~ span {
     width: 100%;

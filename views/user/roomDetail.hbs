@@ -15,7 +15,14 @@
                         {{#if search}}
                         <div class="row">
                             <div class="input-field col s12 m4 l2">
-                                <input type="text" placeholder="Location" value="{{search.location}}" name="location">
+                                 <input list="locations"type="text" id="" class="" autocomplete="off"value="{{search.location}}"
+										placeholder="Location" name="location" style="">
+										<datalist id="locations">
+											{{#each locations}}
+											<option value="{{this._id}}">{{this._id}}</option>
+											{{/each}}
+										</datalist>
+                                {{!-- <input type="text" placeholder="Location" value="{{search.location}}" name="location"> --}}
                             </div>
                             <div class="input-field  col s12 m4 l2">
 
@@ -176,6 +183,7 @@
                         </div>
                         <div class="lp-ur-all-rat">
                             <ul>
+                                {{#if finalReviews}}
                                 {{#each finalReviews}}
 
                                 <li>
@@ -188,6 +196,9 @@
                                     </div>
                                 </li>
                                 {{/each}}
+                                {{else}}
+                                    <p style="text-align: center;">There is no reviews</p>
+                                {{/if}}
                             </ul>
                         </div>
                     </div>

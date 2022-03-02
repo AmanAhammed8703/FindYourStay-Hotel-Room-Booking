@@ -35,6 +35,12 @@ module.exports = {
 
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: data.Email })
             if (user) {
+                if(user.Blocked){
+                    response.status = false
+                    response.block=true
+                    console.log("login failed")
+                    resolve(response)
+                }else{
                 bcrypt.compare(data.Password, user.Password).then((status) => {
 
                     if (status) {
@@ -50,6 +56,7 @@ module.exports = {
                         resolve(response)
                     }
                 })
+            }
             } else {
                 response.status = false
                 console.log("login failed")
@@ -120,7 +127,7 @@ module.exports = {
                 $project: { rooms: 1, roomId: 1, Bookedrooms: 1, bookedfrom: '$Bookedrooms.from', bookedto: '$Bookedrooms.to' }
             }
             ]).toArray()
-            console.log(result);
+            //console.log(result);
             let roomData = await db.get().collection(collection.ROOM_COLLECTION).find({}).toArray()
             let qty
             const rooms = []
@@ -136,18 +143,18 @@ module.exports = {
                     bookedRooms.push(j)
                 }
             }
-            console.log(rooms);
-            console.log(bookedRooms);
+            // console.log(rooms);
+            // console.log(bookedRooms);
             for (let i of roomData) {
                 console.log(typeof (i.quantity));
                 if (parseInt(i.quantity) < parseInt(search.room)) {
                     let id = i._id
                     for (let l in rooms) {
-                        console.log(ObjectId(rooms[l]));
-                        console.log(id);
+                        // console.log(ObjectId(rooms[l]));
+                        // console.log(id);
                         if ((ObjectId(rooms[l])).toString() === (id).toString()) {
-                            console.log("hee");
-                            console.log(l, id);
+                            // console.log("hee");
+                            // console.log(l, id);
                             rooms.splice(l, 1);
                         }
                     }
@@ -158,18 +165,18 @@ module.exports = {
 
                 for (let r of roomData) {
 
-                    console.log(r._id, i.roomId)
+                   // console.log(r._id, i.roomId)
                     if (r._id.toString() === i.roomId.toString()) {
 
                         qty = parseInt(r.quantity)
-                        console.log("quan" + typeof (r.quantity));
-                        console.log(qty)
+                        // console.log("quan" + typeof (r.quantity));
+                        // console.log(qty)
                     }
                 }
                 for (let k of bookedRooms) {
                     if (i.roomId.toString() === k.roomId.toString()) {
 
-                        console.log("qty" + qty);
+                       //console.log("qty" + qty);
                         var dateOne = search.from
                         var dateTwo = search.to
                         var searchFrom = new Date(dateOne.split("-").reverse().join("-"))
@@ -187,21 +194,21 @@ module.exports = {
 
                         }
 
-                        console.log(search.room);
-                        console.log("qty" + qty);
-                        console.log(typeof (parseInt(search.room)));
-                        console.log("qn" + typeof (qty));
+                        // console.log(search.room);
+                        // console.log("qty" + qty);
+                        // console.log(typeof (parseInt(search.room)));
+                        // console.log("qn" + typeof (qty));
                         let no = parseInt(search.room)
-                        console.log(no);
+                       // console.log(no);
                         if (qty < no) {
 
                             let id = i.roomId
                             for (let l in rooms) {
-                                console.log(ObjectId(rooms[l]));
-                                console.log(id);
+                                // console.log(ObjectId(rooms[l]));
+                                // console.log(id);
                                 if ((ObjectId(rooms[l])).toString() === (id).toString()) {
-                                    console.log("hee");
-                                    console.log(l, id);
+                                    // console.log("hee");
+                                    // console.log(l, id);
                                     rooms.splice(l, 1);
                                 }
                             }
@@ -545,6 +552,21 @@ module.exports = {
     addReview:(id,review)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.ROOM_COLLECTION).updateOne({_id:id},{$push:{review:review}})
+        })
+    },
+    getCoupon:(name)=>{
+        return new Promise(async(resolve,reject)=>{
+            let coupon=await db.get().collection(collection.COUPONS_COLLECTION).findOne({couponCode:name})
+            resolve(coupon)
+        })
+    },
+    getLocations:()=>{
+        return new Promise(async(resolve,reject)=>{
+           let location=await db.get().collection(collection.VENDOR_COLLECTION).aggregate([{
+               $group:{_id:"$Location"}
+           }]).toArray()
+           resolve(location)
+           console.log(location);
         })
     }
 

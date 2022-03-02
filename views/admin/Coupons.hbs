@@ -55,7 +55,8 @@
                                 <div class="mb-3">
                                     <label for="recipient-name" class="col-form-label" style="color: black;">Expiry
                                         Date:</label>
-                                    <input type="date" class="form-control" id="dtpick" min="" name="couponExpiry" required>
+                                    <input type="date" class="form-control" id="dtpick" min="" name="couponExpiry"
+                                        required>
                                 </div>
 
                         </div>
@@ -74,7 +75,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -93,12 +94,12 @@
                                         <td>{{this.couponCode}}</td>
                                         <td>{{this.couponPercentage}}</td>
                                         <td>{{this.couponExpiry}}</td>
-                                        
+
 
 
                                         <td>
 
-                                           
+
                                             <button type="button" data-id="{{this._id}}" id="reject"
                                                 class="reject btn btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModalDelete">
@@ -130,7 +131,7 @@
                                                 </div>
                                             </div>
                                             <!-- Modal -->
-                                
+
 
 
 
@@ -201,3 +202,10 @@
     crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+           
+        });
+    });
+</script>

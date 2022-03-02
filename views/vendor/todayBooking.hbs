@@ -7,7 +7,7 @@
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
 
-                    <h1 style="font-weight: 700;">Upcoming bookings <i class="fas fa-chevron-right"></i>
+                    <h1 style="font-weight: 700;">Today's bookings <i class="fas fa-chevron-right"></i>
                         {{hotel.propertyName}}</h1><br><br>
 
                 </div>
@@ -44,9 +44,16 @@
                                 </thead>
                                 <tbody>
                                     {{#each data}}
+                                    {{#if this.userId}}
                                     <tr>
                                         <td>{{this.userName}}</td>
                                         <td>{{this.userMobile}}</td>
+                                        
+                                    {{else}}
+                                     <tr>
+                                        <td>{{this._id}}</td>
+                                        <td>--</td>
+                                    {{/if}}
                                         <td>{{this.categoty}}</td>
                                         <td>{{this.from}}</td>
                                         <td>{{this.to}}</td>
@@ -56,6 +63,7 @@
                                         <td>{{this.amount}}</td>
                                         <td>{{this.payment}}</td>
                                         <td>
+                                            {{#if this.userId}}
                                             <button type="button" data-id="{{this._id}}" id="show"
                                                 class="show btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal2">
@@ -72,7 +80,7 @@
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                             <input type="text" id="#inp" value="">
+                                                            
                                                             <img src="" id="image" alt="image" style="width: 500px;">
                                                         </div>
                                                         <div class="modal-footer">
@@ -83,18 +91,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                        {{/if}}
                                         </td>
-                                        </td>
+                                        
 
 
 
                                         <td><button type="button" data-id="{{this._id}}" data-amt="{{this.amount}}"
                                                 data-user="{{this.userId}}" class="cancel btn btn-danger"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin: 5px;">
                                                 Cancel
                                             </button>
-                                            <a href="/vendor/statusUpdate?id={{this._id}}" class="btn btn-success">Check
+                                            <a href="/vendor/statusUpdate?id={{this._id}}" class="btn btn-success" style="margin: 5px;">Check
                                                 in</a>
 
                                             <!-- Modal -->
@@ -109,7 +117,7 @@
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                                <input type="text" id="#inp">
+                                                            
                                                             Are you sure?Do you want to Cancel this Booking?
                                                         </div>
                                                         <div class="modal-footer">
@@ -202,3 +210,10 @@
     crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+           
+        });
+    });
+</script>

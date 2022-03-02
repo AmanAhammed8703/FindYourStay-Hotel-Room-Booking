@@ -461,6 +461,92 @@ module.exports = {
         }]).sort({_id:-1}).limit(10).toArray()
             resolve(lastbookings)
         })
+    },
+    getGroupedBookings:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let bookings=await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
+                $project:{from:1,amount:{$toInt:"$amount"}}
+            },{
+                $group: { _id: '$from', count: { $sum: 1 } ,amount:{$sum:"$amount"}}
+                
+            }]).toArray()
+            resolve(bookings)
+        })
+    },
+    getGroupedUser:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let users=await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
+                    $project:{userId:1,amount:{$toInt:"$amount"}}
+            },
+                {
+                $group:{_id:"$userId", count: { $sum: 1 } ,amount:{$sum:"$amount"}}
+            },{
+                $project:{_id:{$toObjectId:"$_id"},count:1,amount:1}
+            },
+        {
+            $lookup:{
+                from:collection.USER_COLLECTION,
+                localField:"_id",
+                foreignField:"_id",
+                as:"user"
+            }
+        },{
+            $project:{_id:1,count:1,amount:1,userName:"$user.userName",userMobile:"$user.mobileNumber",userEmail:"$user.Email"}
+        }]).toArray()
+            console.log(users);
+            resolve(users)
+        })
+    },
+    getGroupedVendor:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let vendors=await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
+                    $project:{hotelid:1,amount:{$toInt:"$amount"}}
+            },
+                {
+                $group:{_id:"$hotelid", count: { $sum: 1 } ,amount:{$sum:"$amount"}}
+            },{
+                $project:{_id:{$toObjectId:"$_id"},count:1,amount:1}
+           },
+        {
+            $lookup:{
+                from:collection.VENDOR_COLLECTION,
+                localField:"_id",
+                foreignField:"_id",
+                as:"vendor"
+            }
+        },{
+            $project:{_id:1,count:1,amount:1,vendorName:"$vendor.propertyName",vendorMobile:"$vendor.mobileNumber",vendorEmail:"$vendor.Email"}
+        }
+         ]).toArray()
+            console.log(vendors);
+            resolve(vendors)
+        })
+    },
+    getUsers:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let users=await db.get().collection(collection.USER_COLLECTION).find({}).toArray()
+            resolve(users)
+        })
+    },
+    blockUser:(id)=>{
+        console.log(id);
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{Blocked:true}}).then(()=>{
+                console.log("blocked");
+                resolve()
+            })
+        })
+    }
+    ,
+    unblockUser:(id)=>{
+        console.log(id);
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(id)},{$set:{Blocked:false}}).then(()=>{
+                console.log("unblocked");
+                resolve()
+            })
+            
+        })
     }
 
 

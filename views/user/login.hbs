@@ -19,6 +19,8 @@
                                     <h1>Login</h1>
 									{{#if nologin}}
                                     <p style="color: red;">Incorrect email or password</p>
+									{{else if userBlock}}
+									<p style="color: red;">Your account is suspended</p>
 									{{/if}}
 									<div class="input-field col s12">
 										<input type="text" class="validate" name="Email" placeholder="Email">

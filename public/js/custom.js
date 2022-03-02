@@ -71,6 +71,8 @@ $(function() {
 
 //DATE PICKER	
 $(function() {
+    var date=new Date()
+    date.setDate(date.getDate() + 1);
     var dateFormat = "dd-mm-yy",
         from = $("#from")
         .datepicker({
@@ -78,16 +80,16 @@ $(function() {
             defaultDate: "+1w",
             changeMonth: false,
             numberOfMonths: 1,
-            minDate:new Date(),
+            minDate:date,
             dateFormat: 'dd-mm-yy',
 
         })
         .on("change", function() {
-            to.datepicker("option", "minDate", getDate(this));
+            to.datepicker("option", "minDate", getDate(this ));
         }),
         to = $("#to").datepicker({
-            minDate:new Date(),
-            defaultDate: "+1w",
+           
+            defaultDate: date,
             changeMonth: false,
             numberOfMonths: 1,
             dateFormat: 'dd-mm-yy',
