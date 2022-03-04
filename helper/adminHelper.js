@@ -370,6 +370,7 @@ module.exports = {
                 $project: { hotel: '$hotel.propertyName', _id: 0 }
             }
             ]).toArray()
+            
             response.mostbookedHotel = booked[0].hotel[0]
             let bookedLoc = await db.get().collection(collection.BOOKINGS_COLLECTION).aggregate([{
                 $lookup:{

@@ -44,7 +44,7 @@ router.get('/adminHotel',loginVerify, function (req, res) {
 });
 
 
-router.post('/adminLogin',loginVerify, (req, res) => {
+router.post('/adminLogin', (req, res) => {
   helper.doLogin(req.body).then((response) => {
     if (response.admin) {
       req.session.admin = true

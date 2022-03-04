@@ -3,7 +3,7 @@ const state={
     db:null
 }
 module.exports.connect=function(done){
-    const url='mongodb://localhost:27017'
+    const url='mongodb+srv://aman_ahammed:Encrypted1@findyourstay.xyxdl.mongodb.net/project?retryWrites=true&w=majority'
     const dbname='project'
 
     MongoClient.connect(url,(err,data)=>{
