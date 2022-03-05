@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session=require('express-session')
+var MongoDBStore = require('connect-mongodb-session')(session);
 var db=require('./config/connection')
 var fileupload=require('express-fileupload')
 require('dotenv').config()
@@ -14,7 +15,13 @@ const hbs = require('hbs');
 
 
 var app = express();
-
+var store = new MongoDBStore({
+  uri: 'mongodb+srv://aman_ahammed:Encrypted1@findyourstay.xyxdl.mongodb.net/project?retryWrites=true&w=majority',
+  collection: 'Sessions'
+});
+store.on('error', function(error) {
+  console.log(error);
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -28,13 +35,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret:"key",cookie:{maxAge:2628002880,sameSite:'lax'}}))
+app.use(session({secret:"key",cookie:{maxAge:2628002880,sameSite:'lax'}, store: store,
+// Boilerplate options, see:
+// * https://www.npmjs.com/package/express-session#resave
+// * https://www.npmjs.com/package/express-session#saveuninitialized
+resave: true,
+saveUninitialized: true}))
 app.use(function(req, res, next) { res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'); next(); });
 app.use(fileupload())
 
 db.connect((err)=>{
   if(err) console.log("connection error!")
-  else console.log("Database connected")
+  else console.log("Database connected") 
 })
 
 
