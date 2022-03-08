@@ -184,7 +184,9 @@ router.get('/salesReport',loginVerify, async (req, res) => {
   for (let i of bookings) {
     let from = new Date(i._id.split("-").reverse().join("-"))
     if (requestFrom <= from && from <= requestTo) {
-      reqBookings.push(i)
+      reqBookings.p
+      
+      ush(i)
     }
   }
   let finalBooking = []

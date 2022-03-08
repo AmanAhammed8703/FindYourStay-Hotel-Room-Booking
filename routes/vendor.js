@@ -7,6 +7,7 @@ var ObjectId = require('mongodb').ObjectId;
 var userhelper = require('../helper/userHelper');
 const async = require('hbs/lib/async');
 const { Db } = require('mongodb');
+const s3= require('../helper/s3')
 
 const loginVerify = (req, res, next) => {
     if (req.session.vendor) {
@@ -86,24 +87,49 @@ router.post('/addCount/', (req, res) => {
 
     console.log(req.body);
 
-    helper.addCount(req.session.vendorId, roomid, req.body).then(() => {
+    helper.addCount(req.session.vendorId, roomid, req.body).then(async() => {
         res.redirect('/vendor/vendorHome')
         if (req.files) {
             if (req.files.roomImage1) {
                 let image1 = req.files.roomImage1
-                image1.mv('./public/vendor-room-images/' + roomid + '1.jpeg')
+                await image1.mv('./public/vendor-room-images/' + roomid + '1.jpeg')
+                let file = {
+                    path : './public/vendor-room-images/' + roomid +'1.jpeg',
+                    filename : 'vendor-room-images/'+roomid+'1.jpeg'
+                  }
+                  let result = await s3.upload(file)
+                  console.log(result);
+
             }
             if (req.files.roomImage2) {
                 let image2 = req.files.roomImage2
-                image2.mv('./public/vendor-room-images/' + roomid + '2.jpeg')
+                await image2.mv('./public/vendor-room-images/' + roomid + '2.jpeg')
+                let file = {
+                    path : './public/vendor-room-images/' + roomid +'2.jpeg',
+                    filename : 'vendor-room-images/'+roomid+'2.jpeg'
+                  }
+                  let result = await s3.upload(file)
+                  console.log(result);
             }
             if (req.files.roomImage3) {
                 let image3 = req.files.roomImage3
-                image3.mv('./public/vendor-room-images/' + roomid + '3.jpeg')
+                await image3.mv('./public/vendor-room-images/' + roomid + '3.jpeg')
+                let file = {
+                    path : './public/vendor-room-images/' + roomid+'3.jpeg',
+                    filename : 'vendor-room-images/'+roomid+'3.jpeg'
+                  }
+                  let result = await s3.upload(file)
+                  console.log(result);
             }
             if (req.files.roomImage4) {
                 let image4 = req.files.roomImage4
-                image4.mv('./public/vendor-room-images/' + roomid + '4.jpeg')
+                await image4.mv('./public/vendor-room-images/' + roomid + '4.jpeg')
+                let file = {
+                    path : './public/vendor-room-images/' + roomid +'4.jpeg',
+                    filename : 'vendor-room-images/'+roomid+'4.jpeg'
+                  }
+                  let result = await s3.upload(file)
+                  console.log(result);
             }
         }
     })
@@ -125,9 +151,9 @@ router.get('/vendorSignup', function (req, res, next) {
 
 
 });
-router.post('/vendorSignup', function (req, res, next) {
+router.post('/vendorSignup', async function (req, res, next) {
    
-    helper.doSignup(req.body).then((response) => {
+    helper.doSignup(req.body).then(async(response) => {
         if (response.exist) {
             req.session.vendorErr = true
             res.redirect('/vendorSignup')
@@ -138,8 +164,14 @@ router.post('/vendorSignup', function (req, res, next) {
             console.log("req=" + req.session.vendorId);
 
             let image = req.files.License
-            image.mv('./public/vendor-license/' + (response.insertedId) + '.jpeg')
-            res.redirect('/vendor/')
+            await image.mv('./public/vendor-license/' + (response.insertedId) + '.jpeg')
+            let file = {
+                path : './public/vendor-license/' + response.insertedId + '.jpeg',
+                filename : 'vendor-license/'+response.insertedId+".jpeg"
+              }
+              let result = await s3.upload(file)
+              console.log(result);
+            res.redirect('/vendor/') 
         }
     })
 });
@@ -160,7 +192,7 @@ router.post('/vendorLogin', (req, res) => {
 })
 router.post('/addRoom',loginVerify,isVendorBlocked, (req, res) => {
     console.log(req.body);
-    helper.addRoom(req.body, req.session.vendorId).then((response) => {
+    helper.addRoom(req.body, req.session.vendorId).then(async(response) => {
         if (response.exist) {
             res.redirect('/vendorSignup')
         } else {
@@ -173,10 +205,19 @@ router.post('/addRoom',loginVerify,isVendorBlocked, (req, res) => {
             let image2 = req.files.roomImage2
             let image3 = req.files.roomImage3
             let image4 = req.files.roomImage4
-            image1.mv('./public/vendor-room-images/' + (response.insertedId) + '1.jpeg')
-            image2.mv('./public/vendor-room-images/' + (response.insertedId) + '2.jpeg')
-            image3.mv('./public/vendor-room-images/' + (response.insertedId) + '3.jpeg')
-            image4.mv('./public/vendor-room-images/' + (response.insertedId) + '4.jpeg')
+            await image1.mv('./public/vendor-room-images/' + (response.insertedId) + '1.jpeg')
+            await image2.mv('./public/vendor-room-images/' + (response.insertedId) + '2.jpeg')
+            await image3.mv('./public/vendor-room-images/' + (response.insertedId) + '3.jpeg')
+            await image4.mv('./public/vendor-room-images/' + (response.insertedId) + '4.jpeg')
+            for(let i=1;i<=4;i++){
+
+                let file = {
+                    path : './public/vendor-room-images/' + response.insertedId + i+'.jpeg',
+                    filename : 'vendor-room-images/'+response.insertedId+i+'.jpeg'
+                  }
+                  let result = await s3.upload(file)
+                  console.log(result);
+            }
             res.redirect('/vendor/vendorHome')
         }
     })

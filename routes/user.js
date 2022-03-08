@@ -7,6 +7,7 @@ var router = express.Router();
 var helper = require('../helper/userHelper')
 var ObjectId = require('mongodb').ObjectId;
 var fs = require('fs')
+const s3= require('../helper/s3')
 var Razorpay = require('razorpay')
 var paypal = require('paypal-rest-sdk');
 paypal.configure({
@@ -542,7 +543,7 @@ router.get('/success/',loginVerify,isBlocked, async (req, res) => {
     resp.roomId = ObjectId(resp.roomId)
     resp.payment = "Paypal"
     console.log(resp);
-    await helper.addBooking(resp).then((response) => {
+    await helper.addBooking(resp).then(async(response) => {
       console.log("booking confirmed");
       console.log(req.session.userId);
       var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
@@ -553,6 +554,11 @@ router.get('/success/',loginVerify,isBlocked, async (req, res) => {
       fs.rename(oldPath, newPath, function (err) {
         if (err) throw err
       })
+      let file = {
+        path : './public/id-Proof/' + inserted.insertedId +'.jpeg',
+        filename : 'id-Proof/'+inserted.insertedId+'.jpeg'
+      }
+      let result = await s3.upload(file)
     })
 
   }
@@ -601,14 +607,21 @@ router.post('/updateProfile/',loginVerify, (req, res) => {
   let phn = '+91' + req.body.mobileNumber
   console.log("phn" + phn);
   req.body.mobileNumber = phn
-  helper.updateProfile(id, req.body).then((response) => {
+  helper.updateProfile(id, req.body).then(async(response) => {
     req.session.activeNo = response.activeNo
     req.session.updateEmailNumberError = response.updateEmailNumberError
     req.session.updateEmailError = response.updateEmailError
     req.session.updateNumberError = response.updateNumberError
     if (req.files) {
       let image = req.files.imgpro
-      image.mv('./public/profile-picture/' + (id) + '.jpeg')
+      await image.mv('./public/profile-picture/' + (id) + '.jpeg')
+      let file = {
+        path : './public/profile-picture/' + id +'.jpeg',
+        filename : 'profile-picture/'+id +'.jpeg'
+      }
+      let result = await s3.upload(file)
+      console.log(result);
+      
     }
     res.redirect('/userProfile')
   })
@@ -667,6 +680,7 @@ router.post('/orderRazorPay', loginVerify,async (req, res) => {
   let id = req.body.roomid
   resp.userId = req.session.userId
   idProof.mv('./public/temp-id/' + resp.userId + '.jpeg')
+  
   console.log(req.body);
   await helper.getOneRoom(id).then((response) => {
     resp.hotelid = response.hotel[0]._id
@@ -699,7 +713,7 @@ router.post('/orderRazorPay', loginVerify,async (req, res) => {
 
     })
 
-    await helper.addBooking(resp).then((inserted) => {
+    await helper.addBooking(resp).then(async(inserted) => {
       console.log("booking confirmed");
       response.payWithWallet = true
       res.json(response)
@@ -710,8 +724,15 @@ router.post('/orderRazorPay', loginVerify,async (req, res) => {
         helper.addCouponUser(resp.userId, resp.couponName)
       }
       fs.rename(oldPath, newPath, function (err) {
+        
         if (err) throw err
       })
+      let file = {
+        path : './public/id-Proof/' + inserted.insertedId +'.jpeg',
+        filename : 'id-Proof/'+inserted.insertedId+'.jpeg'
+      }
+      let result = await s3.upload(file)
+      console.log(result)
     })
 
   } else {
@@ -723,7 +744,7 @@ router.post('/orderRazorPay', loginVerify,async (req, res) => {
       console.log(req.body);
       console.log(resp);
 
-      await helper.addBooking(resp).then((inserted) => {
+      await helper.addBooking(resp).then(async(inserted) => {
         console.log("booking confirmed");
         response.payAtHotel = true
         res.json(response)
@@ -736,6 +757,11 @@ router.post('/orderRazorPay', loginVerify,async (req, res) => {
         fs.rename(oldPath, newPath, function (err) {
           if (err) throw err
         })
+        let file = {
+          path : './public/id-Proof/' + inserted.insertedId +'.jpeg',
+          filename : 'id-Proof/'+inserted.insertedId+'.jpeg'
+        }
+        let result = await s3.upload(file)
       })
 
 
@@ -853,7 +879,7 @@ router.post('/verifypayment', async (req, res) => {
     console.log(req.body);
     console.log(resp);
 
-    await helper.addBooking(resp).then((response) => {
+    await helper.addBooking(resp).then(async(response) => {
       console.log("booking confirmed");
       var oldPath = './public/temp-id/' + req.session.userId + '.jpeg'
       var newPath = './public/id-Proof/' + response.insertedId + '.jpeg'
@@ -864,6 +890,11 @@ router.post('/verifypayment', async (req, res) => {
       fs.rename(oldPath, newPath, function (err) {
         if (err) throw err
       })
+      let file = {
+        path : './public/id-Proof/' + inserted.insertedId +'.jpeg',
+        filename : 'id-Proof/'+inserted.insertedId+'.jpeg'
+      }
+      let result = await s3.upload(file)
     })
 
 
