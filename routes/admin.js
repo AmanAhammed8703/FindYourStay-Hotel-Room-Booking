@@ -186,7 +186,7 @@ router.get('/salesReport',loginVerify, async (req, res) => {
     if (requestFrom <= from && from <= requestTo) {
       reqBookings.p
       
-      ush(i)
+      push(i)
     }
   }
   let finalBooking = []

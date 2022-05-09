@@ -35,16 +35,16 @@
                 let fileInputElement = document.getElementById('img1');
                 let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
                 let container = new DataTransfer();
-
-                container.items.add(file);
-                const img = container.files[0]
+                
+                container.items.add(file);  
+                const img = container.files[0] 
                 var url = URL.createObjectURL(img)
                 fileInputElement.files = container.files;
                 document.getElementById('imagePreview1').src = url
                 document.getElementById('image-box').style.display = 'none'
                 document.getElementById('crop-btn').style.display = 'none'
                 document.getElementById('confirm-btn').style.display = 'block'
-            });
+            });     
             });
 
         } else {
